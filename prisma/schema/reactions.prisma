@@ -1,0 +1,32 @@
+model Comment {
+  commentId String @id @default(cuid()) @map("comment_id")
+
+  message String
+
+  recipe   Recipe @relation(fields: [recipeId], references: [recipeId])
+  recipeId String @map("recipe_id")
+
+  author   User   @relation(fields: [authorId], references: [userId])
+  authorId String @map("author_id")
+
+  createdAt DateTime @default(now()) @map("created_at")
+  updatedAt DateTime @updatedAt @map("updated_at")
+
+  @@map("comments")
+}
+
+model Like {
+  likeId String @id @default(cuid()) @map("like_id")
+
+  recipe   Recipe @relation(fields: [recipeId], references: [recipeId])
+  recipeId String @map("recipe_id")
+
+  user   User   @relation(fields: [userId], references: [userId])
+  userId String @map("user_id")
+
+  createdAt DateTime @default(now()) @map("created_at")
+  updatedAt DateTime @updatedAt @map("updated_at")
+
+  @@unique([recipeId, userId])
+  @@map("likes")
+}

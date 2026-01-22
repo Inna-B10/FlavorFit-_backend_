@@ -1,0 +1,56 @@
+model Order {
+  orderId  String      @id @default(cuid()) @map("order_id")
+  orderRef String      @unique @map("order_referanse")
+  status   OrderStatus @default(PENDING)
+
+  user   User   @relation(fields: [userId], references: [userId])
+  userId String @map("user_id")
+
+  orderItems OrderItem[]
+  courierId  String?     @map("courier_id")
+  courier    Courier?    @relation(fields: [courierId], references: [courierId])
+
+  createdAt DateTime @default(now()) @map("created_at")
+  updatedAt DateTime @updatedAt @map("updated_at")
+
+  @@map("orders")
+}
+
+model OrderItem {
+  orderItemId String  @id @default(cuid()) @map("order_item_id")
+  quantity    Int     @default(1)
+  price       Decimal // price at the time of order
+
+  orderId String @map("order_id")
+  order   Order  @relation(fields: [orderId], references: [orderId])
+
+  ingredient   Ingredient @relation(fields: [ingredientId], references: [ingredientId])
+  ingredientId String     @map("ingredient_id")
+
+  createdAt DateTime @default(now()) @map("created_at")
+  updatedAt DateTime @updatedAt @map("updated_at")
+
+  @@map("order_items")
+}
+
+model Courier {
+  courierId String @id @default(cuid()) @map("courier_id")
+
+  name        String
+  phoneNumber String @map("phone_number")
+
+  orders Order[]
+
+  createdAt DateTime @default(now()) @map("created_at")
+  updatedAt DateTime @updatedAt @map("updated_at")
+
+  @@map("couriers")
+}
+
+enum OrderStatus {
+  PENDING
+  PROCESSING
+  ON_WAY
+  COMPLETED
+  CANCELED
+}

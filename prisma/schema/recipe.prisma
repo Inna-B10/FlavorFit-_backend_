@@ -1,13 +1,20 @@
 model Recipe {
-  recipeId    String     @id @default(cuid()) @map("recipe_id")
+  recipeId    String @id @default(cuid()) @map("recipe_id")
   title       String
   description String
+
   calories    Int?
   cookingTime Int?       @map("cooking_time")
   difficulty  Difficulty
 
+  author   User   @relation(fields: [authorId], references: [userId])
+  authorId String @map("author_id")
+
   ingredients RecipeIngredient[]
   recipeSteps RecipeStep[]
+
+  comments Comment[]
+  likes    Like[]
 
   createdAt DateTime @default(now()) @map("created_at")
   updatedAt DateTime @updatedAt @map("updated_at")
@@ -16,11 +23,23 @@ model Recipe {
 }
 
 model Ingredient {
-  ingredientId String @id @default(cuid()) @map("ingredient_id")
+  ingredientId String  @id @default(cuid()) @map("ingredient_id")
   name         String
-  defaultUnit  Unit   @map("default_unit")
+  description  String?
+  iconUrl      String? @map("icon_url")
 
-  recipes RecipeIngredient[]
+  // how it is USED in recipes
+  defaultUnit Unit @map("default_unit") //150 MILLILITER
+
+  // how it is SOLD
+  saleUnit     SaleUnit @map("sale_unit") // BOTTLE / BOX (как товар продаётся)
+  saleQuantity Decimal  @map("sale_quantity") // 1000 / 150
+  saleBaseUnit Unit     @map("sale_base_unit") // MILLILITER / GRAM (в чём измеряется содержимое упаковки)
+
+  price Decimal // price for ONE sale unit
+
+  recipes   RecipeIngredient[]
+  orderItem OrderItem[]
 
   createdAt DateTime @default(now()) @map("created_at")
   updatedAt DateTime @updatedAt @map("updated_at")
@@ -70,8 +89,17 @@ enum Difficulty {
 enum Unit {
   GRAM
   MILLILITER
+  LITER
   PIECE
   TEASPOON
   TABLESPOON
   CLOVES
+}
+
+enum SaleUnit {
+  PIECE
+  PACK
+  BOTTLE
+  BOX
+  BAG
 }

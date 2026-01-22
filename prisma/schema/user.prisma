@@ -2,16 +2,22 @@ model User {
   userId   String @id @default(cuid()) @map("user_id")
   email    String @unique
   password String
+  role     Role   @default(USER)
 
-  role      Role    @default(USER)
   firstName String? @map("first_name")
   avatarUrl String? @map("avatar_url")
 
-  createdAt DateTime @default(now()) @map("created_at")
-  updatedAt DateTime @updatedAt @map("updated_at")
-
   profile        UserProfile?
   fitnessProfile FitnessProfile?
+
+  recipes  Recipe[]
+  comments Comment[]
+  likes    Like[]
+
+  orders Order[]
+
+  createdAt DateTime @default(now()) @map("created_at")
+  updatedAt DateTime @updatedAt @map("updated_at")
 
   @@map("users")
 }
