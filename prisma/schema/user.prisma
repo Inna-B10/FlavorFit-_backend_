@@ -1,16 +1,81 @@
 model User {
-  id          String    @id       @default(cuid())
-  email       String    @unique
-  password    String
-  role        Role      @default(USER)
+  userId   String @id @default(cuid()) @map("user_id")
+  email    String @unique
+  password String
 
-  createdAt   DateTime  @default(now())   @map("created_at")
-  updatedAt   DateTime  @updatedAt        @map("updated_at")
+  role      Role    @default(USER)
+  firstName String? @map("first_name")
+  avatarUrl String? @map("avatar_url")
 
-  @@map("user")
+  createdAt DateTime @default(now()) @map("created_at")
+  updatedAt DateTime @updatedAt @map("updated_at")
+
+  profile        UserProfile?
+  fitnessProfile FitnessProfile?
+
+  @@map("users")
 }
 
-enum Role{
+model UserProfile {
+  profileId String  @id @default(cuid()) @map("profile_id")
+  fullName  String? @map("full_name")
+  gender    Gender?
+  age       Int?
+  bio       String?
+
+  user   User   @relation(fields: [userId], references: [userId])
+  userId String @unique @map("user_id")
+
+  createdAt DateTime @default(now()) @map("created_at")
+  updatedAt DateTime @updatedAt @map("updated_at")
+
+  @@map("user_profiles")
+}
+
+model FitnessProfile {
+  fitnessProfileId String @id @default(cuid()) @map("fitness_profile_id")
+
+  heightCm      Int? @map("height_cm")
+  currentWeight Int? @map("current_weight")
+  targetWeight  Int? @map("target_weight")
+
+  chestCm Int? @map("chest_cm")
+  waistCm Int? @map("waist_cm")
+  thighCm Int? @map("thigh_cm")
+  armCm   Int? @map("arm_cm")
+
+  activityLevel ActivityLevel? @map("activity_level")
+  nutritionGoal NutritionGoal? @map("nutrition_goal")
+
+  user   User   @relation(fields: [userId], references: [userId])
+  userId String @unique @map("user_id")
+
+  createdAt DateTime @default(now()) @map("created_at")
+  updatedAt DateTime @updatedAt @map("updated_at")
+
+  @@map("fitness_profiles")
+}
+
+enum Role {
   USER
   ADMIN
+}
+
+enum Gender {
+  MALE
+  FEMALE
+}
+
+enum ActivityLevel {
+  SEDENTARY
+  LIGHTLY_ACTIVE
+  MODERATELY_ACTIVE
+  ACTIVE
+  VERY_ACTIVE
+}
+
+enum NutritionGoal {
+  LOSE_WEIGHT
+  MAINTAIN
+  GAIN_MUSCLE
 }
