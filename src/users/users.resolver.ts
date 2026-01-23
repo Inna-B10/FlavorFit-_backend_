@@ -1,7 +1,12 @@
-import { Resolver } from '@nestjs/graphql';
-import { UsersService } from './users.service';
+import { Query, Resolver } from '@nestjs/graphql'
+import { UsersService } from './users.service'
 
 @Resolver()
 export class UsersResolver {
-  constructor(private readonly usersService: UsersService) {}
+	constructor(private readonly usersService: UsersService) {}
+
+	@Query(() => String)
+	getProfile() {
+		return 'John Doe'
+	}
 }

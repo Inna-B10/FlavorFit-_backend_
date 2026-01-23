@@ -66,22 +66,22 @@ npm install -D dotenv
 
 ### 📋 TODOs:
 
-- [ ] Create modules (module + resolver (or controller if REST API) + service) for auth, users,
-      recipes, orders
-- [ ] Create a prisma module and connect it to nest.js
-- [ ] Connect config service to access .env
-- [ ] Configure graphql for nest.js
 - [ ] Read about graphql-codegen
 - [ ] Test the first test request to /graphql
 
 <details style="border:1px solid #d4d4d4; border-radius:2px; padding:1rem;">
 <summary><h4 style="display:inline; padding-left:6px;">✅ Done</h4></summary>
 
-[✔️] Write the remaining tables/models (userProfile, recipe, order, likes+comments)\
-[✔️] Verify that the users table has appeared in the database\
-[✔️] Run the first migration\
-[✔️] Write the first model (user)\
-[✔️] Install the database\
-[✔️] Create the Nest.js project
+✔️ Configure graphql for nest.js\
+✔️ Connect config service to access .env\
+✔️ Create a prisma module and connect it to nest.js\
+✔️ Create modules (module + resolver (or controller if REST API) + service) for auth, users,
+recipes, orders\
+✔️ Write the remaining tables/models (userProfile, recipe, order, likes+comments)\
+✔️ Verify that the users table has appeared in the database\
+✔️ Run the first migration\
+✔️ Write the first model (user)\
+✔️ Install the database\
+✔️ Create the Nest.js project
 
 </details>
