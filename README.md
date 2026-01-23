@@ -11,18 +11,18 @@
 <!-- - Название самого файла README.md -->
 <!-- ========================================================= -->
 
-# Project name: FlavorFit - backend
+# **🚧 Work in Progress 🚧**
 
-## 🚧 Work in Progress
+# Project name: FlavorFit - backend
 
 ### 💎 Description
 
 <!-- [<img src="preview.png" height="250" align="right" style="margin-left:20px" />](preview.png) -->
 
-Backend for the [**FlavorFit**](https://github.com/Inna-B10/FlavorFit) built with `Nest.js` and
-`Prisma`.
+Backend for the project [**FlavorFit**](https://github.com/Inna-B10/FlavorFit), built with `Nest.js`
+and `Prisma`.
 
-### 🧩 Tech Stack/Built With
+### 🧩 Tech Stack
 
 ![Nest.js](https://img.shields.io/badge/Nest.js_11.0.1-424242?logo=nestjs&logoColor=E0234E)
 ![Prisma](https://img.shields.io/badge/Prisma_7.3.0-424242?logo=prisma)
@@ -66,15 +66,22 @@ npm install -D dotenv
 
 ### 📋 TODOs:
 
-- [ ] Write the remaining tables (models)
+- [ ] Create modules (module + resolver (or controller if REST API) + service) for auth, users,
+      recipes, orders
+- [ ] Create a prisma module and connect it to nest.js
+- [ ] Connect config service to access .env
+- [ ] Configure graphql for nest.js
+- [ ] Read about graphql-codegen
+- [ ] Test the first test request to /graphql
 
 <details style="border:1px solid #d4d4d4; border-radius:2px; padding:1rem;">
 <summary><h4 style="display:inline; padding-left:6px;">✅ Done</h4></summary>
 
-- [x] Create the Nest.js project
-- [x] Install the database
-- [x] Write the first model (user)
-- [x] Run the first migration
-- [x] Verify that the users table has appeared in the database
+[✔️] Write the remaining tables/models (userProfile, recipe, order, likes+comments)\
+[✔️] Verify that the users table has appeared in the database\
+[✔️] Run the first migration\
+[✔️] Write the first model (user)\
+[✔️] Install the database\
+[✔️] Create the Nest.js project
 
 </details>
