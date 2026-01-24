@@ -5,13 +5,12 @@ import { PrismaClient } from 'prisma/generated/prisma/client'
 
 @Injectable()
 export class PrismaService extends PrismaClient {
-	// check
-	async $healthcheck() {
-		await this.$queryRaw`SELECT 1`
-	}
-
 	constructor(private readonly configService: ConfigService) {
 		const connectionString = process.env.DATABASE_URL
+
+		if (!connectionString) {
+			throw new Error('DATABASE_URL is not defined')
+		}
 
 		const adapter = new PrismaPg({
 			connectionString
@@ -21,10 +20,7 @@ export class PrismaService extends PrismaClient {
 	}
 	async onModuleInit() {
 		await this.$connect()
-
-		// check
-		await this.$healthcheck()
-		console.log('✅ Prisma connected and queryable')
+		console.log('✅ Prisma connected to PostgreSQL')
 	}
 
 	async onModuleDestroy() {

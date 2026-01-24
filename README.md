@@ -50,6 +50,8 @@ npm install @nestjs/graphql
 npm install @nestjs/apollo
 npm install graphql
 npm install prisma @prisma/client
+npm install @prisma/adapter-pg
+npm i @as-integrations/express5
 npm install @nestjs/config
 npm install -D dotenv
 ```
