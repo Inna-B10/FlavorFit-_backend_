@@ -35,12 +35,16 @@ and `Prisma`.
 ![dotenv](https://img.shields.io/badge/dotenv_17.2.3-424242?logo=dotenv)
 ![graphql](https://img.shields.io/badge/graphql_16.12.0-424242?logo=graphql&logoColor=E10098)
 ![@nestjs/apollo](https://img.shields.io/badge/%40nestjs%2Fapollo_13.2.3-424242?logo=apollographql)
-![@nestjs/config](https://img.shields.io/badge/%40nestjs%2Fconfig_4.0.2-424242)
 ![@prisma/client](https://img.shields.io/badge/%40prisma%2Fclient_7.3.0-424242)
+![@prisma/adapter-pg](https://img.shields.io/badge/%40prisma%2Fadapter--pg_7.3.0-424242)
 ![@nestjs/cli](https://img.shields.io/badge/%40nestjs%2Fcli_11.0.0-424242)
+![@nestjs/graphql](https://img.shields.io/badge/%40nestjs%2Fgraphql_13.2.3-424242)
+![@nestjs/config](https://img.shields.io/badge/%40nestjs%2Fconfig_4.0.2-424242)
 ![@nestjs/schematics](https://img.shields.io/badge/%40nestjs%2Fschematics_11.0.0-424242)
+![@nestjs/common](https://img.shields.io/badge/%40nestjs%2Fcommon_11.0.1-424242)
+![@nestjs/platform-express](https://img.shields.io/badge/%40nestjs%2Fplatform--express_11.0.1-424242)
+![@as-integrations/express5](https://img.shields.io/badge/%40as--integrations%2Fexpress5_1.1.2-424242)
 ![globals](https://img.shields.io/badge/globals_16.0.0-424242)
-![jest](https://img.shields.io/badge/jest_30.0.0-424242)
 
 <details style="border:1px solid #d4d4d4; border-radius:2px; padding:1rem;">
 <summary><h4 style="display:inline; padding-left:6px;">🗃 Dependencies</h4></summary>
@@ -54,6 +58,8 @@ npm install @prisma/adapter-pg
 npm i @as-integrations/express5
 npm install @nestjs/config
 npm install -D dotenv
+npm install @nestjs/jwt
+npm install argon2
 ```
 
 </details>
@@ -68,22 +74,37 @@ npm install -D dotenv
 
 ### 📋 TODOs:
 
+- [ ] Captcha
+- [ ] Move creating a new user from auth.service to user service
+- [ ] Add server cookie during registration
+- [ ] Generate Models from Prisma to graphql
+- [ ] Login (login)
+- [ ] Check email
+- [ ] Check password
+- [ ] Attach and detach refreshToken in http-only cookies
+- [ ] Test using playground graphql
 - [ ] Read about graphql-codegen
-- [ ] Test the first test request to /graphql
 
 <details style="border:1px solid #d4d4d4; border-radius:2px; padding:1rem;">
 <summary><h4 style="display:inline; padding-left:6px;">✅ Done</h4></summary>
 
-✔️ Configure graphql for nest.js\
-✔️ Connect config service to access .env\
-✔️ Create a prisma module and connect it to nest.js\
-✔️ Create modules (module + resolver (or controller if REST API) + service) for auth, users,
-recipes, orders\
-✔️ Write the remaining tables/models (userProfile, recipe, order, likes+comments)\
-✔️ Verify that the users table has appeared in the database\
-✔️ Run the first migration\
-✔️ Write the first model (user)\
-✔️ Install the database\
-✔️ Create the Nest.js project
+- [x] **Authorization:**
+  - [x] User creation
+  - [x] Generating JWT tokens (access + refresh)
+  - [x] Password hashing
+  - [x] Registration
+- [x] **Configure DB, Prisma, GraphQL:**
+  - [x] Test the first test request to /graphql
+  - [x] Configure graphql for nest.js
+  - [x] Connect config service to access .env
+  - [x] Create a prisma module and connect it to nest.js
+  - [x] Create modules (module + resolver (or controller if REST API) + service) for auth, users,
+        recipes, orders
+  - [x] Write the remaining tables/models (userProfile, recipe, order, likes+comments)
+  - [x] Verify that the users table has appeared in the database
+  - [x] Run the first migration
+  - [x] Write the first model (user)
+  - [x] Install the database
+  - [x] Create the Nest.js project
 
 </details>
