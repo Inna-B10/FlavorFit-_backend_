@@ -75,23 +75,25 @@ npm install argon2
 ### 📋 TODOs:
 
 - [ ] Captcha
-- [ ] Move creating a new user from auth.service to user service
-- [ ] Add server cookie during registration
 - [ ] Generate Models from Prisma to graphql
-- [ ] Login (login)
-- [ ] Check email
-- [ ] Check password
-- [ ] Attach and detach refreshToken in http-only cookies
-- [ ] Test using playground graphql
+- [ ] **Login/Logout:**
+  - [ ] Add server cookie during registration
+  - [ ] Get new tokens
+  - [ ] Logout
+  - [ ] Roles guard, auth guard
 - [ ] Read about graphql-codegen
 
 <details style="border:1px solid #d4d4d4; border-radius:2px; padding:1rem;">
 <summary><h4 style="display:inline; padding-left:6px;">✅ Done</h4></summary>
 
-- [x] **Authorization:**
-  - [x] User creation
+- [x] **Login/Logout:**
+  - [x] Test using playground graphql
+  - [x] Attach and detach refreshToken in http-only cookies
+  - [x] Validate user
+  - [x] Login
   - [x] Generating JWT tokens (access + refresh)
   - [x] Password hashing
+  - [x] Check if exist
   - [x] Registration
 - [x] **Configure DB, Prisma, GraphQL:**
   - [x] Test the first test request to /graphql
