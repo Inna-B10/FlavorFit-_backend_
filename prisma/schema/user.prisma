@@ -7,7 +7,7 @@ model User {
   firstName String? @map("first_name")
   avatarUrl String? @map("avatar_url")
 
-  profile        UserProfile?
+  userProfile    UserProfile?
   fitnessProfile FitnessProfile?
 
   recipes  Recipe[]
@@ -26,7 +26,7 @@ model UserProfile {
   profileId String  @id @default(cuid()) @map("profile_id")
   fullName  String? @map("full_name")
   gender    Gender?
-  age       Int?
+  birthYear Int?
   bio       String?
 
   user   User   @relation(fields: [userId], references: [userId])
