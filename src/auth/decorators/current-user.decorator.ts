@@ -1,10 +1,7 @@
 import { createParamDecorator, ExecutionContext } from '@nestjs/common'
 import { GqlExecutionContext } from '@nestjs/graphql'
-import { TCurrentUser } from '../auth.interface'
+import type { TCurrentUser, TRequestWithUser } from '../auth.interface'
 
-type TRequestWithUser = {
-	user?: TCurrentUser
-}
 export const CurrentUser = createParamDecorator(
 	(data: keyof TCurrentUser | undefined, ctx: ExecutionContext) => {
 		let user: TCurrentUser | null | undefined = null
@@ -23,5 +20,6 @@ export const CurrentUser = createParamDecorator(
 	}
 )
 
+// examples:
 // @CurrentUser() user: UserModel
 // @CurrentUser('id') userId: string

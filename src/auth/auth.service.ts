@@ -47,11 +47,7 @@ export class AuthService {
 			return
 		}
 
-		const expiresIn = new Date(Date.now() + this.EXPIRE_DAY_REFRESH_TOKEN * 24 * 60 * 60 * 1000)
-
-		// const expiresIn = isRemoveCookie
-		// 	? new Date(0)
-		// 	: new Date(Date.now() + this.EXPIRE_DAY_REFRESH_TOKEN * 24 * 60 * 60 * 1000)
+		const expiresIn = new Date(Date.now() + this.EXPIRE_DAY_REFRESH_TOKEN * 24 * 60 * 60 * 1000) // 3 days
 
 		res.cookie(this.REFRESH_TOKEN_COOKIE_NAME, refreshToken || '', {
 			httpOnly: true,
@@ -66,7 +62,7 @@ export class AuthService {
 	//* ------------------------------ Validate User ----------------------------- */
 	private async validateUser(input: AuthInput) {
 		const email = input.email.toLowerCase()
-		const user = await this.usersService.findByEmail(email)
+		const user = await this.usersService.findUserByEmail(email)
 
 		if (!user) {
 			throw new NotFoundException('Invalid email or password')

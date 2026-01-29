@@ -26,24 +26,6 @@ export class UserModel extends UserBaseModel {
 	avatarUrl?: string
 }
 
-//* ------------------------------ User Profile ------------------------------ */
-@ObjectType()
-export class UserProfileModel extends UserBaseModel {
-	// @Field()
-	// userProfileId: string
-	@Field({ nullable: true })
-	fullName?: string
-	@Field(() => Gender, { nullable: true })
-	gender?: Gender
-	@Field(() => Int, { nullable: true })
-	birthYear?: number
-	@Field({ nullable: true })
-	bio?: string
-
-	// @Field(() => FitnessProfileModel, { nullable: true })
-	// fitnessProfile?: FitnessProfileModel
-}
-
 //* ----------------------------- Fitness Profile ---------------------------- */
 @ObjectType()
 export class FitnessProfileModel {
@@ -73,6 +55,31 @@ export class FitnessProfileModel {
 	// createdAt: Date
 	// @Field()
 	// updatedAt: Date
+}
+
+//* ------------------------------ User Profile ------------------------------ */
+@ObjectType()
+export class UserProfileModel extends UserBaseModel {
+	// @Field()
+	// userProfileId: string
+	@Field({ nullable: true })
+	fullName?: string
+	@Field(() => Gender, { nullable: true })
+	gender?: Gender
+	@Field(() => Int, { nullable: true })
+	birthYear?: number
+	@Field({ nullable: true })
+	bio?: string
+}
+
+//* ------------------------- User With Full Profile ------------------------- */
+@ObjectType()
+export class UserWithProfileModel extends UserModel {
+	@Field(() => UserProfileModel, { nullable: true })
+	userProfile?: UserProfileModel
+
+	@Field(() => FitnessProfileModel, { nullable: true })
+	fitnessProfile?: FitnessProfileModel
 }
 
 //* -------------------------- User Model For Admin -------------------------- */

@@ -12,17 +12,11 @@ export interface IAuthTokenData {
 //current user at the time of authorization
 export type TCurrentUser = Omit<UserModel, 'password'>
 
-// [TODO] generate Models from Prisma to graphql
+export type TRequestWithUser = {
+	user?: TCurrentUser
+}
 
-// @ObjectType()
-// export class UserModel {
-// 	@Field()
-// 	userId: string
-// 	@Field()
-// 	email: string
-// 	@Field()
-// 	role: Role
-// }
+// [TODO] generate Models from Prisma to graphql
 
 @ObjectType()
 export class AuthResponse {
