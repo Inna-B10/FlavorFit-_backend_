@@ -1,12 +1,15 @@
-import { Injectable } from '@nestjs/common'
+import { ConsoleLogger, Injectable } from '@nestjs/common'
 import { ConfigService } from '@nestjs/config'
 import { PrismaPg } from '@prisma/adapter-pg'
 import { PrismaClient } from 'prisma/generated/prisma/client'
 
 @Injectable()
 export class PrismaService extends PrismaClient {
-	constructor(private readonly configService: ConfigService) {
-		const connectionString = process.env.DATABASE_URL
+	constructor(
+		private readonly configService: ConfigService,
+		private readonly logger: ConsoleLogger
+	) {
+		const connectionString = configService.get<string>('DATABASE_URL')
 
 		if (!connectionString) {
 			throw new Error('DATABASE_URL is not defined')
@@ -20,11 +23,11 @@ export class PrismaService extends PrismaClient {
 	}
 	async onModuleInit() {
 		await this.$connect()
-		console.log('✅ Prisma connected to PostgreSQL')
+		this.logger.log('✅ Prisma connected to PostgreSQL')
 	}
 
 	async onModuleDestroy() {
 		await this.$disconnect()
-		console.log('❌ Prisma disconnected from PostgreSQL')
+		this.logger.log('❌ Prisma disconnected from PostgreSQL')
 	}
 }

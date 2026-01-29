@@ -1,9 +1,12 @@
+import { ConsoleLogger } from '@nestjs/common'
 import { NestFactory } from '@nestjs/core'
 import { NestExpressApplication } from '@nestjs/platform-express'
 import cookieParser from 'cookie-parser'
 import { AppModule } from './app.module'
 
 async function bootstrap() {
+	const logger = new ConsoleLogger()
+
 	const app = await NestFactory.create<NestExpressApplication>(AppModule)
 
 	app.use(cookieParser())
@@ -15,7 +18,8 @@ async function bootstrap() {
 	})
 
 	app.disable('x-powered-by')
-
-	await app.listen(process.env.PORT ?? 4200)
+	const port = process.env.PORT ?? 4200
+	await app.listen(port)
+	logger.log(`Server running on port ${port}`)
 }
 bootstrap()

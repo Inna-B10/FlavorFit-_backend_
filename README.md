@@ -63,6 +63,11 @@ npm install argon2
 npm install @nestjs/passport
 npm install @nestjs/passport-jwt
 npm install -D @types/passport-jwt
+npm install cookie-parser
+npm install -D @types/cookie-parser
+npm install -D prisma-nestjs-graphql
+npm install graphql-type-json
+npm install prisma-graphql-type-decimal #??
 
 ```
 
@@ -82,32 +87,28 @@ npm install -D @types/passport-jwt
 - [ ] CORS-configuration
 - [ ] Generate Models from Prisma to graphql
 - [ ] FASTIFY??
-- [ ] Add auto-generation of prisms in the NestJS graphql model
-- [ ] **Additional tasks for practice:**
-  - [ ] In the console, create a full-fledged log output like NestJS, instead of the ugly "✅ Prisma
-        connected to PostgreSQL" format, change the format to "[Nest] 54756 - 01/29/2026, 9:58:22 AM
-        LOG [RouterExplorer] Mapped {/, GET} route +1ms"
-  - [ ] Replace process.env in `prisma.service` with configService
 - [ ] **Login/Logout/Authorization:**
   - [ ] Create endpoint for receiving new tokens (refresh)
   - [ ] Create endpoint for logout (clear refresh)
-  - [ ] Add server cookie during registration
-  - [ ] Get new tokens
-  - [ ] Logout
-  - [ ] Test via playground graphql
 - [ ] Read about graphql-codegen
 
 <details style="border:1px solid #d4d4d4; border-radius:2px; padding:1rem;">
 <summary><h4 style="display:inline; padding-left:6px;">✅ Done</h4></summary>
 
-- [x] Roles guard, auth guard
-  - [x] Guard (endpoint protection by roles) Conditionally only for admin or only for authorized
-        users
-  - [x] For admin
-  - [x] For authorized users
+- [x] **Additional tasks for practice:**
+  - [x] In the console, create a full-fledged log output like NestJS, instead of the ugly "✅ Prisma
+        connected to PostgreSQL" format, change the format to "[Nest] 54756 - 01/29/2026, 9:58:22 AM
+        LOG [RouterExplorer] Mapped {/, GET} route +1ms"
+  - [x] Replace **process.env** in `prisma.service` with **configService**
 - [x] Get profile
-- [x] **Login/Logout:**
-  - [x] Test using playground graphql
+- [x] **Login/Logout/Authorization:**
+  - [x] Roles guard, auth guard
+    - [x] Guard (endpoint protection by roles) Conditionally only for admin or only for authorized
+          users
+    - [x] For admin
+    - [x] For authorized users
+  - [x] Get new tokens
+  - [x] Logout
   - [x] Attach and detach refreshToken in http-only cookies
   - [x] Validate user
   - [x] Login
