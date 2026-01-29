@@ -60,6 +60,10 @@ npm install @nestjs/config
 npm install -D dotenv
 npm install @nestjs/jwt
 npm install argon2
+npm install @nestjs/passport
+npm install @nestjs/passport-jwt
+npm install -D @types/passport-jwt
+
 ```
 
 </details>
@@ -75,17 +79,33 @@ npm install argon2
 ### 📋 TODOs:
 
 - [ ] Captcha
+- [ ] CORS-configuration
 - [ ] Generate Models from Prisma to graphql
-- [ ] **Login/Logout:**
+- [ ] FASTIFY??
+- [ ] Add auto-generation of prisms in the NestJS graphql model
+- [ ] **Additional tasks for practice:**
+  - [ ] In the console, create a full-fledged log output like NestJS, instead of the ugly "✅ Prisma
+        connected to PostgreSQL" format, change the format to "[Nest] 54756 - 01/29/2026, 9:58:22 AM
+        LOG [RouterExplorer] Mapped {/, GET} route +1ms"
+  - [ ] Replace process.env in `prisma.service` with configService
+- [ ] **Login/Logout/Authorization:**
+  - [ ] Create endpoint for receiving new tokens (refresh)
+  - [ ] Create endpoint for logout (clear refresh)
   - [ ] Add server cookie during registration
   - [ ] Get new tokens
   - [ ] Logout
-  - [ ] Roles guard, auth guard
+  - [ ] Test via playground graphql
 - [ ] Read about graphql-codegen
 
 <details style="border:1px solid #d4d4d4; border-radius:2px; padding:1rem;">
 <summary><h4 style="display:inline; padding-left:6px;">✅ Done</h4></summary>
 
+- [x] Roles guard, auth guard
+  - [x] Guard (endpoint protection by roles) Conditionally only for admin or only for authorized
+        users
+  - [x] For admin
+  - [x] For authorized users
+- [x] Get profile
 - [x] **Login/Logout:**
   - [x] Test using playground graphql
   - [x] Attach and detach refreshToken in http-only cookies
