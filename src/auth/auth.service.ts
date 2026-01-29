@@ -38,6 +38,28 @@ export class AuthService {
 		}
 	}
 
+	//* ----------------------------- Get New Tokens ----------------------------- */
+	async getNewTokens(refreshToken: string) {
+		const result = await this.jwt.verifyAsync<Pick<IAuthTokenData, 'userId'>>(refreshToken)
+
+		if (!result) {
+			throw new BadRequestException('Invalid refresh token')
+		}
+
+		const user = await this.usersService.findUserById(result.userId)
+
+		if (!user) {
+			throw new NotFoundException('User not found')
+		}
+
+		const tokens = this.generateTokens({
+			userId: user.userId,
+			role: user.role
+		})
+
+		return { user, ...tokens }
+	}
+
 	//* ---------------------- Add/Remove Refresh Token Cookie ---------------------- */
 	toggleRefreshTokenCookie(res: Response, refreshToken: string | null) {
 		const isRemoveCookie = !refreshToken
