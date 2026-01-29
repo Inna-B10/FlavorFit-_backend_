@@ -1,14 +1,21 @@
 import { NestFactory } from '@nestjs/core'
+import { NestExpressApplication } from '@nestjs/platform-express'
+import cookieParser from 'cookie-parser'
 import { AppModule } from './app.module'
 
 async function bootstrap() {
-	const app = await NestFactory.create(AppModule)
+	const app = await NestFactory.create<NestExpressApplication>(AppModule)
 
-	//NB! CORS-configuration is needed to work with https://studio.apollographql.com/sandbox/explorer
+	app.use(cookieParser())
+
 	app.enableCors({
-		origin: true,
+		origin: ['http://localhost:3000', 'http://localhost:3001'],
 		credentials: true
+		// allowedHeaders: ['Content-Type', 'Authorization']
 	})
+
+	app.disable('x-powered-by')
+
 	await app.listen(process.env.PORT ?? 4200)
 }
 bootstrap()
