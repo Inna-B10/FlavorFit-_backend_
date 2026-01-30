@@ -27,28 +27,20 @@ Backend for the project [**FlavorFit**](https://github.com/Inna-B10/FlavorFit), 
 ![Nest.js](https://img.shields.io/badge/Nest.js_11.0.1-424242?logo=nestjs&logoColor=E0234E)
 ![Prisma](https://img.shields.io/badge/Prisma_7.3.0-424242?logo=prisma)
 ![TypeScript](https://img.shields.io/badge/TypeScript_5.7.3-424242?logo=typescript&logoColor=3178C6)
-![tailwindcss](https://img.shields.io/badge/tailwindcss_4-424242?logo=tailwindcss&logoColor=06B6D4)
 
 <!-- end:tech-stack -->
 
 #### **⚙️ Libraries & Technologies**
 
-![react-dom](https://img.shields.io/badge/react--dom_19.2.3-424242?logo=react&logoColor=61DAFB)
 ![dotenv](https://img.shields.io/badge/dotenv_17.2.3-424242?logo=dotenv)
 ![graphql](https://img.shields.io/badge/graphql_16.12.0-424242?logo=graphql&logoColor=E10098)
+![argon2](https://img.shields.io/badge/argon2_0.44.0-424242)
+![cookie-parser](https://img.shields.io/badge/cookie--parser_1.4.7-424242)
+![passport-jwt](https://img.shields.io/badge/passport--jwt_4.0.1-424242)
 ![@nestjs/apollo](https://img.shields.io/badge/%40nestjs%2Fapollo_13.2.3-424242?logo=apollographql)
 ![@prisma/client](https://img.shields.io/badge/%40prisma%2Fclient_7.3.0-424242)
 ![@prisma/adapter-pg](https://img.shields.io/badge/%40prisma%2Fadapter--pg_7.3.0-424242)
 ![@nestjs/cli](https://img.shields.io/badge/%40nestjs%2Fcli_11.0.0-424242)
-![@nestjs/graphql](https://img.shields.io/badge/%40nestjs%2Fgraphql_13.2.3-424242)
-![@nestjs/config](https://img.shields.io/badge/%40nestjs%2Fconfig_4.0.2-424242)
-![@nestjs/schematics](https://img.shields.io/badge/%40nestjs%2Fschematics_11.0.0-424242)
-![@nestjs/common](https://img.shields.io/badge/%40nestjs%2Fcommon_11.0.1-424242)
-![@nestjs/platform-express](https://img.shields.io/badge/%40nestjs%2Fplatform--express_11.0.1-424242)
-![@as-integrations/express5](https://img.shields.io/badge/%40as--integrations%2Fexpress5_1.1.2-424242)
-![globals](https://img.shields.io/badge/globals_16.0.0-424242)
-![react-icons](https://img.shields.io/badge/react--icons_5.5.0-424242)
-![@tailwindcss/postcss](https://img.shields.io/badge/%40tailwindcss%2Fpostcss_4-424242)
 
 <details style="border:1px solid #d4d4d4; border-radius:2px; padding:1rem;">
 <summary><h4 style="display:inline; padding-left:6px;">🗃 Dependencies</h4></summary>
