@@ -1,15 +1,15 @@
-<!-- ========================================================= -->
+<!-- =========================================================                -->
 
-<!-- ✅ README TEMPLATE FOR PORTFOLIO PROJECTS                -->
-<!-- ========================================================= -->
-<!-- - Название скриншота: preview.png                        -->
-<!-- - Блок Tech Stack обязателен                             -->
-<!-- - Граница блока: от 🧩 Tech Stack до <!-- end:tech-stack -->
-<!-- - Между ними — только теги (бейджи) и подзаголовки       -->
-<!-- - Названия в [] отображаются в портфолио, соблюдай регистр -->
-<!-- - Раздели основной стек и вспомогательные библиотеки стоп-комментарием -->
-<!-- - Название самого файла README.md -->
-<!-- ========================================================= -->
+<!-- README TEMPLATE FOR PORTFOLIO PROJECTS                                   -->
+<!-- =========================================================                -->
+<!-- Название скриншота: preview.png                                          -->
+<!-- Блок Tech Stack обязателен                                               -->
+<!-- Граница блока: от 🧩 Tech Stack до <!-- end:tech-stack -->
+<!-- Между ними — только теги (бейджи) и подзаголовки                        -->
+<!-- Названия в [] отображаются в портфолио, соблюдать регистр                -->
+<!-- Основной стек и вспомогательные библиотеки разделены стоп-комментарием   -->
+<!-- Название самого файла README.md                                          -->
+<!-- =========================================================                -->
 
 # **🚧 Work in Progress 🚧**
 
@@ -19,19 +19,21 @@
 
 <!-- [<img src="preview.png" height="250" align="right" style="margin-left:20px" />](preview.png) -->
 
-Backend for the project [**FlavorFit**](https://github.com/Inna-B10/FlavorFit), built with `Nest.js`
-and `Prisma`.
+Backend for the project [**FlavorFit**](https://github.com/Inna-B10/FlavorFit), built with
+`Nest.js`, `Prisma` and `GraphQL`.
 
 ### 🧩 Tech Stack
 
 ![Nest.js](https://img.shields.io/badge/Nest.js_11.0.1-424242?logo=nestjs&logoColor=E0234E)
 ![Prisma](https://img.shields.io/badge/Prisma_7.3.0-424242?logo=prisma)
 ![TypeScript](https://img.shields.io/badge/TypeScript_5.7.3-424242?logo=typescript&logoColor=3178C6)
+![tailwindcss](https://img.shields.io/badge/tailwindcss_4-424242?logo=tailwindcss&logoColor=06B6D4)
 
 <!-- end:tech-stack -->
 
 #### **⚙️ Libraries & Technologies**
 
+![react-dom](https://img.shields.io/badge/react--dom_19.2.3-424242?logo=react&logoColor=61DAFB)
 ![dotenv](https://img.shields.io/badge/dotenv_17.2.3-424242?logo=dotenv)
 ![graphql](https://img.shields.io/badge/graphql_16.12.0-424242?logo=graphql&logoColor=E10098)
 ![@nestjs/apollo](https://img.shields.io/badge/%40nestjs%2Fapollo_13.2.3-424242?logo=apollographql)
@@ -45,6 +47,8 @@ and `Prisma`.
 ![@nestjs/platform-express](https://img.shields.io/badge/%40nestjs%2Fplatform--express_11.0.1-424242)
 ![@as-integrations/express5](https://img.shields.io/badge/%40as--integrations%2Fexpress5_1.1.2-424242)
 ![globals](https://img.shields.io/badge/globals_16.0.0-424242)
+![react-icons](https://img.shields.io/badge/react--icons_5.5.0-424242)
+![@tailwindcss/postcss](https://img.shields.io/badge/%40tailwindcss%2Fpostcss_4-424242)
 
 <details style="border:1px solid #d4d4d4; border-radius:2px; padding:1rem;">
 <summary><h4 style="display:inline; padding-left:6px;">🗃 Dependencies</h4></summary>
@@ -67,17 +71,10 @@ npm install cookie-parser
 npm install -D @types/cookie-parser
 npm install -D prisma-nestjs-graphql
 npm install graphql-type-json
-npm install prisma-graphql-type-decimal #??
 
 ```
 
 </details>
-
-<!-- ## 💎 Features
-
-- {основная фича 1}
-- {основная фича 2}
-- {основная фича 3} -->
 
 ---
 
@@ -85,16 +82,19 @@ npm install prisma-graphql-type-decimal #??
 
 - [ ] Captcha
 - [ ] CORS-configuration
-- [ ] Generate Models from Prisma to graphql
-- [ ] FASTIFY??
-- [ ] **Login/Logout/Authorization:**
-  - [ ] Create endpoint for receiving new tokens (refresh)
-  - [ ] Create endpoint for logout (clear refresh)
+- [ ] ? Generate Models from Prisma to graphql
+- [ ] ? Fix for prism model generation
+- [ ] ?? FASTIFY
 - [ ] Read about graphql-codegen
 
 <details style="border:1px solid #d4d4d4; border-radius:2px; padding:1rem;">
 <summary><h4 style="display:inline; padding-left:6px;">✅ Done</h4></summary>
 
+- [x] **Additional practice tasks:**
+  - [x] Checking user existence before updating
+- [x] Updating user
+- [x] Updating body measurements
+- [x] Updating profile details
 - [x] **Additional tasks for practice:**
   - [x] In the console, create a full-fledged log output like NestJS, instead of the ugly "✅ Prisma
         connected to PostgreSQL" format, change the format to "[Nest] 54756 - 01/29/2026, 9:58:22 AM

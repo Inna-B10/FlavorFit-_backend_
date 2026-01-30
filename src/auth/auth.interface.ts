@@ -16,8 +16,6 @@ export type TRequestWithUser = {
 	user?: TCurrentUser
 }
 
-// [TODO] generate Models from Prisma to graphql
-
 @ObjectType()
 export class AuthResponse {
 	@Field(() => UserModel)

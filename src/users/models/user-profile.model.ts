@@ -29,8 +29,6 @@ export class UserModel extends UserBaseModel {
 //* ----------------------------- Fitness Profile ---------------------------- */
 @ObjectType()
 export class FitnessProfileModel {
-	// @Field()
-	// fitnessProfileId: string
 	@Field(() => Int, { nullable: true })
 	heightCm?: number
 	@Field(() => Int, { nullable: true })
@@ -59,9 +57,7 @@ export class FitnessProfileModel {
 
 //* ------------------------------ User Profile ------------------------------ */
 @ObjectType()
-export class UserProfileModel extends UserBaseModel {
-	// @Field()
-	// userProfileId: string
+export class UserProfileModel {
 	@Field({ nullable: true })
 	fullName?: string
 	@Field(() => Gender, { nullable: true })
@@ -81,13 +77,3 @@ export class UserWithProfileModel extends UserModel {
 	@Field(() => FitnessProfileModel, { nullable: true })
 	fitnessProfile?: FitnessProfileModel
 }
-
-//* -------------------------- User Model For Admin -------------------------- */
-// @ObjectType()
-// export class UserAdminModel extends UserBaseModel {
-// 	@Field()
-// 	createdAt: Date
-//
-// 	@Field()
-// 	updatedAt: Date
-// }
