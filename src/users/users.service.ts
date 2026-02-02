@@ -1,5 +1,5 @@
 import { BadRequestException, Injectable } from '@nestjs/common'
-import type { ProfileUpdateInput } from 'src/graphql/user/user.input'
+import type { FullProfileUpdateInput } from 'src/graphql/user/user.input'
 import { PrismaService } from 'src/prisma/prisma.service'
 
 @Injectable()
@@ -52,84 +52,39 @@ export class UsersService {
 	}
 
 	//* ----------------------------- Update Profile ----------------------------- */
-	async updateProfile(userId: string, data: ProfileUpdateInput) {
-		await this.findUserById(userId) // check if user exists
+	async updateFullProfile(userId: string, input: FullProfileUpdateInput) {
+		const { user, profile, fitnessProfile } = input
 
-		const {
-			firstName,
-			avatarUrl,
+		const updateUserProfile = profile
+			? {
+					userProfile: {
+						upsert: {
+							create: profile,
+							update: profile
+						}
+					}
+				}
+			: {}
 
-			fullName,
-			gender,
-			birthYear,
-			bio,
+		const updateFitnessProfile = fitnessProfile
+			? {
+					fitnessProfile: {
+						upsert: {
+							create: fitnessProfile,
+							update: fitnessProfile
+						}
+					}
+				}
+			: {}
 
-			heightCm,
-			currentWeight,
-			targetWeight,
-			chestCm,
-			waistCm,
-			thighCm,
-			armCm,
-			activityLevel,
-			nutritionGoal
-		} = data
-
-		await this.prisma.user.update({
-			where: { userId },
-			data: {
-				...(firstName !== undefined && { firstName }),
-				...(avatarUrl !== undefined && { avatarUrl })
-			}
-		})
-
-		await this.prisma.userProfile.upsert({
-			where: { userId },
-			create: {
-				userId,
-				fullName,
-				gender,
-				birthYear,
-				bio
-			},
-			update: {
-				...(fullName !== undefined && { fullName }),
-				...(gender !== undefined && { gender }),
-				...(birthYear !== undefined && { birthYear }),
-				...(bio !== undefined && { bio })
-			}
-		})
-
-		await this.prisma.fitnessProfile.upsert({
-			where: { userId },
-			create: {
-				userId,
-				heightCm,
-				currentWeight,
-				targetWeight,
-				chestCm,
-				waistCm,
-				thighCm,
-				armCm,
-				activityLevel,
-				nutritionGoal
-			},
-			update: {
-				...(heightCm !== undefined && { heightCm }),
-				...(currentWeight !== undefined && { currentWeight }),
-				...(targetWeight !== undefined && { targetWeight }),
-				...(chestCm !== undefined && { chestCm }),
-				...(waistCm !== undefined && { waistCm }),
-				...(thighCm !== undefined && { thighCm }),
-				...(armCm !== undefined && { armCm }),
-				...(activityLevel !== undefined && { activityLevel }),
-				...(nutritionGoal !== undefined && { nutritionGoal })
-			}
-		})
-
-		return this.prisma.user.findUnique({
+		return this.prisma.user.update({
 			where: {
 				userId
+			},
+			data: {
+				...user,
+				...updateUserProfile,
+				...updateFitnessProfile
 			},
 			include: {
 				userProfile: true,
