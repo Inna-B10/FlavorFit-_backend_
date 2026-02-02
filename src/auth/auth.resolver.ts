@@ -8,15 +8,6 @@ import { AuthService } from './auth.service'
 @Resolver()
 export class AuthResolver {
 	constructor(private authService: AuthService) {}
-	//* ---------------------------------- Login --------------------------------- */
-	//[TODO] captcha
-	@Mutation(() => AuthResponse)
-	async login(@Args('data') input: AuthInput, @Context() { res }: IGqlContext) {
-		const { refreshToken, ...response } = await this.authService.login(input)
-		this.authService.toggleRefreshTokenCookie(res, refreshToken)
-
-		return response
-	}
 
 	//* -------------------------------- Register -------------------------------- */
 	//[TODO] captcha
@@ -27,20 +18,13 @@ export class AuthResolver {
 
 		return response
 	}
-	//* ------------------------------- New Tokens ------------------------------- */
-	@Query(() => AuthResponse)
-	async newTokens(@Context() { req, res }: IGqlContext) {
-		const refreshToken = req.cookies?.[this.authService.REFRESH_TOKEN_COOKIE_NAME]
 
-		if (!refreshToken) {
-			this.authService.toggleRefreshTokenCookie(res, null)
-			throw new BadRequestException('Refresh token is missing')
-		}
-
-		const { refreshToken: newRefreshToken, ...response } =
-			await this.authService.getNewTokens(refreshToken)
-
-		this.authService.toggleRefreshTokenCookie(res, newRefreshToken)
+	//* ---------------------------------- Login --------------------------------- */
+	//[TODO] captcha
+	@Mutation(() => AuthResponse)
+	async login(@Args('data') input: AuthInput, @Context() { res }: IGqlContext) {
+		const { refreshToken, ...response } = await this.authService.login(input)
+		this.authService.toggleRefreshTokenCookie(res, refreshToken)
 
 		return response
 	}
@@ -57,5 +41,23 @@ export class AuthResolver {
 
 		this.authService.toggleRefreshTokenCookie(res, null)
 		return true
+	}
+
+	//* ------------------------------- New Tokens ------------------------------- */
+	@Query(() => AuthResponse)
+	async newTokens(@Context() { req, res }: IGqlContext) {
+		const refreshToken = req.cookies?.[this.authService.REFRESH_TOKEN_COOKIE_NAME]
+
+		if (!refreshToken) {
+			this.authService.toggleRefreshTokenCookie(res, null)
+			throw new BadRequestException('Refresh token is missing')
+		}
+
+		const { refreshToken: newRefreshToken, ...response } =
+			await this.authService.getNewTokens(refreshToken)
+
+		this.authService.toggleRefreshTokenCookie(res, newRefreshToken)
+
+		return response
 	}
 }

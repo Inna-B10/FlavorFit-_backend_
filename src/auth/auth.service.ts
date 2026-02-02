@@ -21,8 +21,67 @@ export class AuthService {
 	private EXPIRE_DAY_REFRESH_TOKEN = 3
 	REFRESH_TOKEN_COOKIE_NAME = 'refreshToken'
 
+	//* ------------------------------ Registration ------------------------------ */
+	async register(input: AuthInput) {
+		try {
+			const normalizedEmail = input.email.toLowerCase()
+
+			const existingUser = await this.usersService.findUserByEmail(normalizedEmail)
+
+			if (existingUser) {
+				throw new BadRequestException('User with this email already exists')
+			}
+
+			const hashedPassword = await hash(input.password)
+			const user = await this.usersService.createUser(normalizedEmail, hashedPassword)
+
+			const tokens = this.generateTokens({
+				userId: user.userId,
+				role: user.role
+			})
+
+			return { user, ...tokens }
+		} catch (error) {
+			const message = error instanceof Error ? error.message : 'Unknown error'
+
+			throw new BadRequestException('Registration failed: ' + message)
+		}
+	}
+
+	//* ---------------------------------- Login --------------------------------- */
+	async login(input: AuthInput) {
+		try {
+			const user = await this.validateUser(input)
+			const tokens = this.generateTokens({
+				userId: user.userId,
+				role: user.role
+			})
+			return { user, ...tokens }
+		} catch (error) {
+			throw new NotFoundException(error || 'Invalid email or password')
+		}
+	}
+
+	//* ------------------------------ Validate User ----------------------------- */
+	private async validateUser(input: AuthInput) {
+		const email = input.email.toLowerCase()
+		const user = await this.usersService.findUserByEmail(email)
+
+		if (!user) {
+			throw new NotFoundException('Invalid email or password')
+		}
+
+		const isValidPassword = await verify(user.password, input.password)
+
+		if (!isValidPassword) {
+			throw new NotFoundException('Invalid email or password')
+		}
+
+		return user
+	}
+
 	//* ------------------------------ Generate Tokens --------------------------- */
-	private generateTokens(data: IAuthTokenData) {
+	generateTokens(data: IAuthTokenData) {
 		const accessToken = this.jwt.sign(data, {
 			expiresIn: '1h'
 		})
@@ -80,70 +139,4 @@ export class AuthService {
 			// domain: isDev(this.configService) ? 'localhost' : '...',
 		})
 	}
-
-	//* ------------------------------ Validate User ----------------------------- */
-	private async validateUser(input: AuthInput) {
-		const email = input.email.toLowerCase()
-		const user = await this.usersService.findUserByEmail(email)
-
-		if (!user) {
-			throw new NotFoundException('Invalid email or password')
-		}
-
-		const isValidPassword = await verify(user.password, input.password)
-
-		if (!isValidPassword) {
-			throw new NotFoundException('Invalid email or password')
-		}
-
-		return user
-	}
-
-	//* ------------------------------ Registration ------------------------------ */
-	async register(input: AuthInput) {
-		try {
-			const email = input.email.toLowerCase()
-			const existingUser = await this.prisma.user.findFirst({
-				where: { email: { equals: email, mode: 'insensitive' } }
-			})
-			if (existingUser) {
-				throw new BadRequestException('User with this email already exists')
-			}
-
-			const user = await this.prisma.user.create({
-				data: {
-					email,
-					password: await hash(input.password)
-				}
-			})
-
-			const tokens = this.generateTokens({
-				userId: user.userId,
-				role: user.role
-			})
-
-			return { user, ...tokens }
-		} catch (error) {
-			throw new BadRequestException('Registration failed: ' + error)
-		}
-	}
-
-	//* ---------------------------------- Login --------------------------------- */
-	async login(input: AuthInput) {
-		try {
-			const user = await this.validateUser(input)
-			const tokens = this.generateTokens({
-				userId: user.userId,
-				role: user.role
-			})
-			return { user, ...tokens }
-		} catch (error) {
-			throw new NotFoundException(error || 'Invalid email or password')
-		}
-	}
-
-	//* --------------------------------- Logout --------------------------------- */
-	// logout(@Context() { res }: IGqlContext) {
-	// 	this.toggleRefreshTokenCookie(res, null)
-	// }
 }

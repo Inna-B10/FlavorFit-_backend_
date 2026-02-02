@@ -1,4 +1,5 @@
 import { BadRequestException, Injectable } from '@nestjs/common'
+
 import type { FullProfileUpdateInput } from 'src/graphql/user/user.input'
 import { PrismaService } from 'src/prisma/prisma.service'
 
@@ -26,19 +27,6 @@ export class UsersService {
 		return user
 	}
 
-	//* ----------------------------- Find User's Full Profile ---------------------------- */
-	async findFullProfile(userId: string) {
-		return this.prisma.user.findUnique({
-			where: {
-				userId
-			},
-			include: {
-				userProfile: true,
-				fitnessProfile: true
-			}
-		})
-	}
-
 	//* --------------------------- Find User By Email --------------------------- */
 	async findUserByEmail(email: string) {
 		return this.prisma.user.findFirst({
@@ -51,7 +39,30 @@ export class UsersService {
 		})
 	}
 
-	//* ----------------------------- Update Profile ----------------------------- */
+	//* ------------------------------- Create User ------------------------------ */
+	async createUser(email: string, password: string) {
+		return this.prisma.user.create({
+			data: {
+				email,
+				password
+			}
+		})
+	}
+
+	//* ---------------------------- Find Full Profile --------------------------- */
+	async findFullProfile(userId: string) {
+		return this.prisma.user.findUnique({
+			where: {
+				userId
+			},
+			include: {
+				userProfile: true,
+				fitnessProfile: true
+			}
+		})
+	}
+
+	//* --------------------------- Update Full Profile -------------------------- */
 	async updateFullProfile(userId: string, input: FullProfileUpdateInput) {
 		const { user, profile, fitnessProfile } = input
 
