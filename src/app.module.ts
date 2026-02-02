@@ -6,6 +6,7 @@ import { AppController } from './app.controller'
 import { AppService } from './app.service'
 import { AuthModule } from './auth/auth.module'
 import { getGraphQLConfig } from './config/graphql.config'
+import { DecimalScalar } from './graphql/scalars/decimal.scalar'
 import { OrdersModule } from './orders/orders.module'
 import { PrismaModule } from './prisma/prisma.module'
 import { RecipesModule } from './recipes/recipes.module'
@@ -27,6 +28,6 @@ import { UsersModule } from './users/users.module'
 		PrismaModule
 	],
 	controllers: [AppController],
-	providers: [AppService]
+	providers: [AppService, DecimalScalar]
 })
 export class AppModule {}
