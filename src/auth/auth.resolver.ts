@@ -1,9 +1,10 @@
 import { BadRequestException } from '@nestjs/common'
 import { Args, Context, Mutation, Query, Resolver } from '@nestjs/graphql'
 import type { IGqlContext } from 'src/app.interface'
-import { AuthInput } from './auth.input'
-import { AuthResponse } from './auth.interface'
+
 import { AuthService } from './auth.service'
+import { AuthInput } from './inputs/auth.input'
+import { AuthResponse } from './models/auth-response.model'
 
 @Resolver()
 export class AuthResolver {

@@ -6,8 +6,8 @@ import { Response } from 'express'
 import { PrismaService } from 'src/prisma/prisma.service'
 import { UsersService } from 'src/users/users.service'
 import { isDev } from 'src/utils/isDev.util'
-import { AuthInput } from './auth.input'
-import { IAuthTokenData } from './auth.interface'
+import type { IAuthTokenData } from './auth.interface'
+import { AuthInput } from './inputs/auth.input'
 
 @Injectable()
 export class AuthService {
@@ -63,7 +63,7 @@ export class AuthService {
 	}
 
 	//* ------------------------------ Validate User ----------------------------- */
-	private async validateUser(input: AuthInput) {
+	async validateUser(input: AuthInput) {
 		const email = input.email.toLowerCase()
 		const user = await this.usersService.findUserByEmail(email)
 
