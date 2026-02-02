@@ -63,6 +63,7 @@ npm install cookie-parser
 npm install -D @types/cookie-parser
 npm install -D prisma-nestjs-graphql
 npm install graphql-type-json
+npm install decimal.js
 
 ```
 
@@ -74,10 +75,18 @@ npm install graphql-type-json
 
 - [ ] Captcha
 - [ ] CORS-configuration
-- [ ] ? Generate Models from Prisma to graphql
-- [ ] ? Fix for prism model generation
-- [ ] ?? FASTIFY
-- [ ] Read about graphql-codegen
+- [ ] password rules/auth.input.ts
+- [ ] dishes type enum
+- [ ] **split user update** = account/profile+fitness
+  - [ ] Testing account update
+  - [ ] Testing profile update
+- [ ] **Additional:**
+  - [ ] ? Generate Models from Prisma to graphql
+  - [ ] ? Fix for prism model generation
+  - [ ] ?Changing the database type from decimal to alternatives
+  - [ ] ?New generation parameters for prisma-nestjs-graphql for improved navigation
+  - [ ] ?? FASTIFY
+  - [ ] Read about graphql-codegen
 
 <details style="border:1px solid #d4d4d4; border-radius:2px; padding:1rem;">
 <summary><h4 style="display:inline; padding-left:6px;">✅ Done</h4></summary>
