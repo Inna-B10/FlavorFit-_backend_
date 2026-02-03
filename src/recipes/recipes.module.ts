@@ -1,10 +1,10 @@
-import { Module } from '@nestjs/common';
-import { RecipesService } from './recipes.service';
-import { RecipesResolver } from './recipes.resolver';
-import { IngredientsModule } from './ingredients/ingredients.module';
+import { Module } from '@nestjs/common'
+import { RecipeIngredientsModule } from './recipe-ingredients/recipe-ingredients.module'
+import { RecipesResolver } from './recipes.resolver'
+import { RecipesService } from './recipes.service'
 
 @Module({
-  providers: [RecipesResolver, RecipesService],
-  imports: [IngredientsModule],
+	providers: [RecipesResolver, RecipesService],
+	imports: [RecipeIngredientsModule]
 })
 export class RecipesModule {}

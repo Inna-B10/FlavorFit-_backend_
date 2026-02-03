@@ -73,18 +73,27 @@ npm install decimal.js
 
 ### 📋 TODOs:
 
-- [ ] Captcha
-- [ ] CORS-configuration
+- [ ] **CRUD operations. Working with ingredients:**
+  - [ ] Create
+  - [ ] Edit
+  - [ ] Delete
+  - [ ] Get all
+  - [ ] Get 1 by ID
+- [ ] All for ADMIN only!
+- [ ] Configure API application to attach a token to all items at once, either as in the video or
+      via variables
 - [ ] password rules/auth.input.ts
 - [ ] dishes type enum
 - [ ] **split user update** = account/profile+fitness
   - [ ] Testing account update
   - [ ] Testing profile update
+- [ ] Captcha
+- [ ] CORS-configuration
 - [ ] **Additional:**
   - [ ] ? Generate Models from Prisma to graphql
   - [ ] ? Fix for prism model generation
-  - [ ] ?Changing the database type from decimal to alternatives
-  - [ ] ?New generation parameters for prisma-nestjs-graphql for improved navigation
+  - [ ] ? Changing the database type from decimal to alternatives
+  - [ ] ? New generation parameters for prisma-nestjs-graphql for improved navigation
   - [ ] ?? FASTIFY
   - [ ] Read about graphql-codegen
 
