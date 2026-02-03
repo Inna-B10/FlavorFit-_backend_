@@ -3,7 +3,7 @@ model Order {
   orderRef String      @unique @map("order_referanse")
   status   OrderStatus @default(PENDING)
 
-  user   User   @relation(fields: [userId], references: [userId])
+  user   User   @relation(fields: [userId], references: [userId], onDelete: Cascade)
   userId String @map("user_id")
 
   orderItems OrderItem[]
@@ -29,10 +29,7 @@ model OrderItem {
 
   // relations
   orderId String @map("order_id")
-  order   Order  @relation(fields: [orderId], references: [orderId])
-
-  purchaseOptionId String         @map("purchase_option_id")
-  purchaseOption   PurchaseOption @relation(fields: [purchaseOptionId], references: [purchaseOptionId])
+  order   Order  @relation(fields: [orderId], references: [orderId], onDelete: Cascade)
 
   createdAt DateTime @default(now()) @map("created_at")
   updatedAt DateTime @updatedAt @map("updated_at")
@@ -52,12 +49,4 @@ model Courier {
   updatedAt DateTime @updatedAt @map("updated_at")
 
   @@map("couriers")
-}
-
-enum OrderStatus {
-  PENDING
-  PROCESSING
-  ON_WAY
-  COMPLETED
-  CANCELED
 }

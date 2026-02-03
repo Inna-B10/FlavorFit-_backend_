@@ -1,7 +1,7 @@
 model ShoppingList {
   shoppingListId String @id @default(cuid()) @map("shopping_list_id")
 
-  user   User   @relation(fields: [userId], references: [userId])
+  user   User   @relation(fields: [userId], references: [userId], onDelete: Cascade)
   userId String @unique @map("user_id")
 
   items   ShoppingListItem[]
@@ -17,10 +17,10 @@ model ShoppingListRecipe {
   shoppingListRecipeId String @id @default(cuid()) @map("shopping_list_recipe_id")
 
   shoppingListId String       @map("shopping_list_id")
-  shoppingList   ShoppingList @relation(fields: [shoppingListId], references: [shoppingListId])
+  shoppingList   ShoppingList @relation(fields: [shoppingListId], references: [shoppingListId], onDelete: Cascade)
 
   recipeId String @map("recipe_id")
-  recipe   Recipe @relation(fields: [recipeId], references: [recipeId])
+  recipe   Recipe @relation(fields: [recipeId], references: [recipeId], onDelete: Cascade)
 
   createdAt DateTime @default(now()) @map("created_at")
 
@@ -33,7 +33,7 @@ model ShoppingListItem {
   shoppingListItemId String @id @default(cuid()) @map("shopping_list_item_id")
 
   shoppingListId String       @map("shopping_list_id")
-  shoppingList   ShoppingList @relation(fields: [shoppingListId], references: [shoppingListId])
+  shoppingList   ShoppingList @relation(fields: [shoppingListId], references: [shoppingListId], onDelete: Cascade)
 
   productId String  @map("product_id")
   product   Product @relation(fields: [productId], references: [productId])
@@ -60,10 +60,10 @@ model ShoppingListItemSource {
   shoppingListItemSourceId String @id @default(cuid()) @map("shopping_list_item_source_id")
 
   shoppingListItemId String           @map("shopping_list_item_id")
-  item               ShoppingListItem @relation(fields: [shoppingListItemId], references: [shoppingListItemId])
+  item               ShoppingListItem @relation(fields: [shoppingListItemId], references: [shoppingListItemId], onDelete: Cascade)
 
   recipeId String @map("recipe_id")
-  recipe   Recipe @relation(fields: [recipeId], references: [recipeId])
+  recipe   Recipe @relation(fields: [recipeId], references: [recipeId], onDelete: Cascade)
 
   // English: snapshot of what this recipe contributed (so later recipe edits won't break the list)
   amount Decimal

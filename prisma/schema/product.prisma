@@ -21,17 +21,15 @@ model Product {
 model PurchaseOption {
   purchaseOptionId String @id @default(cuid()) @map("purchase_option_id")
 
-  amount Decimal
-  unit   Unit // GRAM / KILOGRAM / PIECE
-  price  Decimal
+  amount   Decimal
+  saleUnit Unit    @map("sale_unit") // GRAM / KILOGRAM / PIECE
+  price    Decimal
 
   // optional: description for UI
   description String? // "500g pack", organic...
 
-  product   Product @relation(fields: [productId], references: [productId])
+  product   Product @relation(fields: [productId], references: [productId], onDelete: Cascade)
   productId String  @map("product_id")
-
-  orders OrderItem[] //ингредиент(именно такой фасовки) встречается в заказах
 
   createdAt DateTime @default(now()) @map("created_at")
 

@@ -31,7 +31,7 @@ model UserProfile {
   birthYear Int?    @map("birth_year")
   bio       String?
 
-  user   User   @relation(fields: [userId], references: [userId])
+  user   User   @relation(fields: [userId], references: [userId], onDelete: Cascade)
   userId String @unique @map("user_id")
 
   createdAt DateTime @default(now()) @map("created_at")
@@ -55,35 +55,11 @@ model FitnessProfile {
   activityLevel ActivityLevel? @map("activity_level")
   nutritionGoal NutritionGoal? @map("nutrition_goal")
 
-  user   User   @relation(fields: [userId], references: [userId])
+  user   User   @relation(fields: [userId], references: [userId], onDelete: Cascade)
   userId String @unique @map("user_id")
 
   createdAt DateTime @default(now()) @map("created_at")
   updatedAt DateTime @updatedAt @map("updated_at")
 
   @@map("fitness_profiles")
-}
-
-enum Role {
-  USER
-  ADMIN
-}
-
-enum Gender {
-  MALE
-  FEMALE
-}
-
-enum ActivityLevel {
-  SEDENTARY
-  LIGHTLY_ACTIVE
-  MODERATELY_ACTIVE
-  ACTIVE
-  VERY_ACTIVE
-}
-
-enum NutritionGoal {
-  LOSE_WEIGHT
-  MAINTAIN
-  GAIN_MUSCLE
 }

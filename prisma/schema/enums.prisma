@@ -8,3 +8,41 @@ enum Unit {
   TABLESPOON
   CLOVES
 }
+
+enum Role {
+  USER
+  ADMIN
+}
+
+enum Gender {
+  MALE
+  FEMALE
+}
+
+enum ActivityLevel {
+  SEDENTARY
+  LIGHTLY_ACTIVE
+  MODERATELY_ACTIVE
+  ACTIVE
+  VERY_ACTIVE
+}
+
+enum NutritionGoal {
+  LOSE_WEIGHT
+  MAINTAIN
+  GAIN_MUSCLE
+}
+
+enum OrderStatus {
+  PENDING
+  PROCESSING
+  ON_WAY
+  COMPLETED
+  CANCELED
+}
+
+enum Difficulty {
+  EASY
+  MEDIUM
+  HARD
+}

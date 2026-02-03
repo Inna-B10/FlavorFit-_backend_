@@ -30,7 +30,7 @@ model RecipeIngredient {
   quantity           Decimal
   unit               Unit
 
-  recipe   Recipe @relation(fields: [recipeId], references: [recipeId])
+  recipe   Recipe @relation(fields: [recipeId], references: [recipeId], onDelete: Cascade)
   recipeId String @map("recipe_id")
 
   product   Product @relation(fields: [productId], references: [productId])
@@ -49,17 +49,11 @@ model RecipeStep {
   title        String
   description  String
 
-  recipe   Recipe @relation(fields: [recipeId], references: [recipeId])
+  recipe   Recipe @relation(fields: [recipeId], references: [recipeId], onDelete: Cascade)
   recipeId String @map("recipe_id")
 
   createdAt DateTime @default(now()) @map("created_at")
   updatedAt DateTime @updatedAt @map("updated_at")
 
   @@map("recipe_steps")
-}
-
-enum Difficulty {
-  EASY
-  MEDIUM
-  HARD
 }
