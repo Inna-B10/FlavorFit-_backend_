@@ -16,35 +16,13 @@ model Recipe {
   comments Comment[]
   likes    Like[]
 
+  shoppingListRecipes     ShoppingListRecipe[]
+  shoppingListItemSources ShoppingListItemSource[]
+
   createdAt DateTime @default(now()) @map("created_at")
   updatedAt DateTime @updatedAt @map("updated_at")
 
   @@map("recipes")
-}
-
-model Ingredient {
-  ingredientId String  @id @default(cuid()) @map("ingredient_id")
-  name         String
-  description  String?
-  iconUrl      String? @map("icon_url")
-
-  // how it is USED in recipes
-  defaultUnit Unit @map("default_unit") //150 MILLILITER
-
-  // how it is SOLD
-  saleUnit     SaleUnit @map("sale_unit") // BOTTLE / BOX (как товар продаётся)
-  saleQuantity Decimal  @map("sale_quantity") // 1000 / 150
-  saleBaseUnit Unit     @map("sale_base_unit") // MILLILITER / GRAM (в чём измеряется содержимое упаковки)
-
-  price Decimal // price for ONE sale unit
-
-  recipes   RecipeIngredient[]
-  orderItem OrderItem[]
-
-  createdAt DateTime @default(now()) @map("created_at")
-  updatedAt DateTime @updatedAt @map("updated_at")
-
-  @@map("ingredients")
 }
 
 model RecipeIngredient {
@@ -55,13 +33,13 @@ model RecipeIngredient {
   recipe   Recipe @relation(fields: [recipeId], references: [recipeId])
   recipeId String @map("recipe_id")
 
-  ingredient   Ingredient @relation(fields: [ingredientId], references: [ingredientId])
-  ingredientId String     @map("ingredient_id")
+  product   Product @relation(fields: [productId], references: [productId])
+  productId String  @map("product_id")
 
   createdAt DateTime @default(now()) @map("created_at")
   updatedAt DateTime @updatedAt @map("updated_at")
 
-  @@unique([recipeId, ingredientId]) // one ingredient - once in the recipe
+  @@unique([recipeId, productId]) // one ingredient - once in the recipe
   @@map("recipe_ingredients")
 }
 
@@ -84,22 +62,4 @@ enum Difficulty {
   EASY
   MEDIUM
   HARD
-}
-
-enum Unit {
-  GRAM
-  MILLILITER
-  LITER
-  PIECE
-  TEASPOON
-  TABLESPOON
-  CLOVES
-}
-
-enum SaleUnit {
-  PIECE
-  PACK
-  BOTTLE
-  BOX
-  BAG
 }

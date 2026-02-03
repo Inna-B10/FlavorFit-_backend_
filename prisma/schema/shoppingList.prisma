@@ -1,0 +1,77 @@
+model ShoppingList {
+  shoppingListId String @id @default(cuid()) @map("shopping_list_id")
+
+  user   User   @relation(fields: [userId], references: [userId])
+  userId String @unique @map("user_id")
+
+  items   ShoppingListItem[]
+  recipes ShoppingListRecipe[]
+
+  createdAt DateTime @default(now()) @map("created_at")
+  updatedAt DateTime @updatedAt @map("updated_at")
+
+  @@map("shopping_lists")
+}
+
+model ShoppingListRecipe {
+  shoppingListRecipeId String @id @default(cuid()) @map("shopping_list_recipe_id")
+
+  shoppingListId String       @map("shopping_list_id")
+  shoppingList   ShoppingList @relation(fields: [shoppingListId], references: [shoppingListId])
+
+  recipeId String @map("recipe_id")
+  recipe   Recipe @relation(fields: [recipeId], references: [recipeId])
+
+  createdAt DateTime @default(now()) @map("created_at")
+
+  // prevents adding the same recipe twice
+  @@unique([shoppingListId, recipeId])
+  @@map("shopping_list_recipes")
+}
+
+model ShoppingListItem {
+  shoppingListItemId String @id @default(cuid()) @map("shopping_list_item_id")
+
+  shoppingListId String       @map("shopping_list_id")
+  shoppingList   ShoppingList @relation(fields: [shoppingListId], references: [shoppingListId])
+
+  productId String  @map("product_id")
+  product   Product @relation(fields: [productId], references: [productId])
+
+  // aggregated required amount across all added recipes
+  requiredAmount Decimal @map("required_amount")
+  unit           Unit
+
+  // user control
+  isChecked Boolean @default(false) @map("is_checked")
+
+  // source
+  sources ShoppingListItemSource[]
+
+  createdAt DateTime @default(now()) @map("created_at")
+  updatedAt DateTime @updatedAt @map("updated_at")
+
+  // aggregate by product + unit (avoid mixing PIECE and GRAM in one row)
+  @@unique([shoppingListId, productId, unit])
+  @@map("shopping_list_items")
+}
+
+model ShoppingListItemSource {
+  shoppingListItemSourceId String @id @default(cuid()) @map("shopping_list_item_source_id")
+
+  shoppingListItemId String           @map("shopping_list_item_id")
+  item               ShoppingListItem @relation(fields: [shoppingListItemId], references: [shoppingListItemId])
+
+  recipeId String @map("recipe_id")
+  recipe   Recipe @relation(fields: [recipeId], references: [recipeId])
+
+  // English: snapshot of what this recipe contributed (so later recipe edits won't break the list)
+  amount Decimal
+  unit   Unit
+
+  createdAt DateTime @default(now()) @map("created_at")
+
+  // English: one recipe contributes once per ShoppingListItem row
+  @@unique([shoppingListItemId, recipeId])
+  @@map("shopping_list_item_sources")
+}

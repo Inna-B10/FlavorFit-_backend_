@@ -14,6 +14,8 @@ model User {
   comments Comment[]
   likes    Like[]
 
+  shoppingList ShoppingList?
+
   orders Order[]
 
   createdAt DateTime @default(now()) @map("created_at")
@@ -26,7 +28,7 @@ model UserProfile {
   profileId String  @id @default(cuid()) @map("profile_id")
   fullName  String? @map("full_name")
   gender    Gender?
-  birthYear Int?
+  birthYear Int?    @map("birth_year")
   bio       String?
 
   user   User   @relation(fields: [userId], references: [userId])

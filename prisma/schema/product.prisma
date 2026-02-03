@@ -1,0 +1,39 @@
+model Product {
+  productId String  @id @default(cuid()) @map("product_id")
+  name      String
+  iconUrl   String? @map("icon_url")
+
+  // how it is USED in recipes
+  recipeUnit Unit @map("recipe_unit") // 150 MILLILITER
+
+  // how it is SOLD variations
+  purchaseOptions PurchaseOption[] //packaging, weight, price
+
+  recipes          RecipeIngredient[] // in what recipes is it used
+  shoppingListItem ShoppingListItem[]
+
+  createdAt DateTime @default(now()) @map("created_at")
+  updatedAt DateTime @updatedAt @map("updated_at")
+
+  @@map("products")
+}
+
+model PurchaseOption {
+  purchaseOptionId String @id @default(cuid()) @map("purchase_option_id")
+
+  amount Decimal
+  unit   Unit // GRAM / KILOGRAM / PIECE
+  price  Decimal
+
+  // optional: description for UI
+  description String? // "500g pack", organic...
+
+  product   Product @relation(fields: [productId], references: [productId])
+  productId String  @map("product_id")
+
+  orders OrderItem[] //ингредиент(именно такой фасовки) встречается в заказах
+
+  createdAt DateTime @default(now()) @map("created_at")
+
+  @@map("purchase_options")
+}

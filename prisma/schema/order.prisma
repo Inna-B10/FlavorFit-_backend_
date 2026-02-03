@@ -17,15 +17,22 @@ model Order {
 }
 
 model OrderItem {
-  orderItemId String  @id @default(cuid()) @map("order_item_id")
-  quantity    Int     @default(1)
-  price       Decimal // price at the time of order
+  orderItemId String @id @default(cuid()) @map("order_item_id")
+  quantity    Int    @default(1)
 
+  // snapshot
+  productNameAtPurchase String @map("product_name_at_purchase")
+
+  priceAtPurchase        Decimal @map("price_at_purchase") // price at the time of order
+  saleQuantityAtPurchase Decimal @map("sale_quantity_at_purchase")
+  saleUnitAtPurchase     Unit    @map("sale_unit_at_purchase")
+
+  // relations
   orderId String @map("order_id")
   order   Order  @relation(fields: [orderId], references: [orderId])
 
-  ingredient   Ingredient @relation(fields: [ingredientId], references: [ingredientId])
-  ingredientId String     @map("ingredient_id")
+  purchaseOptionId String         @map("purchase_option_id")
+  purchaseOption   PurchaseOption @relation(fields: [purchaseOptionId], references: [purchaseOptionId])
 
   createdAt DateTime @default(now()) @map("created_at")
   updatedAt DateTime @updatedAt @map("updated_at")
