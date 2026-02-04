@@ -18,14 +18,19 @@ model Order {
 
 model OrderItem {
   orderItemId String @id @default(cuid()) @map("order_item_id")
-  quantity    Int    @default(1)
+
+  // how many packages / items
+  goodsCount Int?     @map("goods_count")
+  // for weight-based purchases
+  weight     Decimal? @db.Decimal(10, 3)
+  weightUnit Unit?
 
   // snapshot
   productNameAtPurchase String @map("product_name_at_purchase")
 
-  priceAtPurchase        Decimal @map("price_at_purchase") @db.Decimal(10, 2) // price at the time of order
-  saleQuantityAtPurchase Decimal @map("sale_quantity_at_purchase") @db.Decimal(10, 3)
-  saleUnitAtPurchase     Unit    @map("sale_unit_at_purchase")
+  priceAtPurchase      Decimal @map("price_at_purchase") @db.Decimal(10, 2) // price at the time of order
+  saleAmountAtPurchase Decimal @map("sale_amount_at_purchase") @db.Decimal(10, 3)
+  saleUnitAtPurchase   Unit    @map("sale_unit_at_purchase")
 
   // relations
   productId String?  @map("product_id")
