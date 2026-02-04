@@ -6,6 +6,7 @@ import { PurchaseOptionsModule } from './purchase-options/purchase-options.modul
 
 @Module({
 	providers: [ProductsResolver, ProductsService],
-	imports: [PurchaseOptionsModule, PrismaModule]
+	imports: [PurchaseOptionsModule, PrismaModule],
+	exports: [ProductsService]
 })
 export class ProductsModule {}

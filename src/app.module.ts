@@ -9,7 +9,7 @@ import { getGraphQLConfig } from './config/graphql.config'
 import { DecimalScalar } from './graphql/scalars/decimal.scalar'
 import { OrdersModule } from './orders/orders.module'
 import { PrismaModule } from './prisma/prisma.module'
-import { RecipesModule } from './recipes/recipes.module'
+import { ProductsModule } from './products/products.module'
 import { UsersModule } from './users/users.module'
 
 @Module({
@@ -23,7 +23,7 @@ import { UsersModule } from './users/users.module'
 		}),
 		AuthModule,
 		UsersModule,
-		RecipesModule,
+		ProductsModule,
 		OrdersModule,
 		PrismaModule
 	],

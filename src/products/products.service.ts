@@ -1,19 +1,27 @@
 import { Injectable, NotFoundException } from '@nestjs/common'
-import type { PrismaService } from 'src/prisma/prisma.service'
-import { ProductCreateInput } from './inputs/product-create.input'
-import type { ProductUpdateInput } from './inputs/product-update.input'
+import { Prisma } from 'prisma/generated/prisma/client'
+import { PrismaService } from 'src/prisma/prisma.service'
+import { CreateProductInput } from './inputs/product/create-product.input'
+import { UpdateProductInput } from './inputs/product/update-product.input'
 
 @Injectable()
 export class ProductsService {
 	constructor(private readonly prisma: PrismaService) {}
 	async getAllProducts() {
-		return this.prisma.product.findMany()
+		return this.prisma.product.findMany({
+			include: {
+				purchaseOptions: true
+			}
+		})
 	}
 
 	async getProductById(productId: string) {
 		const product = await this.prisma.product.findUnique({
 			where: {
 				productId
+			},
+			include: {
+				purchaseOptions: true
 			}
 		})
 		if (!product) {
@@ -22,7 +30,7 @@ export class ProductsService {
 		return product
 	}
 
-	async createProduct(input: ProductCreateInput) {
+	async createProduct(input: CreateProductInput) {
 		const { purchaseOptions, ...productData } = input
 
 		return this.prisma.product.create({
@@ -36,50 +44,43 @@ export class ProductsService {
 						description: po.description
 					}))
 				}
+			},
+			include: {
+				purchaseOptions: true
 			}
 		})
 	}
 
-	async updateProduct(productId: string, input: ProductUpdateInput) {
-		const { purchaseOptions, ...productData } = input
+	async updateProduct(productId: string, input: UpdateProductInput) {
+		try {
+			return await this.prisma.product.update({
+				where: { productId },
+				data: input,
+				include: { purchaseOptions: true }
+			})
+		} catch (e) {
+			if (e instanceof Prisma.PrismaClientKnownRequestError && e.code === 'P2025') {
+				throw new NotFoundException(`Product with ID '${productId}' not found`)
+			}
+			throw e
+		}
+	}
 
-		return this.prisma.product.update({
-			where: { productId },
-			data: {
-				...productData,
-
-				purchaseOptions: {
-					// remove all connections that are not in the new list
-					set: purchaseOptions
-						.filter(po => po.purchaseOptionId)
-						.map(po => ({ purchaseOptionId: po.purchaseOptionId! })),
-
-					// update existing and create new ones
-					upsert: purchaseOptions.map(po => ({
-						where: { purchaseOptionId: po.purchaseOptionId ?? '' }, // Prisma requires where
-						update: {
-							amount: po.amount,
-							saleUnit: po.saleUnit,
-							price: po.price,
-							description: po.description
-						},
-						create: {
-							amount: po.amount,
-							saleUnit: po.saleUnit,
-							price: po.price,
-							description: po.description
-						}
-					}))
+	async deleteProduct(productId: string) {
+		try {
+			return await this.prisma.product.delete({
+				where: {
+					productId
+				},
+				include: {
+					purchaseOptions: true
 				}
+			})
+		} catch (e) {
+			if (e instanceof Prisma.PrismaClientKnownRequestError && e.code === 'P2025') {
+				throw new NotFoundException(`Product with ID '${productId}' not found`)
 			}
-		})
-	}
-
-	async deleteProductById(productId: string) {
-		return this.prisma.product.delete({
-			where: {
-				productId
-			}
-		})
+			throw e
+		}
 	}
 }

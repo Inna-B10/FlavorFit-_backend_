@@ -73,15 +73,14 @@ npm install decimal.js
 
 ### 📋 TODOs:
 
-- [ ] **CRUD operations. Working with ingredients:**
+- [ ] **CRUD operations. Working with products:**
   - [ ] Create
   - [ ] Edit
   - [ ] Delete
   - [ ] Get all
   - [ ] Get 1 by ID
-- [ ] All for ADMIN only!
-- [ ] Configure API application to attach a token to all items at once, either as in the video or
-      via variables
+  - [ ] Create table/schema for variants of product(purchaseOption) and CRUD
+  - [ ] Get all products without purchaseOption (and delete?)
 - [ ] password rules/auth.input.ts
 - [ ] dishes type enum
 - [ ] **split user update** = account/profile+fitness

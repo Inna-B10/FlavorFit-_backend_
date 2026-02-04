@@ -11,10 +11,10 @@ import { UsersService } from './users.service'
 export class UsersResolver {
 	constructor(private readonly usersService: UsersService) {}
 
-	//* -------------------------------- Get User -------------------------------- */
-	@Query(() => UserModel, { name: 'User' })
+	//* -------------------------------- User By Id -------------------------------- */
+	@Query(() => UserModel, { name: 'UserById' })
 	@Auth()
-	getUser(@CurrentUser('userId') userId: string) {
+	getUserById(@CurrentUser('userId') userId: string) {
 		return this.usersService.findUserById(userId)
 	}
 

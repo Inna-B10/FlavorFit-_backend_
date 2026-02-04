@@ -1,7 +1,8 @@
 import { Args, Mutation, Query, Resolver } from '@nestjs/graphql'
 import { Auth } from 'src/auth/decorators/auth.decorator'
 import { Role } from 'src/graphql/graphql.enums'
-import type { ProductUpdateInput } from './inputs/product-update.input'
+import { CreateProductInput } from './inputs/product/create-product.input'
+import { UpdateProductInput } from './inputs/product/update-product.input'
 import { ProductModel } from './models/product.model'
 import { ProductsService } from './products.service'
 
@@ -15,7 +16,7 @@ export class ProductsResolver {
 		return this.productsService.getAllProducts()
 	}
 
-	@Query(() => ProductModel)
+	@Query(() => ProductModel, { name: 'ProductById' })
 	@Auth(Role.ADMIN)
 	getProductById(@Args('productId') productId: string) {
 		return this.productsService.getProductById(productId)
@@ -23,19 +24,19 @@ export class ProductsResolver {
 
 	@Mutation(() => ProductModel)
 	@Auth(Role.ADMIN)
-	createProduct(@Args('input') input: ProductUpdateInput) {
+	createProduct(@Args('input') input: CreateProductInput) {
 		return this.productsService.createProduct(input)
 	}
 
 	@Mutation(() => ProductModel)
 	@Auth(Role.ADMIN)
-	updateProduct(@Args('productId') productId: string, @Args('input') input: ProductUpdateInput) {
+	updateProduct(@Args('productId') productId: string, @Args('input') input: UpdateProductInput) {
 		return this.productsService.updateProduct(productId, input)
 	}
 
 	@Mutation(() => ProductModel)
 	@Auth(Role.ADMIN)
-	deleteProductById(@Args('productId') productId: string) {
-		return this.productsService.deleteProductById(productId)
+	deleteProduct(@Args('productId') productId: string) {
+		return this.productsService.deleteProduct(productId)
 	}
 }
