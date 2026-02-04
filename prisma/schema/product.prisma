@@ -12,6 +12,8 @@ model Product {
   recipes          RecipeIngredient[] // in what recipes is it used
   shoppingListItem ShoppingListItem[]
 
+  orderItems OrderItem[]
+
   createdAt DateTime @default(now()) @map("created_at")
   updatedAt DateTime @updatedAt @map("updated_at")
 
