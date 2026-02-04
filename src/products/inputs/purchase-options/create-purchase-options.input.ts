@@ -5,7 +5,7 @@ import { Unit } from 'src/graphql/graphql.enums'
 @InputType()
 export class CreatePurchaseOptionInput {
 	@Field(() => Decimal)
-	amount: Decimal
+	saleAmount: Decimal
 
 	@Field(() => Unit)
 	saleUnit: Unit

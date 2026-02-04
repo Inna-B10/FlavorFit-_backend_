@@ -1,6 +1,7 @@
 import { Injectable, NotFoundException } from '@nestjs/common'
 import { Prisma } from 'prisma/generated/prisma/client'
 import { PrismaService } from 'src/prisma/prisma.service'
+
 import { CreateProductInput } from './inputs/product/create-product.input'
 import { UpdateProductInput } from './inputs/product/update-product.input'
 
@@ -38,7 +39,7 @@ export class ProductsService {
 				...productData,
 				purchaseOptions: {
 					create: purchaseOptions.map(po => ({
-						amount: po.amount,
+						saleAmount: po.saleAmount,
 						saleUnit: po.saleUnit,
 						price: po.price,
 						description: po.description

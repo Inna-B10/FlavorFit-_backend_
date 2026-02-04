@@ -8,7 +8,7 @@ export class PurchaseOptionModel {
 	purchaseOptionId: string
 
 	@Field(() => Decimal)
-	amount: Decimal
+	saleAmount: Decimal
 
 	@Field(() => Unit)
 	saleUnit: Unit
