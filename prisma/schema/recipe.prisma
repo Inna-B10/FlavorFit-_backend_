@@ -27,7 +27,7 @@ model Recipe {
 
 model RecipeIngredient {
   recipeIngredientId String  @id @default(cuid()) @map("recipe_ingredient_id")
-  quantity           Decimal
+  quantity           Decimal @db.Decimal(10, 3)
   unit               Unit
 
   recipe   Recipe @relation(fields: [recipeId], references: [recipeId], onDelete: Cascade)

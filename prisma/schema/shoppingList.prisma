@@ -39,7 +39,7 @@ model ShoppingListItem {
   product   Product @relation(fields: [productId], references: [productId])
 
   // aggregated required amount across all added recipes
-  requiredAmount Decimal @map("required_amount")
+  requiredAmount Decimal @map("required_amount") @db.Decimal(10, 3)
   unit           Unit
 
   // user control
@@ -66,7 +66,7 @@ model ShoppingListItemSource {
   recipe   Recipe @relation(fields: [recipeId], references: [recipeId], onDelete: Cascade)
 
   // English: snapshot of what this recipe contributed (so later recipe edits won't break the list)
-  amount Decimal
+  amount Decimal @db.Decimal(10, 3)
   unit   Unit
 
   createdAt DateTime @default(now()) @map("created_at")

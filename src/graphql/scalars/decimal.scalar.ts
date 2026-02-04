@@ -12,8 +12,8 @@ export class DecimalScalar implements CustomScalar<string, Decimal> {
 	}
 
 	serialize(value: Decimal): string {
-		// value sent to client
-		return value.toString()
+		// remove trailing zeros, keep exact value
+		return value.toFixed()
 	}
 
 	parseLiteral(ast: ValueNode): Decimal {

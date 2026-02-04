@@ -21,9 +21,9 @@ model Product {
 model PurchaseOption {
   purchaseOptionId String @id @default(cuid()) @map("purchase_option_id")
 
-  amount   Decimal
+  amount   Decimal @db.Decimal(10, 3)
   saleUnit Unit    @map("sale_unit") // GRAM / KILOGRAM / PIECE
-  price    Decimal
+  price    Decimal @db.Decimal(10, 2)
 
   // optional: description for UI
   description String? // "500g pack", organic...

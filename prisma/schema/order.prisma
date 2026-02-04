@@ -23,8 +23,8 @@ model OrderItem {
   // snapshot
   productNameAtPurchase String @map("product_name_at_purchase")
 
-  priceAtPurchase        Decimal @map("price_at_purchase") // price at the time of order
-  saleQuantityAtPurchase Decimal @map("sale_quantity_at_purchase")
+  priceAtPurchase        Decimal @map("price_at_purchase") @db.Decimal(10, 2) // price at the time of order
+  saleQuantityAtPurchase Decimal @map("sale_quantity_at_purchase") @db.Decimal(10, 3)
   saleUnitAtPurchase     Unit    @map("sale_unit_at_purchase")
 
   // relations
