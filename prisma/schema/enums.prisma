@@ -1,12 +1,28 @@
-enum Unit {
+enum RecipeUnit {
+  GRAM
+  KILOGRAM
+  MILLILITER
+  LITER
+  TEASPOON
+  TABLESPOON
+  PIECE
+  CLOVES
+  SLICE
+  PINCH
+}
+
+enum SaleUnit {
   GRAM
   KILOGRAM
   MILLILITER
   LITER
   PIECE
-  TEASPOON
-  TABLESPOON
-  CLOVES
+}
+
+enum Difficulty {
+  EASY
+  MEDIUM
+  HARD
 }
 
 enum Role {
@@ -39,10 +55,4 @@ enum OrderStatus {
   ON_WAY
   COMPLETED
   CANCELED
-}
-
-enum Difficulty {
-  EASY
-  MEDIUM
-  HARD
 }

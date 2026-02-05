@@ -39,8 +39,8 @@ model ShoppingListItem {
   product   Product @relation(fields: [productId], references: [productId])
 
   // aggregated required amount across all added recipes
-  requiredAmount Decimal @map("required_amount") @db.Decimal(10, 3)
-  unit           Unit
+  requiredAmount Decimal    @map("required_amount") @db.Decimal(10, 3)
+  recipeUnit     RecipeUnit @map("recipe_unit")
 
   // user control
   isChecked Boolean @default(false) @map("is_checked")
@@ -51,8 +51,8 @@ model ShoppingListItem {
   createdAt DateTime @default(now()) @map("created_at")
   updatedAt DateTime @updatedAt @map("updated_at")
 
-  // aggregate by product + unit (avoid mixing PIECE and GRAM in one row)
-  @@unique([shoppingListId, productId, unit])
+  // aggregate by product + recipeUnit (avoid mixing PIECE and GRAM in one row)
+  @@unique([shoppingListId, productId, recipeUnit])
   @@map("shopping_list_items")
 }
 
@@ -65,13 +65,13 @@ model ShoppingListItemSource {
   recipeId String @map("recipe_id")
   recipe   Recipe @relation(fields: [recipeId], references: [recipeId], onDelete: Cascade)
 
-  // English: snapshot of what this recipe contributed (so later recipe edits won't break the list)
-  amount Decimal @db.Decimal(10, 3)
-  unit   Unit
+  // snapshot of what this recipe contributed (so later recipe edits won't break the list)
+  amount     Decimal    @db.Decimal(10, 3)
+  recipeUnit RecipeUnit @map("recipe_unit")
 
   createdAt DateTime @default(now()) @map("created_at")
 
-  // English: one recipe contributes once per ShoppingListItem row
+  // one recipe contributes once per ShoppingListItem row
   @@unique([shoppingListItemId, recipeId])
   @@map("shopping_list_item_sources")
 }
