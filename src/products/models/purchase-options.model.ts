@@ -1,6 +1,6 @@
 import { Field, ObjectType } from '@nestjs/graphql'
 import Decimal from 'decimal.js'
-import { Unit } from 'src/graphql/graphql.enums'
+import { SaleUnit } from 'src/graphql/graphql.enums'
 
 @ObjectType()
 export class PurchaseOptionModel {
@@ -8,10 +8,10 @@ export class PurchaseOptionModel {
 	purchaseOptionId: string
 
 	@Field(() => Decimal)
-	saleAmount: Decimal
+	pricingAmount: Decimal
 
-	@Field(() => Unit)
-	saleUnit: Unit
+	@Field(() => SaleUnit)
+	pricingUnit: SaleUnit
 
 	@Field(() => Decimal)
 	price: Decimal

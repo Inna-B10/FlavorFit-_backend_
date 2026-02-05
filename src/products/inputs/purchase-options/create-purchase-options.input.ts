@@ -1,14 +1,14 @@
 import { Field, InputType } from '@nestjs/graphql'
 import Decimal from 'decimal.js'
-import { Unit } from 'src/graphql/graphql.enums'
+import { SaleUnit } from 'src/graphql/graphql.enums'
 
 @InputType()
 export class CreatePurchaseOptionInput {
 	@Field(() => Decimal)
-	saleAmount: Decimal
+	pricingAmount: Decimal
 
-	@Field(() => Unit)
-	saleUnit: Unit
+	@Field(() => SaleUnit)
+	pricingUnit: SaleUnit
 
 	@Field(() => Decimal)
 	price: Decimal

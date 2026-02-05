@@ -39,8 +39,8 @@ export class ProductsService {
 				...productData,
 				purchaseOptions: {
 					create: purchaseOptions.map(po => ({
-						saleAmount: po.saleAmount,
-						saleUnit: po.saleUnit,
+						pricingAmount: po.pricingAmount,
+						pricingUnit: po.pricingUnit,
 						price: po.price,
 						description: po.description
 					}))

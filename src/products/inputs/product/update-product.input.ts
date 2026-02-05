@@ -1,5 +1,5 @@
 import { Field, InputType } from '@nestjs/graphql'
-import { Unit } from 'src/graphql/graphql.enums'
+import { RecipeUnit } from 'src/graphql/graphql.enums'
 
 @InputType()
 export class UpdateProductInput {
@@ -9,6 +9,6 @@ export class UpdateProductInput {
 	@Field({ nullable: true })
 	iconUrl?: string
 
-	@Field(() => Unit, { nullable: true })
-	recipeUnit?: Unit
+	@Field(() => RecipeUnit, { nullable: true })
+	recipeUnit?: RecipeUnit
 }
