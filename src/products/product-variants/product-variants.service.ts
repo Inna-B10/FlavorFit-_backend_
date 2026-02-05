@@ -9,12 +9,12 @@ export class ProductVariantsService {
 	constructor(private readonly prisma: PrismaService) {}
 
 	async getAllProductVariantsByProductId(productId: string) {
-		return await this.prisma.productVariants.findMany({ where: { productId } })
+		return await this.prisma.productVariant.findMany({ where: { productId } })
 	}
 
 	async createProductVariant(productId: string, input: CreateProductVariantInput) {
 		try {
-			return await this.prisma.productVariants.create({ data: { productId, ...input } })
+			return await this.prisma.productVariant.create({ data: { productId, ...input } })
 		} catch (e) {
 			if (e instanceof Prisma.PrismaClientKnownRequestError && e.code === 'P2003') {
 				throw new BadRequestException(`Product with ID '${productId}' not found`)

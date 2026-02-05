@@ -25,7 +25,7 @@ export class ProductsService {
 			}
 		})
 		if (!product) {
-			throw new NotFoundException('Product not found')
+			throw new NotFoundException(`Product with ID ${productId} not found`)
 		}
 		return product
 	}

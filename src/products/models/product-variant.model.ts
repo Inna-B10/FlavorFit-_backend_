@@ -16,6 +16,9 @@ export class ProductVariantModel {
 	@Field(() => Decimal)
 	price: Decimal
 
+	@Field()
+	label: string
+
 	@Field({ nullable: true })
-	description?: string
+	note?: string
 }

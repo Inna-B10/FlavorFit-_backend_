@@ -14,5 +14,8 @@ export class UpdateProductVariantInput {
 	price?: Decimal
 
 	@Field({ nullable: true })
-	description?: string
+	label?: string
+
+	@Field({ nullable: true })
+	note?: string
 }
