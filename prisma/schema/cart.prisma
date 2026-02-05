@@ -18,7 +18,7 @@ model CartItem {
   // requirements sources (what user saw in ShoppingList)
   requirements CartItemRequirement[]
 
-  // How much the user will buy, expressed in purchaseOption.pricingUnit
+  // How much the user will buy, expressed in productVariant.pricingUnit
   goodsCount Decimal? @map("goods_count")
 
   cartId String @map("cart_id")
@@ -28,8 +28,8 @@ model CartItem {
   product   Product @relation(fields: [productId], references: [productId])
 
   // Selected purchase option (pack/weight/etc.)
-  purchaseOptionId String?         @map("purchase_option_id")
-  purchaseOption   PurchaseOption? @relation(fields: [purchaseOptionId], references: [purchaseOptionId], onDelete: SetNull)
+  productVariantId String?         @map("product_variant_id")
+  productVariant   ProductVariant? @relation(fields: [productVariantId], references: [productVariantId], onDelete: SetNull)
 
   createdAt DateTime @default(now()) @map("created_at")
   updatedAt DateTime @updatedAt @map("updated_at")

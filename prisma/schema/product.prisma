@@ -7,7 +7,7 @@ model Product {
   recipeUnit RecipeUnit @map("recipe_unit") // 150 MILLILITER
 
   // how it is SOLD variations
-  purchaseOptions PurchaseOption[] //packaging, weight, price
+  productVariants ProductVariant[] //packaging, weight, price
 
   recipes          RecipeIngredient[] // in what recipes is it used
   shoppingListItem ShoppingListItem[]
@@ -21,8 +21,8 @@ model Product {
   @@map("products")
 }
 
-model PurchaseOption {
-  purchaseOptionId String @id @default(cuid()) @map("purchase_option_id")
+model ProductVariant {
+  productVariantId String @id @default(cuid()) @map("product_variant_id")
 
   pricingAmount Decimal  @map("pricing_amount") @db.Decimal(10, 3) //количество по данной цене
   pricingUnit   SaleUnit @map("pricing_unit") // GRAM / KILOGRAM / PIECE
@@ -37,5 +37,5 @@ model PurchaseOption {
   createdAt DateTime   @default(now()) @map("created_at")
   cartItems CartItem[]
 
-  @@map("purchase_options")
+  @@map("product_variants")
 }
