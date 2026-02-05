@@ -1,7 +1,6 @@
 import { Injectable, NotFoundException } from '@nestjs/common'
 import { Prisma } from 'prisma/generated/prisma/client'
 import { PrismaService } from 'src/prisma/prisma.service'
-
 import { CreateProductInput } from './inputs/product/create-product.input'
 import { UpdateProductInput } from './inputs/product/update-product.input'
 
@@ -11,7 +10,7 @@ export class ProductsService {
 	async getAllProducts() {
 		return this.prisma.product.findMany({
 			include: {
-				purchaseOptions: true
+				productVariants: true
 			}
 		})
 	}
@@ -22,7 +21,7 @@ export class ProductsService {
 				productId
 			},
 			include: {
-				purchaseOptions: true
+				productVariants: true
 			}
 		})
 		if (!product) {
@@ -32,13 +31,13 @@ export class ProductsService {
 	}
 
 	async createProduct(input: CreateProductInput) {
-		const { purchaseOptions, ...productData } = input
+		const { productVariants, ...productData } = input
 
 		return this.prisma.product.create({
 			data: {
 				...productData,
-				purchaseOptions: {
-					create: purchaseOptions.map(po => ({
+				productVariants: {
+					create: productVariants.map(po => ({
 						pricingAmount: po.pricingAmount,
 						pricingUnit: po.pricingUnit,
 						price: po.price,
@@ -47,7 +46,7 @@ export class ProductsService {
 				}
 			},
 			include: {
-				purchaseOptions: true
+				productVariants: true
 			}
 		})
 	}
@@ -57,7 +56,7 @@ export class ProductsService {
 			return await this.prisma.product.update({
 				where: { productId },
 				data: input,
-				include: { purchaseOptions: true }
+				include: { productVariants: true }
 			})
 		} catch (e) {
 			if (e instanceof Prisma.PrismaClientKnownRequestError && e.code === 'P2025') {
@@ -74,7 +73,7 @@ export class ProductsService {
 					productId
 				},
 				include: {
-					purchaseOptions: true
+					productVariants: true
 				}
 			})
 		} catch (e) {

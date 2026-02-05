@@ -1,6 +1,6 @@
 import { Field, ObjectType } from '@nestjs/graphql'
 import { RecipeUnit } from 'src/graphql/graphql.enums'
-import { PurchaseOptionModel } from './purchase-options.model'
+import { ProductVariantModel } from './product-variant.model'
 
 @ObjectType()
 export class ProductModel {
@@ -16,6 +16,6 @@ export class ProductModel {
 	@Field(() => RecipeUnit)
 	recipeUnit: RecipeUnit
 
-	@Field(() => [PurchaseOptionModel])
-	purchaseOptions: PurchaseOptionModel[]
+	@Field(() => [ProductVariantModel])
+	productVariants: ProductVariantModel[]
 }

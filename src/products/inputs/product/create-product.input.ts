@@ -1,7 +1,7 @@
 import { Field, InputType } from '@nestjs/graphql'
 
 import { RecipeUnit } from 'src/graphql/graphql.enums'
-import { CreatePurchaseOptionInput } from '../purchase-options/create-purchase-options.input'
+import { CreateProductVariantInput } from '../product-variant/create-product-variants.input'
 
 @InputType()
 export class CreateProductInput {
@@ -14,6 +14,6 @@ export class CreateProductInput {
 	@Field(() => RecipeUnit)
 	recipeUnit: RecipeUnit
 
-	@Field(() => [CreatePurchaseOptionInput])
-	purchaseOptions: CreatePurchaseOptionInput[]
+	@Field(() => [CreateProductVariantInput])
+	productVariants: CreateProductVariantInput[]
 }

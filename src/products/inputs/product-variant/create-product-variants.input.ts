@@ -3,7 +3,7 @@ import Decimal from 'decimal.js'
 import { SaleUnit } from 'src/graphql/graphql.enums'
 
 @InputType()
-export class CreatePurchaseOptionInput {
+export class CreateProductVariantInput {
 	@Field(() => Decimal)
 	pricingAmount: Decimal
 

@@ -3,9 +3,9 @@ import Decimal from 'decimal.js'
 import { SaleUnit } from 'src/graphql/graphql.enums'
 
 @ObjectType()
-export class PurchaseOptionModel {
+export class ProductVariantModel {
 	@Field()
-	purchaseOptionId: string
+	productVariantId: string
 
 	@Field(() => Decimal)
 	pricingAmount: Decimal
