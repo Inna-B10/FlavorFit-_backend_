@@ -1,5 +1,6 @@
 model Recipe {
   recipeId    String @id @default(cuid()) @map("recipe_id")
+  slug        String
   title       String
   description String
 
@@ -29,6 +30,8 @@ model RecipeIngredient {
   recipeIngredientId String     @id @default(cuid()) @map("recipe_ingredient_id")
   quantity           Decimal    @db.Decimal(10, 3)
   recipeUnit         RecipeUnit @map("recipe_unit")
+
+  note String? //3–4 depending on size
 
   recipe   Recipe @relation(fields: [recipeId], references: [recipeId], onDelete: Cascade)
   recipeId String @map("recipe_id")

@@ -1,0 +1,53 @@
+model Cart {
+  cartId String @id @default(cuid()) @map("cart_id")
+
+  cartItems CartItem[]
+
+  userId String @map("user_id")
+  user   User   @relation(fields: [userId], references: [userId], onDelete: Cascade)
+
+  createdAt DateTime @default(now()) @map("created_at")
+  updatedAt DateTime @updatedAt @map("updated_at")
+
+  @@map("carts")
+}
+
+model CartItem {
+  cartItemId String @id @default(cuid()) @map("cart_item_id")
+
+  // requirements sources (what user saw in ShoppingList)
+  requirements CartItemRequirement[]
+
+  // How much the user will buy, expressed in purchaseOption.pricingUnit
+  goodsCount Decimal? @map("goods_count")
+
+  cartId String @map("cart_id")
+  cart   Cart   @relation(fields: [cartId], references: [cartId], onDelete: Cascade)
+
+  productId String  @map("product_id")
+  product   Product @relation(fields: [productId], references: [productId])
+
+  // Selected purchase option (pack/weight/etc.)
+  purchaseOptionId String?         @map("purchase_option_id")
+  purchaseOption   PurchaseOption? @relation(fields: [purchaseOptionId], references: [purchaseOptionId], onDelete: SetNull)
+
+  createdAt DateTime @default(now()) @map("created_at")
+  updatedAt DateTime @updatedAt @map("updated_at")
+
+  @@unique([cartId, productId])
+  @@map("cart_items")
+}
+
+model CartItemRequirement {
+  cartItemRequirementId String @id @default(cuid()) @map("cart_item_requirement_id")
+
+  cartItem   CartItem @relation(fields: [cartItemId], references: [cartItemId], onDelete: Cascade)
+  cartItemId String   @map("cart_item_id")
+
+  shoppingListItemId String           @map("shopping_list_item_id")
+  shoppingListItem   ShoppingListItem @relation(fields: [shoppingListItemId], references: [shoppingListItemId], onDelete: Cascade)
+
+  // prevent duplicates
+  @@unique([cartItemId, shoppingListItemId])
+  @@map("cart_item_requirements")
+}

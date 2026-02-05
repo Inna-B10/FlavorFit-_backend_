@@ -13,30 +13,8 @@ model ShoppingList {
   @@map("shopping_lists")
 }
 
-model ShoppingListRecipe {
-  shoppingListRecipeId String @id @default(cuid()) @map("shopping_list_recipe_id")
-
-  shoppingListId String       @map("shopping_list_id")
-  shoppingList   ShoppingList @relation(fields: [shoppingListId], references: [shoppingListId], onDelete: Cascade)
-
-  recipeId String @map("recipe_id")
-  recipe   Recipe @relation(fields: [recipeId], references: [recipeId], onDelete: Cascade)
-
-  createdAt DateTime @default(now()) @map("created_at")
-
-  // prevents adding the same recipe twice
-  @@unique([shoppingListId, recipeId])
-  @@map("shopping_list_recipes")
-}
-
 model ShoppingListItem {
   shoppingListItemId String @id @default(cuid()) @map("shopping_list_item_id")
-
-  shoppingListId String       @map("shopping_list_id")
-  shoppingList   ShoppingList @relation(fields: [shoppingListId], references: [shoppingListId], onDelete: Cascade)
-
-  productId String  @map("product_id")
-  product   Product @relation(fields: [productId], references: [productId])
 
   // aggregated required amount across all added recipes
   requiredAmount Decimal    @map("required_amount") @db.Decimal(10, 3)
@@ -45,8 +23,16 @@ model ShoppingListItem {
   // user control
   isChecked Boolean @default(false) @map("is_checked")
 
+  cartRequirements CartItemRequirement[]
+
   // source
   sources ShoppingListItemSource[]
+
+  shoppingListId String       @map("shopping_list_id")
+  shoppingList   ShoppingList @relation(fields: [shoppingListId], references: [shoppingListId], onDelete: Cascade)
+
+  productId String  @map("product_id")
+  product   Product @relation(fields: [productId], references: [productId])
 
   createdAt DateTime @default(now()) @map("created_at")
   updatedAt DateTime @updatedAt @map("updated_at")
@@ -74,4 +60,20 @@ model ShoppingListItemSource {
   // one recipe contributes once per ShoppingListItem row
   @@unique([shoppingListItemId, recipeId])
   @@map("shopping_list_item_sources")
+}
+
+model ShoppingListRecipe {
+  shoppingListRecipeId String @id @default(cuid()) @map("shopping_list_recipe_id")
+
+  shoppingListId String       @map("shopping_list_id")
+  shoppingList   ShoppingList @relation(fields: [shoppingListId], references: [shoppingListId], onDelete: Cascade)
+
+  recipeId String @map("recipe_id")
+  recipe   Recipe @relation(fields: [recipeId], references: [recipeId], onDelete: Cascade)
+
+  createdAt DateTime @default(now()) @map("created_at")
+
+  // prevents adding the same recipe twice
+  @@unique([shoppingListId, recipeId])
+  @@map("shopping_list_recipes")
 }
