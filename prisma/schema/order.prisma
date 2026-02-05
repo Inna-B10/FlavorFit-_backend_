@@ -1,7 +1,7 @@
 model Order {
-  orderId  String      @id @default(cuid()) @map("order_id")
-  orderRef String      @unique @map("order_referanse")
-  status   OrderStatus @default(PENDING)
+  orderId        String      @id @default(cuid()) @map("order_id")
+  orderReferanse String      @unique @map("order_referanse")
+  status         OrderStatus @default(PENDING)
 
   user   User   @relation(fields: [userId], references: [userId], onDelete: Cascade)
   userId String @map("user_id")
@@ -46,7 +46,7 @@ model Courier {
   courierId String @id @default(cuid()) @map("courier_id")
 
   name        String
-  phoneNumber String @map("phone_number")
+  phoneNumber String @unique @map("phone_number")
 
   orders Order[]
 

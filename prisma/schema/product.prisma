@@ -23,13 +23,14 @@ model Product {
 
 model ProductVariant {
   productVariantId String @id @default(cuid()) @map("product_variant_id")
+  label            String //Green grape, ground beef,
+
+  // optional: description for UI
+  note String? // "500g pack", organic...
 
   pricingAmount Decimal  @map("pricing_amount") @db.Decimal(10, 3) //количество по данной цене
   pricingUnit   SaleUnit @map("pricing_unit") // GRAM / KILOGRAM / PIECE
   price         Decimal  @db.Decimal(10, 2)
-
-  // optional: description for UI
-  description String? // "500g pack", organic...
 
   product   Product @relation(fields: [productId], references: [productId], onDelete: Cascade)
   productId String  @map("product_id")
@@ -37,5 +38,6 @@ model ProductVariant {
   createdAt DateTime   @default(now()) @map("created_at")
   cartItems CartItem[]
 
+  @@unique([productId, pricingAmount, pricingUnit, label])
   @@map("product_variants")
 }

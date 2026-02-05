@@ -16,7 +16,7 @@ model User {
 
   shoppingList ShoppingList?
 
-  carts  Cart[]
+  cart   Cart?
   orders Order[]
 
   createdAt DateTime @default(now()) @map("created_at")

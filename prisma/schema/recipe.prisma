@@ -1,6 +1,6 @@
 model Recipe {
   recipeId    String @id @default(cuid()) @map("recipe_id")
-  slug        String
+  slug        String @unique
   title       String
   description String
 
@@ -8,11 +8,14 @@ model Recipe {
   cookingTime Int?       @map("cooking_time")
   difficulty  Difficulty
 
-  author   User   @relation(fields: [authorId], references: [userId])
-  authorId String @map("author_id")
-
   ingredients RecipeIngredient[]
   recipeSteps RecipeStep[]
+
+  tags           RecipeTag[]
+  nutritionFacts NutritionFact?
+
+  author   User   @relation(fields: [authorId], references: [userId])
+  authorId String @map("author_id")
 
   comments Comment[]
   likes    Like[]
@@ -58,5 +61,35 @@ model RecipeStep {
   createdAt DateTime @default(now()) @map("created_at")
   updatedAt DateTime @updatedAt @map("updated_at")
 
+  @@unique([recipeId, order])
   @@map("recipe_steps")
+}
+
+model NutritionFact {
+  factId String @id @default(cuid()) @map("fact_id")
+
+  protein       Decimal?
+  fats          Decimal?
+  carbohydrates Decimal?
+  fiber         Decimal?
+
+  recipeId String @unique @map("recipe_id")
+  recipe   Recipe @relation(fields: [recipeId], references: [recipeId], onDelete: Cascade)
+
+  createdAt DateTime @default(now()) @map("created_at")
+  updatedAt DateTime @updatedAt @map("updated_at")
+
+  @@map("nutrition_facts")
+}
+
+model RecipeTag {
+  tagId   String @id @default(cuid()) @map("tag_id")
+  tagName String @unique @map("tag_name")
+
+  recipes Recipe[]
+
+  createdAt DateTime @default(now()) @map("created_at")
+  updatedAt DateTime @updatedAt @map("updated_at")
+
+  @@map("recipe_tags")
 }

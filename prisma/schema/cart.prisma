@@ -3,7 +3,7 @@ model Cart {
 
   cartItems CartItem[]
 
-  userId String @map("user_id")
+  userId String @unique @map("user_id")
   user   User   @relation(fields: [userId], references: [userId], onDelete: Cascade)
 
   createdAt DateTime @default(now()) @map("created_at")
