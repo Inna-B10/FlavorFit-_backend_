@@ -1,4 +1,4 @@
-import { Args, Mutation, Query, Resolver } from '@nestjs/graphql'
+import { Args, Int, Mutation, Parent, Query, ResolveField, Resolver } from '@nestjs/graphql'
 import { Auth } from 'src/auth/decorators/auth.decorator'
 import { CurrentUser } from 'src/auth/decorators/current-user.decorator'
 import { Role } from 'src/graphql/graphql.enums'
@@ -7,6 +7,12 @@ import { CreateRecipeInput } from './inputs/recipe/create-recipe.input'
 import { UpdateRecipeInput } from './inputs/recipe/update-recipe.input'
 import { RecipeModel } from './models/recipe.model'
 import { RecipesService } from './recipes.service'
+
+type RecipeWithLikesCount = RecipeModel & {
+	_count?: {
+		likes?: number
+	}
+}
 
 @Resolver(() => RecipeModel)
 export class RecipesResolver {
@@ -19,6 +25,12 @@ export class RecipesResolver {
 	@Query(() => [RecipeModel], { name: 'allRecipes' })
 	getAllRecipes() {
 		return this.recipesService.getAllRecipes()
+	}
+
+	@ResolveField(() => Int)
+	likes(@Parent() recipe: RecipeWithLikesCount): number {
+		// likes count is resolved from Prisma _count
+		return recipe._count?.likes ?? 0
 	}
 
 	//* ------------------------------- By Slug - User --------------------------- */

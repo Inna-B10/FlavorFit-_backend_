@@ -16,6 +16,6 @@ export class ProductModel {
 	@Field(() => RecipeUnit)
 	recipeUnit: RecipeUnit
 
-	@Field(() => [ProductVariantModel])
-	productVariants: ProductVariantModel[]
+	@Field(() => [ProductVariantModel], { nullable: true })
+	productVariants?: ProductVariantModel[]
 }

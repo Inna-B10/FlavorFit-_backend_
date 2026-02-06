@@ -10,30 +10,35 @@ import { ProductsService } from './products.service'
 export class ProductsResolver {
 	constructor(private readonly productsService: ProductsService) {}
 
-	@Query(() => [ProductModel], { name: 'AllProducts' })
+	//* ------------------------------ All Products ------------------------------ */
+	@Query(() => [ProductModel], { name: 'allProducts' })
 	@Auth(Role.ADMIN)
 	getAllProducts() {
 		return this.productsService.getAllProducts()
 	}
 
-	@Query(() => ProductModel, { name: 'ProductById' })
+	//* ------------------------------ Product ById ------------------------------ */
+	@Query(() => ProductModel, { name: 'productById' })
 	@Auth(Role.ADMIN)
 	getProductById(@Args('productId') productId: string) {
 		return this.productsService.getProductById(productId)
 	}
 
+	//* ------------------------------ Create Product ------------------------------ */
 	@Mutation(() => ProductModel)
 	@Auth(Role.ADMIN)
 	createProduct(@Args('input') input: CreateProductInput) {
 		return this.productsService.createProduct(input)
 	}
 
+	//* ------------------------------ Update Product ------------------------------ */
 	@Mutation(() => ProductModel)
 	@Auth(Role.ADMIN)
 	updateProduct(@Args('productId') productId: string, @Args('input') input: UpdateProductInput) {
 		return this.productsService.updateProduct(productId, input)
 	}
 
+	//* ------------------------------ Delete Product ------------------------------ */
 	@Mutation(() => ProductModel)
 	@Auth(Role.ADMIN)
 	deleteProduct(@Args('productId') productId: string) {

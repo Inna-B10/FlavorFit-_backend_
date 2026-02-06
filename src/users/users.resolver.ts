@@ -12,14 +12,14 @@ export class UsersResolver {
 	constructor(private readonly usersService: UsersService) {}
 
 	//* -------------------------------- User By Id -------------------------------- */
-	@Query(() => UserModel, { name: 'UserById' })
+	@Query(() => UserModel, { name: 'userById' })
 	@Auth()
 	getUserById(@CurrentUser('userId') userId: string) {
 		return this.usersService.findUserById(userId)
 	}
 
 	//* -------------------------- User With Full Profile ------------------------- */
-	@Query(() => UserWithProfileModel, { name: 'FullProfile' })
+	@Query(() => UserWithProfileModel, { name: 'fullProfile' })
 	@Auth()
 	getFullProfile(@CurrentUser('userId') userId: string) {
 		return this.usersService.findFullProfile(userId)
@@ -36,7 +36,7 @@ export class UsersResolver {
 	}
 
 	//*test*/
-	@Query(() => [UserModel], { name: 'AllUsers' })
+	@Query(() => [UserModel], { name: 'allUsers' })
 	@Auth(Role.ADMIN)
 	async getAllUsers() {
 		return this.usersService.findAllUsers()

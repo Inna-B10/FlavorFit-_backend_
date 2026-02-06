@@ -7,6 +7,8 @@ import { UpdateProductInput } from './inputs/product/update-product.input'
 @Injectable()
 export class ProductsService {
 	constructor(private readonly prisma: PrismaService) {}
+
+	// * ------------------------------- All Products ------------------------------ */
 	async getAllProducts() {
 		return this.prisma.product.findMany({
 			include: {
@@ -15,6 +17,7 @@ export class ProductsService {
 		})
 	}
 
+	//* ------------------------------ Product ById ------------------------------ */
 	async getProductById(productId: string) {
 		const product = await this.prisma.product.findUnique({
 			where: {
@@ -30,6 +33,7 @@ export class ProductsService {
 		return product
 	}
 
+	//* ------------------------------ Create Product ------------------------------ */
 	async createProduct(input: CreateProductInput) {
 		const { productVariants, ...productData } = input
 
@@ -54,6 +58,7 @@ export class ProductsService {
 		})
 	}
 
+	//* ------------------------------ Update Product ------------------------------ */
 	async updateProduct(productId: string, input: UpdateProductInput) {
 		try {
 			return await this.prisma.product.update({
@@ -66,6 +71,7 @@ export class ProductsService {
 		}
 	}
 
+	//* ------------------------------ Delete Product ------------------------------ */
 	async deleteProduct(productId: string) {
 		try {
 			return await this.prisma.product.delete({

@@ -27,8 +27,8 @@ export class AdminRecipesService {
 				ingredients: { include: { product: true } },
 				tags: true,
 				nutritionFacts: true,
-				likes: true,
-				author: true
+				author: true,
+				_count: { select: { likes: true } } // return number, not array
 			}
 		})
 	}

@@ -8,10 +8,12 @@ import { UpdateProductVariantInput } from '../inputs/product-variant/update-prod
 export class ProductVariantsService {
 	constructor(private readonly prisma: PrismaService) {}
 
+	//* -------------------------- Variants By ProductId ------------------------- */
 	async getAllProductVariantsByProductId(productId: string) {
 		return await this.prisma.productVariant.findMany({ where: { productId } })
 	}
 
+	//* ------------------------------ Create Variant ------------------------------ */
 	async createProductVariant(productId: string, input: CreateProductVariantInput) {
 		try {
 			return await this.prisma.productVariant.create({ data: { productId, ...input } })
@@ -20,6 +22,7 @@ export class ProductVariantsService {
 		}
 	}
 
+	//* ------------------------------ Update Variant ------------------------------ */
 	async updateProductVariant(productVariantId: string, input: UpdateProductVariantInput) {
 		// for not to save undefined
 		const data = Object.fromEntries(Object.entries(input).filter(([, v]) => v !== undefined))
@@ -34,6 +37,7 @@ export class ProductVariantsService {
 		}
 	}
 
+	//* ------------------------------ Delete Variant ------------------------------ */
 	async deleteProductVariant(productVariantId: string) {
 		try {
 			return await this.prisma.productVariant.delete({ where: { productVariantId } })

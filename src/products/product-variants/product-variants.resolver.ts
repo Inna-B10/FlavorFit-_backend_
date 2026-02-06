@@ -10,11 +10,13 @@ import { ProductVariantsService } from './product-variants.service'
 export class ProductVariantsResolver {
 	constructor(private readonly productVariantsService: ProductVariantsService) {}
 
-	@Query(() => [ProductVariantModel], { name: 'AllProductVariants' })
+	//* -------------------------- Variants By ProductId ------------------------- */
+	@Query(() => [ProductVariantModel], { name: 'allProductVariants' })
 	getAllProductVariantsByProductId(@Args('productId') productId: string) {
 		return this.productVariantsService.getAllProductVariantsByProductId(productId)
 	}
 
+	//* ------------------------------ Create Variant ------------------------------ */
 	@Mutation(() => ProductVariantModel)
 	@Auth(Role.ADMIN)
 	async createProductVariant(
@@ -24,6 +26,7 @@ export class ProductVariantsResolver {
 		return this.productVariantsService.createProductVariant(productId, input)
 	}
 
+	//* ------------------------------ Update Variant ------------------------------ */
 	@Mutation(() => ProductVariantModel)
 	@Auth(Role.ADMIN)
 	async updateProductVariant(
@@ -33,6 +36,7 @@ export class ProductVariantsResolver {
 		return this.productVariantsService.updateProductVariant(productVariantId, input)
 	}
 
+	//* ------------------------------ Delete Variant ------------------------------ */
 	@Mutation(() => ProductVariantModel)
 	@Auth(Role.ADMIN)
 	async deleteProductVariant(@Args('productVariantId') productVariantId: string) {
