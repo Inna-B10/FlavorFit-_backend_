@@ -73,16 +73,28 @@ npm install decimal.js
 
 ### 📋 TODOs:
 
-- [ ] **CRUD operations. Working with products:**
-  - [ ] Create
-  - [ ] Edit
-  - [ ] Delete
-  - [ ] Get all
-  - [ ] Get 1 by ID
-  - [ ] Create table/schema for variants of product(purchaseOption) and CRUD
-  - [ ] Get all products without purchaseOption (and delete?)
+- [ ] pagination
+- [ ] popular, recommended recipes
+- [ ] **filtering:**
+  - [ ] searchTerm (name, desc, ingredient)
+  - [ ] difficulty
+  - [ ] tags (meal, dietary, dish types)
+- [ ] **sorting:**
+  - [ ] default (by data)
+  - [ ] recommended (by likes)
+  - [ ] popularity (by views)
+  - [ ] cookingTime
+- [ ] **Recipes, CRUD:**
+  - [ ] update recipe
+  - [ ] ? при удалении проверка тегов на удаление
+  - [ ] обновить код после добавления isActive для товаров
+- [ ] **Products, CRUD:**
+  - [ ] Get all products without productVariant (and delete?)
+  - [ ] add field "isActive"
 - [ ] password rules/auth.input.ts
-- [ ] dishes type enum
+- [ ] ? meal type enum (breakfast, dinner, lunch,snacks desserts drinks)
+- [ ] dietary type enum (vegetar, gluten-free)
+- [ ] dish type (main, bowl, sandwich, salad, wrap)
 - [ ] **split user update** = account/profile+fitness
   - [ ] Testing account update
   - [ ] Testing profile update
@@ -99,6 +111,13 @@ npm install decimal.js
 <details style="border:1px solid #d4d4d4; border-radius:2px; padding:1rem;">
 <summary><h4 style="display:inline; padding-left:6px;">✅ Done</h4></summary>
 
+- [x] **CRUD operations. Working with products:**
+  - [x] Create
+  - [x] Edit
+  - [x] Delete
+  - [x] Get all
+  - [x] Get 1 by ID
+  - [x] Create table/schema for variants of product(productVariant) and CRUD
 - [x] **Additional practice tasks:**
   - [x] Checking user existence before updating
 - [x] Updating user
