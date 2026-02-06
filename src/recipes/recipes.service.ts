@@ -1,13 +1,16 @@
 import { Injectable, NotFoundException } from '@nestjs/common'
-import type { PrismaService } from 'src/prisma/prisma.service'
+import { PrismaService } from 'src/prisma/prisma.service'
 
 @Injectable()
 export class RecipesService {
 	constructor(private readonly prisma: PrismaService) {}
+
+	//* ------------------------------- All Recipes ------------------------------ */
 	async getAllRecipes() {
 		return this.prisma.recipe.findMany({})
 	}
 
+	//* --------------------------------- By Slug -------------------------------- */
 	async getRecipeBySlug(slug: string) {
 		const recipe = await this.prisma.recipe.findUnique({
 			where: {

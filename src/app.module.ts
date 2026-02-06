@@ -10,6 +10,7 @@ import { DecimalScalar } from './graphql/scalars/decimal.scalar'
 import { OrdersModule } from './orders/orders.module'
 import { PrismaModule } from './prisma/prisma.module'
 import { ProductsModule } from './products/products.module'
+import { RecipesModule } from './recipes/recipes.module'
 import { UsersModule } from './users/users.module'
 
 @Module({
@@ -24,6 +25,7 @@ import { UsersModule } from './users/users.module'
 		AuthModule,
 		UsersModule,
 		ProductsModule,
+		RecipesModule,
 		OrdersModule,
 		PrismaModule
 	],

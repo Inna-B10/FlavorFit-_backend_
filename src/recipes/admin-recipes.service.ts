@@ -6,19 +6,36 @@ import { buildStepsData } from 'src/recipes/helpers/build-steps-data'
 import { buildTagsConnectOrCreate } from 'src/recipes/helpers/build-tags-data'
 import { validateCreateRecipeInput } from 'src/recipes/helpers/recipe-validate'
 import { resolveProductsForIngredients } from 'src/recipes/helpers/resolve-products-for-ingredients'
-import type { CreateRecipeInput } from './inputs/recipe/create-recipe.input'
+import { CreateRecipeInput } from './inputs/recipe/create-recipe.input'
 
 @Injectable()
 export class AdminRecipesService {
 	constructor(private readonly prisma: PrismaService) {}
-	async getAllRecipes() {
-		return this.prisma.recipe.findMany({})
-	}
 
+	//* ------------------------------- All Recipes ------------------------------ */
+	async getAllRecipes() {
+		return this.prisma.recipe.findMany({
+			include: {
+				recipeSteps: true,
+				ingredients: { include: { product: true } },
+				tags: true,
+				nutritionFacts: true,
+				author: true
+			}
+		})
+	}
+	//* ------------------------------ Recipe By Id ------------------------------ */
 	async getRecipeById(recipeId: string) {
 		const recipe = await this.prisma.recipe.findUnique({
 			where: {
 				recipeId
+			},
+			include: {
+				recipeSteps: true,
+				ingredients: { include: { product: true } },
+				tags: true,
+				nutritionFacts: true,
+				author: true
 			}
 		})
 		if (!recipe) {
@@ -27,6 +44,7 @@ export class AdminRecipesService {
 		return recipe
 	}
 
+	//* ------------------------------ Create Recipe ----------------------------- */
 	async createRecipe(
 		authorId: string,
 		{ recipeSteps, ingredients, nutritionFacts, tags, ...recipeData }: CreateRecipeInput
@@ -82,49 +100,20 @@ export class AdminRecipesService {
 		}
 	}
 
-	// 	async createRecipe(
-	// 		authorId: string,
-	// 		{ recipeSteps, ingredients, nutritionFacts, tags,...recipeData }: CreateRecipeInput
-	// 	) {
-	//
-	//     const ingredients = ingredients && ingredients.length && ingredients.map(id => ({ productId: id }))
-	//     				const createdIngredients = ingredients
-	//         ? {
-	//           ingredients: {
-	// 					create: {
-	//             ingredients
-	//           }
-	// 				}
-	//       }
-	//       : {}
-	//
-	//
-	//
-	// 		return this.prisma.recipe.create({
-	// 			data: {
-	// 				...recipeData,
-	//         ...createdIngredients,
-	// 				author: {
-	// 					connect: {
-	// 						userId: authorId
-	// 					}
-	// 				},
-	// 				recipeSteps: {
-	// 					create: recipeSteps
-	// 				},
-	// 				nutritionFacts: {
-	// 					create: nutritionFacts
-	// 				},
-	//         ...(!!tags?.length && {
-	//           tags: {
-	//           connectOrCreate: tags.map(tag => ({
-	//             where: { tagName: tag },
-	//             create: { tagName: tag }
-	//           }))
-	//         }}
-	//       ),
-	//   }})
-	// 	}
+	//* ------------------------------ Delete Recipe ----------------------------- */
+	async deleteRecipe(recipeId: string) {
+		try {
+			return await this.prisma.recipe.delete({
+				where: {
+					recipeId
+				}
+			})
+		} catch (e) {
+			if (e instanceof Prisma.PrismaClientKnownRequestError && e.code === 'P2025') {
+				throw new NotFoundException(`Recipe with ID ${recipeId} not found`)
+			}
+		}
+	}
 
 	// 	async updateRecipe(
 	// 		recipeId: string,
@@ -153,21 +142,4 @@ export class AdminRecipesService {
 	// 		}
 	// 	}
 	//
-	// 	async deleteRecipe(recipeId: string) {
-	// 		try {
-	// 			return await this.prisma.recipe.delete({
-	// 				where: {
-	// 					recipeId
-	// 				},
-	// 				include: {
-	// 					recipeVariants: true
-	// 				}
-	// 			})
-	// 		} catch (e) {
-	// 			if (e instanceof Prisma.PrismaClientKnownRequestError && e.code === 'P2025') {
-	// 				throw new NotFoundException(`Recipe with ID '${recipeId}' not found`)
-	// 			}
-	// 			throw e
-	// 		}
-	// 	}
 }
