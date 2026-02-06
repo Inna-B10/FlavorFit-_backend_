@@ -1,6 +1,6 @@
-import { BadRequestException, Injectable, NotFoundException } from '@nestjs/common'
-import { Prisma } from 'prisma/generated/prisma/client'
+import { Injectable } from '@nestjs/common'
 import { PrismaService } from 'src/prisma/prisma.service'
+import { rethrowPrismaKnownErrors } from 'src/utils/prisma-errors'
 import { CreateProductVariantInput } from '../inputs/product-variant/create-product-variants.input'
 import { UpdateProductVariantInput } from '../inputs/product-variant/update-product-variants.input'
 
@@ -16,10 +16,7 @@ export class ProductVariantsService {
 		try {
 			return await this.prisma.productVariant.create({ data: { productId, ...input } })
 		} catch (e) {
-			if (e instanceof Prisma.PrismaClientKnownRequestError && e.code === 'P2003') {
-				throw new BadRequestException(`Product with ID '${productId}' not found`)
-			}
-			throw e
+			rethrowPrismaKnownErrors(e, { notFound: { type: 'product', id: productId } })
 		}
 	}
 
@@ -33,10 +30,7 @@ export class ProductVariantsService {
 				data
 			})
 		} catch (e) {
-			if (e instanceof Prisma.PrismaClientKnownRequestError && e.code === 'P2025') {
-				throw new NotFoundException(`ProductVariant with ID '${productVariantId}' not found`)
-			}
-			throw e
+			rethrowPrismaKnownErrors(e, { notFound: { type: 'productVariant', id: productVariantId } })
 		}
 	}
 
@@ -44,10 +38,7 @@ export class ProductVariantsService {
 		try {
 			return await this.prisma.productVariant.delete({ where: { productVariantId } })
 		} catch (e) {
-			if (e instanceof Prisma.PrismaClientKnownRequestError && e.code === 'P2025') {
-				throw new NotFoundException(`ProductVariant with ID '${productVariantId}' not found`)
-			}
-			throw e
+			rethrowPrismaKnownErrors(e, { notFound: { type: 'productVariant', id: productVariantId } })
 		}
 	}
 }

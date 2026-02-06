@@ -1,5 +1,4 @@
 import { Field, ObjectType } from '@nestjs/graphql'
-
 import Decimal from 'decimal.js'
 import { RecipeUnit } from 'src/graphql/graphql.enums'
 import { ProductModel } from 'src/products/models/product.model'

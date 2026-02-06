@@ -1,5 +1,4 @@
 import { Field, Int, ObjectType } from '@nestjs/graphql'
-
 import { Difficulty } from 'src/graphql/graphql.enums'
 import { UserModel } from 'src/users/models/user-profile.model'
 import { RecipeIngredientModel } from './ingredient.model'

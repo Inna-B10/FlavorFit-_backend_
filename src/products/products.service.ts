@@ -1,6 +1,6 @@
 import { Injectable, NotFoundException } from '@nestjs/common'
-import { Prisma } from 'prisma/generated/prisma/client'
 import { PrismaService } from 'src/prisma/prisma.service'
+import { rethrowPrismaKnownErrors } from 'src/utils/prisma-errors'
 import { CreateProductInput } from './inputs/product/create-product.input'
 import { UpdateProductInput } from './inputs/product/update-product.input'
 
@@ -62,10 +62,7 @@ export class ProductsService {
 				include: { productVariants: true }
 			})
 		} catch (e) {
-			if (e instanceof Prisma.PrismaClientKnownRequestError && e.code === 'P2025') {
-				throw new NotFoundException(`Product with ID '${productId}' not found`)
-			}
-			throw e
+			rethrowPrismaKnownErrors(e, { notFound: { type: 'product', id: productId } })
 		}
 	}
 
@@ -80,10 +77,7 @@ export class ProductsService {
 				}
 			})
 		} catch (e) {
-			if (e instanceof Prisma.PrismaClientKnownRequestError && e.code === 'P2025') {
-				throw new NotFoundException(`Product with ID '${productId}' not found`)
-			}
-			throw e
+			rethrowPrismaKnownErrors(e, { notFound: { type: 'product', id: productId } })
 		}
 	}
 }

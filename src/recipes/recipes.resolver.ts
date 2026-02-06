@@ -4,7 +4,7 @@ import { CurrentUser } from 'src/auth/decorators/current-user.decorator'
 import { Role } from 'src/graphql/graphql.enums'
 import { AdminRecipesService } from './admin-recipes.service'
 import { CreateRecipeInput } from './inputs/recipe/create-recipe.input'
-import type { UpdateRecipeInput } from './inputs/recipe/update-recipe.input'
+import { UpdateRecipeInput } from './inputs/recipe/update-recipe.input'
 import { RecipeModel } from './models/recipe.model'
 import { RecipesService } from './recipes.service'
 
