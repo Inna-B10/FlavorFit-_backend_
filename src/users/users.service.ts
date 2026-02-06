@@ -39,16 +39,6 @@ export class UsersService {
 		})
 	}
 
-	//* ------------------------------- Create User ------------------------------ */
-	async createUser(email: string, password: string) {
-		return this.prisma.user.create({
-			data: {
-				email,
-				password
-			}
-		})
-	}
-
 	//* ---------------------------- Find Full Profile --------------------------- */
 	async findFullProfile(userId: string) {
 		return this.prisma.user.findUnique({
@@ -62,6 +52,15 @@ export class UsersService {
 		})
 	}
 
+	//* ------------------------------- Create User ------------------------------ */
+	async createUser(email: string, password: string) {
+		return this.prisma.user.create({
+			data: {
+				email,
+				password
+			}
+		})
+	}
 	//* --------------------------- Update Full Profile -------------------------- */
 	async updateFullProfile(userId: string, input: FullProfileUpdateInput) {
 		const { user, profile, fitnessProfile } = input

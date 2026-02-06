@@ -36,14 +36,17 @@ export class ProductsService {
 		return this.prisma.product.create({
 			data: {
 				...productData,
-				productVariants: {
-					create: productVariants.map(po => ({
-						pricingAmount: po.pricingAmount,
-						pricingUnit: po.pricingUnit,
-						price: po.price,
-						description: po.description
-					}))
-				}
+				...(!!productVariants?.length && {
+					productVariants: {
+						create: productVariants.map(po => ({
+							pricingAmount: po.pricingAmount,
+							pricingUnit: po.pricingUnit,
+							price: po.price,
+							label: po.label,
+							note: po.note
+						}))
+					}
+				})
 			},
 			include: {
 				productVariants: true

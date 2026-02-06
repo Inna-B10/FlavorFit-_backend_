@@ -14,6 +14,6 @@ export class CreateProductInput {
 	@Field(() => RecipeUnit)
 	recipeUnit: RecipeUnit
 
-	@Field(() => [CreateProductVariantInput])
-	productVariants: CreateProductVariantInput[]
+	@Field(() => [CreateProductVariantInput], { nullable: true })
+	productVariants?: CreateProductVariantInput[]
 }

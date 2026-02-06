@@ -50,9 +50,9 @@ model RecipeIngredient {
 }
 
 model RecipeStep {
-  recipeStepId String @id @default(cuid()) @map("recipe_steps_id")
-  order        Int
-  title        String
+  recipeStepId String  @id @default(cuid()) @map("recipe_steps_id")
+  stepNumber   Int?    @map("step_number")
+  title        String?
   description  String
 
   recipe   Recipe @relation(fields: [recipeId], references: [recipeId], onDelete: Cascade)
@@ -61,7 +61,7 @@ model RecipeStep {
   createdAt DateTime @default(now()) @map("created_at")
   updatedAt DateTime @updatedAt @map("updated_at")
 
-  @@unique([recipeId, order])
+  @@unique([recipeId, stepNumber])
   @@map("recipe_steps")
 }
 
