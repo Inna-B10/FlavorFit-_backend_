@@ -51,6 +51,6 @@ export class RecipeModel {
 	// 	@Field(() => [CommentModel], { nullable: true })
 	// 	comments?: [CommentModel]
 	//
-	// 	@Field(() => [LikeModel], { nullable: true })
-	// 	likes?: [LikeModel]
+	@Field(() => Int, { nullable: true })
+	likes?: number
 }
