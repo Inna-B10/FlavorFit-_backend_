@@ -1,5 +1,5 @@
 import { BadRequestException } from '@nestjs/common'
-import { CreateRecipeStepInput } from 'src/recipes/inputs/recipe-step/create-recipe-step'
+import { CreateRecipeStepInput } from 'src/recipes/inputs/recipe-step/create-recipe-step.input'
 
 export function buildStepsData(steps?: CreateRecipeStepInput[]) {
 	if (!steps?.length) return undefined

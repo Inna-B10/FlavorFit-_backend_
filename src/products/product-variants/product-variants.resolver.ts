@@ -10,7 +10,7 @@ import { ProductVariantsService } from './product-variants.service'
 export class ProductVariantsResolver {
 	constructor(private readonly productVariantsService: ProductVariantsService) {}
 
-	@Query(() => [ProductVariantModel], { name: 'AllProductProductVariants' })
+	@Query(() => [ProductVariantModel], { name: 'AllProductVariants' })
 	getAllProductVariantsByProductId(@Args('productId') productId: string) {
 		return this.productVariantsService.getAllProductVariantsByProductId(productId)
 	}

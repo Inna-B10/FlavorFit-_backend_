@@ -1,8 +1,11 @@
-import { Field, InputType } from '@nestjs/graphql'
+import { Field, ObjectType } from '@nestjs/graphql'
 import Decimal from 'decimal.js'
 
-@InputType()
-export class NutritionFactInput {
+@ObjectType()
+export class NutritionFactsModel {
+	@Field()
+	factId: string
+
 	@Field(() => Decimal, { nullable: true })
 	protein?: Decimal
 
@@ -14,4 +17,7 @@ export class NutritionFactInput {
 
 	@Field(() => Decimal, { nullable: true })
 	fiber?: Decimal
+
+	@Field()
+	recipeId: string
 }
