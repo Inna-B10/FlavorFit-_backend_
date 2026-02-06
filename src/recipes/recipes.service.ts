@@ -7,7 +7,11 @@ export class RecipesService {
 
 	//* ------------------------------- All Recipes ------------------------------ */
 	async getAllRecipes() {
-		return this.prisma.recipe.findMany({})
+		return this.prisma.recipe.findMany({
+			include: {
+				likes: true
+			}
+		})
 	}
 
 	//* --------------------------------- By Slug -------------------------------- */
