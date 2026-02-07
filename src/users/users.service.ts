@@ -1,7 +1,6 @@
 import { BadRequestException, Injectable } from '@nestjs/common'
-
 import { PrismaService } from 'src/prisma/prisma.service'
-import type { FullProfileUpdateInput } from 'src/users/inputs/user-profile.input'
+import { FullProfileUpdateInput } from 'src/users/inputs/user-profile.input'
 
 @Injectable()
 export class UsersService {

@@ -56,7 +56,10 @@ export function validateCreateRecipeInput(
 }
 
 //* ---------------------------- BuildRecipePatch ---------------------------- */
-export function buildRecipePatch(input: UpdateRecipeInput): Prisma.RecipeUpdateInput {
+export function buildRecipePatch(
+	input: UpdateRecipeInput,
+	shouldBumpIngredientsVersion?: boolean
+): Prisma.RecipeUpdateInput {
 	const data: Prisma.RecipeUpdateInput = {}
 
 	if (input.slug !== undefined) data.slug = input.slug
@@ -65,7 +68,7 @@ export function buildRecipePatch(input: UpdateRecipeInput): Prisma.RecipeUpdateI
 	if (input.difficulty !== undefined) data.difficulty = input.difficulty
 	if (input.calories !== undefined) data.calories = input.calories
 	if (input.cookingTime !== undefined) data.cookingTime = input.cookingTime
-
+	if (shouldBumpIngredientsVersion) data.ingredientsVersion = { increment: 1 }
 	return data
 }
 
@@ -73,9 +76,10 @@ export function buildRecipePatch(input: UpdateRecipeInput): Prisma.RecipeUpdateI
 export async function patchRecipeCore(
 	tx: Prisma.TransactionClient,
 	recipeId: string,
-	input: UpdateRecipeInput
+	input: UpdateRecipeInput,
+	shouldBumpIngredientsVersion: boolean = false
 ): Promise<void> {
-	const patch = buildRecipePatch(input)
+	const patch = buildRecipePatch(input, shouldBumpIngredientsVersion)
 	if (!Object.keys(patch).length) return
 
 	await tx.recipe.update({

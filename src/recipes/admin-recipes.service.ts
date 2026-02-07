@@ -106,13 +106,20 @@ export class AdminRecipesService {
 
 	// 	//* ------------------------------ Update Recipe ----------------------------- */
 	async updateRecipe(recipeId: string, input: UpdateRecipeInput) {
+		const shouldBumpIngredientsVersion =
+			input.addIngredients !== undefined ||
+			input.updateIngredients !== undefined ||
+			input.deleteIngredientIds !== undefined
+
 		try {
 			return await this.prisma.$transaction(async tx => {
 				await ensureRecipeExists(tx, recipeId)
-				await patchRecipeCore(tx, recipeId, input)
+				await patchRecipeCore(tx, recipeId, input, shouldBumpIngredientsVersion)
 				await syncRecipeTags(tx, recipeId, input.tags)
 				await upsertNutritionFacts(tx, recipeId, input.nutritionFacts)
-				await applyIngredientChanges(tx, recipeId, input)
+				if (shouldBumpIngredientsVersion) {
+					await applyIngredientChanges(tx, recipeId, input)
+				}
 				await applyStepChanges(tx, recipeId, input)
 
 				return getRecipeFull(tx, recipeId)
