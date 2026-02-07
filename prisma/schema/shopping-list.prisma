@@ -46,16 +46,20 @@ model ShoppingListItemSource {
   shoppingListItemSourceId String @id @default(cuid()) @map("shopping_list_item_source_id")
 
   shoppingListItemId String           @map("shopping_list_item_id")
-  item               ShoppingListItem @relation(fields: [shoppingListItemId], references: [shoppingListItemId], onDelete: Cascade)
+  shoppingListItem   ShoppingListItem @relation(fields: [shoppingListItemId], references: [shoppingListItemId], onDelete: Cascade)
 
   recipeId String @map("recipe_id")
   recipe   Recipe @relation(fields: [recipeId], references: [recipeId], onDelete: Cascade)
+
+  // which recipe-ingredients version was used when creating this source
+  recipeIngredientsVersionAtAdd Int @default(1) @map("recipe_ingredients_version_at_add")
 
   // snapshot of what this recipe contributed (so later recipe edits won't break the list)
   amount     Decimal    @db.Decimal(10, 3)
   recipeUnit RecipeUnit @map("recipe_unit")
 
   createdAt DateTime @default(now()) @map("created_at")
+  updatedAt DateTime @updatedAt @map("updated_at")
 
   // one recipe contributes once per ShoppingListItem row
   @@unique([shoppingListItemId, recipeId])
@@ -72,6 +76,7 @@ model ShoppingListRecipe {
   recipe   Recipe @relation(fields: [recipeId], references: [recipeId], onDelete: Cascade)
 
   createdAt DateTime @default(now()) @map("created_at")
+  updatedAt DateTime @updatedAt @map("updated_at")
 
   // prevents adding the same recipe twice
   @@unique([shoppingListId, recipeId])

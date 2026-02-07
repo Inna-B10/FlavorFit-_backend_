@@ -8,6 +8,9 @@ model Recipe {
   cookingTime Int?       @map("cooking_time")
   difficulty  Difficulty
 
+  // increases only when ingredients change
+  ingredientsVersion Int @default(1) @map("ingredients_version")
+
   ingredients RecipeIngredient[]
   recipeSteps RecipeStep[]
 
