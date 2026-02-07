@@ -73,6 +73,9 @@ npm install decimal.js
 
 ### 📋 TODOs:
 
+- [ ] Cart
+- [ ] Order
+- [ ] Shopping list
 - [ ] pagination
 - [ ] popular, recommended recipes
 - [ ] **filtering:**
@@ -85,39 +88,35 @@ npm install decimal.js
   - [ ] popularity (by views)
   - [ ] cookingTime
 - [ ] **Recipes, CRUD:**
-  - [ ] update recipe
   - [ ] ? при удалении проверка тегов на удаление
   - [ ] обновить код после добавления isActive для товаров
 - [ ] **Products, CRUD:**
   - [ ] Get all products without productVariant (and delete?)
   - [ ] add field "isActive"
-- [ ] password rules/auth.input.ts
+- [ ] **input rules** + password rules/auth.input.ts
 - [ ] ? meal type enum (breakfast, dinner, lunch,snacks desserts drinks)
 - [ ] dietary type enum (vegetar, gluten-free)
 - [ ] dish type (main, bowl, sandwich, salad, wrap)
-- [ ] **split user update** = account/profile+fitness
-  - [ ] Testing account update
-  - [ ] Testing profile update
+- [ ] **user info:** 2 separate pages
+  - [ ] account
+  - [ ] profile+fitness
+  - [ ] **split user update and test it** = account/profile+fitness
 - [ ] Captcha
 - [ ] CORS-configuration
 - [ ] **Additional:**
-  - [ ] ? Generate Models from Prisma to graphql
-  - [ ] ? Fix for prism model generation
-  - [ ] ? Changing the database type from decimal to alternatives
-  - [ ] ? New generation parameters for prisma-nestjs-graphql for improved navigation
   - [ ] ?? FASTIFY
   - [ ] Read about graphql-codegen
 
 <details style="border:1px solid #d4d4d4; border-radius:2px; padding:1rem;">
 <summary><h4 style="display:inline; padding-left:6px;">✅ Done</h4></summary>
-
-- [x] **CRUD operations. Working with products:**
-  - [x] Create
-  - [x] Edit
-  - [x] Delete
-  - [x] Get all
-  - [x] Get 1 by ID
-  - [x] Create table/schema for variants of product(productVariant) and CRUD
+- [x] likes, comments
+- [x] **Recipes, CRUD:**
+  - [x] create, update delete recipe, get by slug, by ID 
+  - [x] admin service
+- [x] **Products, CRUD:**
+  - [x] Create, Edit, Delete, Get all, Get 1 by ID
+  - [x] Create table/schema for variants of product(productVariant) 
+  - [x] productVariant  CRUD
 - [x] **Additional practice tasks:**
   - [x] Checking user existence before updating
 - [x] Updating user
