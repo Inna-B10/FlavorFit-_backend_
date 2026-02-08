@@ -1,8 +1,8 @@
 import { Field, InputType, Int } from '@nestjs/graphql'
 import { Difficulty } from 'src/graphql/graphql.enums'
+import { CreateIngredientInput } from '../ingredient/create-ingredient.input'
 import { NutritionFactsInput } from '../nutrition-facts.input'
-import { CreateRecipeIngredientInput } from '../recipe-ingredient/create-recipe-ingredient.input'
-import { CreateRecipeStepInput } from '../recipe-step/create-recipe-step.input'
+import { CreateRecipeStepInput } from '../step/create-step.input'
 
 @InputType()
 export class CreateRecipeInput {
@@ -27,8 +27,8 @@ export class CreateRecipeInput {
 	@Field(() => [String], { nullable: true })
 	tags?: string[]
 
-	@Field(() => [CreateRecipeIngredientInput])
-	ingredients: CreateRecipeIngredientInput[]
+	@Field(() => [CreateIngredientInput])
+	ingredients: CreateIngredientInput[]
 
 	@Field(() => [CreateRecipeStepInput], { nullable: true })
 	recipeSteps?: CreateRecipeStepInput[]

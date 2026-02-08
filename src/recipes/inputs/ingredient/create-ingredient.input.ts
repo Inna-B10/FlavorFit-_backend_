@@ -3,7 +3,7 @@ import Decimal from 'decimal.js'
 import { RecipeUnit } from 'src/graphql/graphql.enums'
 
 @InputType()
-export class CreateRecipeIngredientInput {
+export class CreateIngredientInput {
 	// If exists in catalog
 	@Field({ nullable: true })
 	productId?: string

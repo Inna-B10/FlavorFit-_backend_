@@ -1,8 +1,8 @@
 import { BadRequestException } from '@nestjs/common'
 import { Prisma } from 'prisma/generated/prisma/client'
-import { CreateRecipeStepInput } from 'src/recipes/inputs/recipe-step/create-recipe-step.input'
-import { UpdateRecipeStepInput } from 'src/recipes/inputs/recipe-step/update-recipe-step.input'
 import { UpdateRecipeInput } from 'src/recipes/inputs/recipe/update-recipe.input'
+import { CreateRecipeStepInput } from 'src/recipes/inputs/step/create-step.input'
+import { UpdateRecipeStepInput } from 'src/recipes/inputs/step/update-step.input'
 
 //* ----------------------------- NormalizeSteps ----------------------------- */
 export function normalizeSteps(steps?: CreateRecipeStepInput[]) {

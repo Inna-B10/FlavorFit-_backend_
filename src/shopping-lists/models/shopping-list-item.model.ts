@@ -2,27 +2,22 @@ import { Field, ObjectType } from '@nestjs/graphql'
 import Decimal from 'decimal.js'
 import { RecipeUnit } from 'src/graphql/graphql.enums'
 import { ProductModel } from 'src/products/models/product.model'
+import { ShoppingListItemSourceModel } from './shopping-list-item-source.model'
 
 @ObjectType()
-export class IngredientModel {
+export class ShoppingListItemModel {
 	@Field()
-	ingredientId: string
+	listItemId: string
+
+	@Field(() => ProductModel)
+	product: ProductModel
 
 	@Field(() => Decimal)
-	quantity: Decimal
+	requiredAmount: Decimal
 
 	@Field(() => RecipeUnit)
 	recipeUnit: RecipeUnit
 
-	@Field({ nullable: true })
-	note?: string
-
-	@Field()
-	recipeId: string
-
-	@Field()
-	productId: string
-
-	@Field(() => ProductModel)
-	product: ProductModel
+	@Field(() => [ShoppingListItemSourceModel])
+	sources: ShoppingListItemSourceModel[]
 }

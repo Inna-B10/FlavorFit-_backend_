@@ -1,13 +1,13 @@
 import { BadRequestException } from '@nestjs/common'
 import { Prisma } from 'prisma/generated/prisma/client'
 import { RecipeUnit } from 'src/graphql/graphql.enums'
-import { CreateRecipeIngredientInput } from 'src/recipes/inputs/recipe-ingredient/create-recipe-ingredient.input'
+import { CreateIngredientInput } from 'src/recipes/inputs/ingredient/create-ingredient.input'
 
 //* --------------------- getOrCreateProductIdsForIngredients -------------------- */
 // convenience wrapper for create/update when we need ids for a list.
 export async function getOrCreateProductIdsForIngredients(
 	tx: Prisma.TransactionClient,
-	ingredients: CreateRecipeIngredientInput[]
+	ingredients: CreateIngredientInput[]
 ): Promise<string[]> {
 	const productIds: string[] = []
 	for (const ing of ingredients) {
@@ -19,7 +19,7 @@ export async function getOrCreateProductIdsForIngredients(
 //* ---------------------- getOrCreateProductIdForIngredient --------------------- */
 export async function getOrCreateProductIdForIngredient(
 	tx: Prisma.TransactionClient,
-	ing: CreateRecipeIngredientInput
+	ing: CreateIngredientInput
 ): Promise<string> {
 	// case A: existing product/productId provided
 	if (ing.productId) {

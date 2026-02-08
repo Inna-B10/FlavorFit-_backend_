@@ -1,7 +1,7 @@
 import { Field, Int, ObjectType } from '@nestjs/graphql'
 import { Difficulty } from 'src/graphql/graphql.enums'
 import { UserModel } from 'src/users/models/user-profile.model'
-import { RecipeIngredientModel } from './ingredient.model'
+import { IngredientModel } from './ingredient.model'
 import { NutritionFactsModel } from './nutrition-facts.model'
 import { RecipeStepModel } from './recipe-step.model'
 import { RecipeTagModel } from './tag.model'
@@ -29,8 +29,8 @@ export class RecipeModel {
 	@Field(() => Difficulty)
 	difficulty: Difficulty
 
-	@Field(() => [RecipeIngredientModel])
-	ingredients: RecipeIngredientModel[]
+	@Field(() => [IngredientModel])
+	ingredients: IngredientModel[]
 
 	@Field(() => [RecipeStepModel], { nullable: true })
 	recipeSteps?: RecipeStepModel[]

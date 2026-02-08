@@ -3,9 +3,9 @@ import Decimal from 'decimal.js'
 import { RecipeUnit } from 'src/graphql/graphql.enums'
 
 @InputType()
-export class UpdateRecipeIngredientInput {
+export class UpdateIngredientInput {
 	@Field()
-	recipeIngredientId: string
+	ingredientId: string
 
 	@Field(() => Decimal, { nullable: true })
 	quantity?: Decimal
