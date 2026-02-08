@@ -44,10 +44,10 @@ model CartItemRequirement {
   cartItem   CartItem @relation(fields: [cartItemId], references: [cartItemId], onDelete: Cascade)
   cartItemId String   @map("cart_item_id")
 
-  shoppingListItemId String           @map("shopping_list_item_id")
-  shoppingListItem   ShoppingListItem @relation(fields: [shoppingListItemId], references: [shoppingListItemId], onDelete: Cascade)
+  listItemId String           @map("shopping_list_item_id")
+  listItem   ShoppingListItem @relation(fields: [listItemId], references: [listItemId], onDelete: Cascade)
 
   // prevent duplicates
-  @@unique([cartItemId, shoppingListItemId])
+  @@unique([cartItemId, listItemId])
   @@map("cart_item_requirements")
 }

@@ -1,11 +1,11 @@
 model ShoppingList {
-  shoppingListId String @id @default(cuid()) @map("shopping_list_id")
+  listId String @id @default(cuid()) @map("list_id")
 
   user   User   @relation(fields: [userId], references: [userId], onDelete: Cascade)
   userId String @unique @map("user_id")
 
-  items   ShoppingListItem[]
-  recipes ShoppingListRecipe[]
+  listItems ShoppingListItem[]
+  recipes   ShoppingListRecipe[]
 
   createdAt DateTime @default(now()) @map("created_at")
   updatedAt DateTime @updatedAt @map("updated_at")
@@ -14,7 +14,7 @@ model ShoppingList {
 }
 
 model ShoppingListItem {
-  shoppingListItemId String @id @default(cuid()) @map("shopping_list_item_id")
+  listItemId String @id @default(cuid()) @map("list_item_id")
 
   // aggregated required amount across all added recipes
   requiredAmount Decimal    @map("required_amount") @db.Decimal(10, 3)
@@ -28,8 +28,8 @@ model ShoppingListItem {
   // source
   sources ShoppingListItemSource[]
 
-  shoppingListId String       @map("shopping_list_id")
-  shoppingList   ShoppingList @relation(fields: [shoppingListId], references: [shoppingListId], onDelete: Cascade)
+  listId String       @map("list_id")
+  list   ShoppingList @relation(fields: [listId], references: [listId], onDelete: Cascade)
 
   productId String  @map("product_id")
   product   Product @relation(fields: [productId], references: [productId])
@@ -38,21 +38,21 @@ model ShoppingListItem {
   updatedAt DateTime @updatedAt @map("updated_at")
 
   // aggregate by product + recipeUnit (avoid mixing PIECE and GRAM in one row)
-  @@unique([shoppingListId, productId, recipeUnit])
+  @@unique([listId, productId, recipeUnit])
   @@map("shopping_list_items")
 }
 
 model ShoppingListItemSource {
-  shoppingListItemSourceId String @id @default(cuid()) @map("shopping_list_item_source_id")
+  listItemSourceId String @id @default(cuid()) @map("list_item_source_id")
 
-  shoppingListItemId String           @map("shopping_list_item_id")
-  shoppingListItem   ShoppingListItem @relation(fields: [shoppingListItemId], references: [shoppingListItemId], onDelete: Cascade)
+  listItemId String           @map("list_item_id")
+  listItem   ShoppingListItem @relation(fields: [listItemId], references: [listItemId], onDelete: Cascade)
 
   recipeId String @map("recipe_id")
   recipe   Recipe @relation(fields: [recipeId], references: [recipeId], onDelete: Cascade)
 
   // which recipe-ingredients version was used when creating this source
-  recipeIngredientsVersionAtAdd Int @default(1) @map("recipe_ingredients_version_at_add")
+  ingredientsVersionUsed Int @default(1) @map("ingredients_version_used")
 
   // snapshot of what this recipe contributed (so later recipe edits won't break the list)
   amount     Decimal    @db.Decimal(10, 3)
@@ -62,15 +62,15 @@ model ShoppingListItemSource {
   updatedAt DateTime @updatedAt @map("updated_at")
 
   // one recipe contributes once per ShoppingListItem row
-  @@unique([shoppingListItemId, recipeId])
+  @@unique([listItemId, recipeId])
   @@map("shopping_list_item_sources")
 }
 
 model ShoppingListRecipe {
-  shoppingListRecipeId String @id @default(cuid()) @map("shopping_list_recipe_id")
+  listRecipeId String @id @default(cuid()) @map("list_recipe_id")
 
-  shoppingListId String       @map("shopping_list_id")
-  shoppingList   ShoppingList @relation(fields: [shoppingListId], references: [shoppingListId], onDelete: Cascade)
+  listId String       @map("list_id")
+  list   ShoppingList @relation(fields: [listId], references: [listId], onDelete: Cascade)
 
   recipeId String @map("recipe_id")
   recipe   Recipe @relation(fields: [recipeId], references: [recipeId], onDelete: Cascade)
@@ -79,6 +79,6 @@ model ShoppingListRecipe {
   updatedAt DateTime @updatedAt @map("updated_at")
 
   // prevents adding the same recipe twice
-  @@unique([shoppingListId, recipeId])
+  @@unique([listId, recipeId])
   @@map("shopping_list_recipes")
 }
