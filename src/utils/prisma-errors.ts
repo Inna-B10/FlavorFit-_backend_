@@ -49,6 +49,10 @@ export function rethrowPrismaKnownErrors(e: unknown, ctx?: PrismaErrorContext): 
 			if (target.includes('recipeId') && target.includes('productId')) {
 				throw new BadRequestException('This ingredient already exists in the recipe')
 			}
+			// @@unique([listId, recipeId])
+			else if (target.includes('recipeId') && target.includes('listId')) {
+				throw new BadRequestException('This recipe is already added to the shopping list')
+			}
 
 			throw new ConflictException('Unique constraint failed')
 		}

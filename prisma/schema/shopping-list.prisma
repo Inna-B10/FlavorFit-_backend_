@@ -57,6 +57,7 @@ model ShoppingListItemSource {
   // snapshot of what this recipe contributed (so later recipe edits won't break the list)
   amount     Decimal    @db.Decimal(10, 3)
   recipeUnit RecipeUnit @map("recipe_unit")
+  note       String?
 
   createdAt DateTime @default(now()) @map("created_at")
   updatedAt DateTime @updatedAt @map("updated_at")
