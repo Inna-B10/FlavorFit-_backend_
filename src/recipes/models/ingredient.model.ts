@@ -1,4 +1,4 @@
-import { Field, ObjectType } from '@nestjs/graphql'
+import { Field, HideField, ObjectType } from '@nestjs/graphql'
 import Decimal from 'decimal.js'
 import { RecipeUnit } from 'src/graphql/graphql.enums'
 import { ProductModel } from 'src/products/models/product.model'
@@ -17,7 +17,7 @@ export class IngredientModel {
 	@Field({ nullable: true })
 	note?: string
 
-	@Field()
+	@HideField()
 	recipeId: string
 
 	@Field()

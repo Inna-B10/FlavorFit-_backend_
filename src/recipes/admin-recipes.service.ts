@@ -21,16 +21,7 @@ export class AdminRecipesService {
 
 	//* ------------------------------- All Recipes ------------------------------ */
 	async getAllRecipes() {
-		return this.prisma.recipe.findMany({
-			include: {
-				recipeSteps: true,
-				ingredients: { include: { product: true } },
-				tags: true,
-				nutritionFacts: true,
-				author: true,
-				_count: { select: { likes: true } } // return number, not array
-			}
-		})
+		return this.prisma.recipe.findMany()
 	}
 	//* ------------------------------ Recipe By Id ------------------------------ */
 	async getRecipeById(recipeId: string) {
@@ -39,11 +30,21 @@ export class AdminRecipesService {
 				recipeId
 			},
 			include: {
+				ingredients: {
+					include: {
+						product: {
+							include: {
+								productVariants: true
+							}
+						}
+					}
+				},
 				recipeSteps: true,
-				ingredients: { include: { product: true } },
 				tags: true,
 				nutritionFacts: true,
-				author: true
+				author: true,
+				_count: { select: { likes: true } },
+				comments: true
 			}
 		})
 		if (!recipe) {

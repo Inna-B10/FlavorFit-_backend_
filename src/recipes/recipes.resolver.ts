@@ -8,12 +8,6 @@ import { UpdateRecipeInput } from './inputs/recipe/update-recipe.input'
 import { RecipeModel } from './models/recipe.model'
 import { RecipesService } from './recipes.service'
 
-type RecipeWithLikesCount = RecipeModel & {
-	_count?: {
-		likes?: number
-	}
-}
-
 @Resolver(() => RecipeModel)
 export class RecipesResolver {
 	constructor(
@@ -28,7 +22,7 @@ export class RecipesResolver {
 	}
 
 	@ResolveField(() => Int)
-	likes(@Parent() recipe: RecipeWithLikesCount): number {
+	likesCount(@Parent() recipe: { _count?: { likes?: number } }): number {
 		// likes count is resolved from Prisma _count
 		return recipe._count?.likes ?? 0
 	}

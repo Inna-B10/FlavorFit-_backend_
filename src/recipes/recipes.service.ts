@@ -21,11 +21,31 @@ export class RecipesService {
 				slug
 			},
 			include: {
-				recipeSteps: true,
 				ingredients: {
 					include: {
-						product: true
+						product: {
+							select: {
+								name: true,
+								iconUrl: true
+							}
+						}
 					}
+				},
+				recipeSteps: {
+					orderBy: { stepNumber: 'asc' }
+				},
+				tags: {
+					select: { tagName: true }
+				},
+				nutritionFacts: true,
+				author: {
+					select: {
+						firstName: true,
+						avatarUrl: true
+					}
+				},
+				_count: {
+					select: { likes: true }
 				}
 			}
 		})

@@ -1,6 +1,7 @@
 import { Field, Int, ObjectType } from '@nestjs/graphql'
 import { Difficulty } from 'src/graphql/graphql.enums'
 import { UserModel } from 'src/users/models/user-profile.model'
+import { CommentModel } from '../reactions/models/comment.model'
 import { IngredientModel } from './ingredient.model'
 import { NutritionFactsModel } from './nutrition-facts.model'
 import { RecipeStepModel } from './recipe-step.model'
@@ -47,9 +48,12 @@ export class RecipeModel {
 	@Field(() => UserModel, { nullable: true })
 	author?: UserModel
 
-	// 	@Field(() => [CommentModel], { nullable: true })
-	// 	comments?: [CommentModel]
-	//
+	@Field(() => [CommentModel], { nullable: true })
+	comments?: [CommentModel]
+
 	@Field(() => Int)
-	likes: number
+	likesCount: number
+
+	@Field(() => Int)
+	ingredientsVersion: number
 }
