@@ -9,7 +9,7 @@ model Product {
   // how it is SOLD variations
   productVariants ProductVariant[] //packaging, weight, price
 
-  recipes          RecipeIngredient[] // in what recipes is it used
+  recipes          Ingredient[] // in what recipes is it used
   shoppingListItem ShoppingListItem[]
 
   orderItems OrderItem[]

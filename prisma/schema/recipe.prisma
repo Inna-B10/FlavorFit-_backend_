@@ -11,7 +11,7 @@ model Recipe {
   // increases only when ingredients change
   ingredientsVersion Int @default(1) @map("ingredients_version")
 
-  ingredients RecipeIngredient[]
+  ingredients Ingredient[]
   recipeSteps RecipeStep[]
 
   tags           RecipeTag[]
@@ -32,10 +32,10 @@ model Recipe {
   @@map("recipes")
 }
 
-model RecipeIngredient {
-  recipeIngredientId String     @id @default(cuid()) @map("recipe_ingredient_id")
-  quantity           Decimal    @db.Decimal(10, 3)
-  recipeUnit         RecipeUnit @map("recipe_unit")
+model Ingredient {
+  ingredientId String     @id @default(cuid()) @map("ingredient_id")
+  quantity     Decimal    @db.Decimal(10, 3)
+  recipeUnit   RecipeUnit @map("recipe_unit")
 
   note String? //3–4 depending on size
 
@@ -49,7 +49,7 @@ model RecipeIngredient {
   updatedAt DateTime @updatedAt @map("updated_at")
 
   @@unique([recipeId, productId]) // one ingredient - once in the recipe
-  @@map("recipe_ingredients")
+  @@map("ingredients")
 }
 
 model RecipeStep {
