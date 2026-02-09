@@ -3,7 +3,7 @@ import { Prisma } from 'prisma/generated/prisma/client'
 import { RecipeUnit } from 'src/graphql/graphql.enums'
 import { CreateIngredientInput } from 'src/recipes/inputs/ingredient/create-ingredient.input'
 
-//* --------------------- getOrCreateProductIdsForIngredients -------------------- */
+//* --------------------- getOrCreate ProductIds For Ingredients -------------------- */
 // convenience wrapper for create/update when we need ids for a list.
 export async function getOrCreateProductIdsForIngredients(
 	tx: Prisma.TransactionClient,
@@ -16,7 +16,7 @@ export async function getOrCreateProductIdsForIngredients(
 	return productIds
 }
 
-//* ---------------------- getOrCreateProductIdForIngredient --------------------- */
+//* ---------------------- getOrCreate ProductId For Ingredient --------------------- */
 export async function getOrCreateProductIdForIngredient(
 	tx: Prisma.TransactionClient,
 	ing: CreateIngredientInput

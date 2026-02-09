@@ -2,20 +2,20 @@ import { Prisma } from 'prisma/generated/prisma/client'
 import { CreateRecipeInput } from 'src/recipes/inputs/recipe/create-recipe.input'
 import { UpdateRecipeInput } from 'src/recipes/inputs/recipe/update-recipe.input'
 
-//* ------------------------------ HasNutrition ------------------------------ */
+//* ------------------------------ Has Nutrition ------------------------------ */
 export function hasNutrition(nutritionFacts?: object | null): boolean {
 	if (!nutritionFacts) return false
 	return Object.values(nutritionFacts).some(v => v !== null && v !== undefined)
 }
 
-//* --------------------------- BuildNutritionData --------------------------- */
+//* --------------------------- Build Nutrition Data --------------------------- */
 // For create (nested create)
 export function buildNutritionData(nutritionFacts?: CreateRecipeInput['nutritionFacts']) {
 	if (!hasNutrition(nutritionFacts)) return undefined
 	return { create: nutritionFacts }
 }
 
-//* -------------------------- UpsertNutritionFacts -------------------------- */
+//* -------------------------- Upsert Nutrition Facts -------------------------- */
 export async function upsertNutritionFacts(
 	tx: Prisma.TransactionClient,
 	recipeId: string,

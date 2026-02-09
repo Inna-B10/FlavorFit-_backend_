@@ -2,9 +2,9 @@ import { BadRequestException } from '@nestjs/common'
 import { Prisma } from 'prisma/generated/prisma/client'
 import { UpdateIngredientInput } from 'src/recipes/inputs/ingredient/update-ingredient.input'
 import { UpdateRecipeInput } from 'src/recipes/inputs/recipe/update-recipe.input'
-import { getOrCreateProductIdForIngredient } from './ingredient-products.helper'
+import { getOrCreateProductIdForIngredient } from './recipe-ingredient-products.helper'
 
-//* ------------------------- ApplyIngredientChanges ------------------------- */
+//* ------------------------- Apply Ingredient Changes ------------------------- */
 export async function applyIngredientChanges(
 	tx: Prisma.TransactionClient,
 	recipeId: string,
@@ -61,7 +61,7 @@ export async function applyIngredientChanges(
 	}
 }
 
-//* -------------------------- BuildIngredientPatch -------------------------- */
+//* -------------------------- Build Ingredient Patch -------------------------- */
 export function buildIngredientPatch(
 	ing: UpdateIngredientInput
 ): Prisma.IngredientUpdateManyMutationInput {

@@ -4,7 +4,7 @@ import { UpdateRecipeInput } from 'src/recipes/inputs/recipe/update-recipe.input
 import { CreateRecipeStepInput } from 'src/recipes/inputs/step/create-step.input'
 import { UpdateRecipeStepInput } from 'src/recipes/inputs/step/update-step.input'
 
-//* ----------------------------- NormalizeSteps ----------------------------- */
+//* ----------------------------- Normalize Steps ----------------------------- */
 export function normalizeSteps(steps?: CreateRecipeStepInput[]) {
 	if (!steps?.length) return undefined
 
@@ -25,7 +25,7 @@ export function normalizeSteps(steps?: CreateRecipeStepInput[]) {
 	return normalized
 }
 
-//* ----------------------------- BuildStepPatch ----------------------------- */
+//* ----------------------------- Build Step Patch ----------------------------- */
 export function buildStepPatch(
 	step: UpdateRecipeStepInput
 ): Prisma.RecipeStepUpdateManyMutationInput {
@@ -38,7 +38,7 @@ export function buildStepPatch(
 	return data
 }
 
-//* ---------------------------- ApplyStepChanges ---------------------------- */
+//* ---------------------------- Apply Step Changes ---------------------------- */
 export async function applyStepChanges(
 	tx: Prisma.TransactionClient,
 	recipeId: string,

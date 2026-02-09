@@ -1,17 +1,16 @@
 import { Injectable, NotFoundException } from '@nestjs/common'
 import { PrismaService } from 'src/prisma/prisma.service'
 import { rethrowPrismaKnownErrors } from 'src/utils/prisma-errors'
-import { applyIngredientChanges } from './helpers/ingredient-helper'
-import { getOrCreateProductIdsForIngredients } from './helpers/ingredient-products.helper'
-import { buildNutritionData, upsertNutritionFacts } from './helpers/nutrition.helper'
+import { applyIngredientChanges } from './helpers/recipe-ingredient.helper'
+import { upsertNutritionFacts } from './helpers/recipe-nutrition.helper'
+import { applyStepChanges } from './helpers/recipe-steps.helper'
+import { syncRecipeTags } from './helpers/recipe-tags'
 import {
-	ensureRecipeExists,
-	getRecipeFull,
-	patchRecipeCore,
+	createRecipeHelper,
 	validateCreateRecipeInput
-} from './helpers/recipe-core.helper'
-import { applyStepChanges, normalizeSteps } from './helpers/steps.helper'
-import { buildTagsConnectOrCreate, syncRecipeTags } from './helpers/tags.helper'
+} from './helpers/recipe/create-recipe.helper'
+import { checkRecipeExists, getRecipeFull } from './helpers/recipe/get-recipe.helper'
+import { patchRecipeCore } from './helpers/recipe/update-recipe.helper'
 import { CreateRecipeInput } from './inputs/recipe/create-recipe.input'
 import { UpdateRecipeInput } from './inputs/recipe/update-recipe.input'
 
@@ -60,49 +59,15 @@ export class AdminRecipesService {
 	) {
 		// Basic guards
 		validateCreateRecipeInput(authorId, { ingredients, ...recipeData })
-		try {
-			return await this.prisma.$transaction(async tx => {
-				// Resolve productIds (existing or newly created)
-				const productIdsByIndex = await getOrCreateProductIdsForIngredients(tx, ingredients)
-
-				const stepsData = normalizeSteps(recipeSteps)
-
-				const recipe = await tx.recipe.create({
-					data: {
-						...recipeData,
-						author: { connect: { userId: authorId } },
-
-						ingredients: {
-							create: ingredients.map((ing, idx) => ({
-								quantity: ing.quantity,
-								recipeUnit: ing.recipeUnit,
-								note: ing.note,
-								product: { connect: { productId: productIdsByIndex[idx] } }
-							}))
-						},
-
-						recipeSteps: { create: stepsData },
-
-						tags: buildTagsConnectOrCreate(tags),
-
-						nutritionFacts: buildNutritionData(nutritionFacts)
-					},
-					include: {
-						ingredients: { include: { product: true } },
-						recipeSteps: true,
-						tags: true,
-						nutritionFacts: true
-					}
-				})
-
-				return recipe
+		return this.prisma.$transaction(tx =>
+			createRecipeHelper(tx, authorId, {
+				recipeSteps,
+				ingredients,
+				nutritionFacts,
+				tags,
+				...recipeData
 			})
-		} catch (e) {
-			// unique constraint for slug
-			rethrowPrismaKnownErrors(e, {
-				slug: recipeData.slug
-			})
-		}
+		)
 	}
 
 	// 	//* ------------------------------ Update Recipe ----------------------------- */
@@ -114,7 +79,7 @@ export class AdminRecipesService {
 
 		try {
 			return await this.prisma.$transaction(async tx => {
-				await ensureRecipeExists(tx, recipeId)
+				await checkRecipeExists(tx, recipeId)
 				await patchRecipeCore(tx, recipeId, input, shouldBumpIngredientsVersion)
 				await syncRecipeTags(tx, recipeId, input.tags)
 				await upsertNutritionFacts(tx, recipeId, input.nutritionFacts)

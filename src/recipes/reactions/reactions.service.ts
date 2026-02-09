@@ -7,7 +7,7 @@ import { CreateCommentInput, UpdateCommentInput } from './inputs/comment.input'
 export class ReactionsService {
 	constructor(private readonly prisma: PrismaService) {}
 
-	//* ------------------------------- ToggleLike ------------------------------- */
+	//* ------------------------------- Toggle Like ------------------------------- */
 	async toggleLike(recipeId: string, userId: string) {
 		const existingLike = await this.prisma.like.findUnique({
 			where: {

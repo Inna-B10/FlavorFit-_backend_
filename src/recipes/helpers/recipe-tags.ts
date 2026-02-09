@@ -1,6 +1,6 @@
 import { Prisma } from 'prisma/generated/prisma/client'
 
-//* ------------------------------ NormalizeTags ----------------------------- */
+//* ------------------------------ Normalize Tags ----------------------------- */
 export function normalizeTags(tags?: string[]): string[] {
 	if (!tags?.length) return []
 
@@ -8,7 +8,7 @@ export function normalizeTags(tags?: string[]): string[] {
 	return [...new Set(tags.map(t => t.trim()).filter(Boolean))]
 }
 
-//* ------------------------ BuildTagsConnectOrCreate ------------------------ */
+//* ------------------------ Build Tags ConnectOrCreate ------------------------ */
 export function buildTagsConnectOrCreate(tags?: string[]) {
 	const cleaned = normalizeTags(tags)
 	if (!cleaned.length) return undefined
@@ -25,7 +25,7 @@ export function buildTagsConnectOrCreate(tags?: string[]) {
 // if not provided - do nothing
 // empty list - clears all tags
 
-//* ----------------------------- SyncRecipeTags ----------------------------- */
+//* ----------------------------- Sync Recipe Tags ----------------------------- */
 export async function syncRecipeTags(
 	tx: Prisma.TransactionClient,
 	recipeId: string,
