@@ -1,7 +1,7 @@
 import { Field, InputType } from '@nestjs/graphql'
 
 @InputType()
-export class RefreshRecipeToShoppingListInput {
+export class RecipeInShoppingListInput {
 	@Field()
 	listId: string
 
