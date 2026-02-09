@@ -18,4 +18,7 @@ export class ProductModel {
 
 	@Field(() => [ProductVariantModel], { nullable: true })
 	productVariants?: ProductVariantModel[]
+
+	// @Field(() => [ProductVariantModel])
+	// productVariants: ProductVariantModel[] = []
 }
