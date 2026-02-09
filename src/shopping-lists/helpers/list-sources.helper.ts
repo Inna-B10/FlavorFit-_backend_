@@ -1,5 +1,5 @@
 import { BadRequestException } from '@nestjs/common'
-import type { Prisma } from 'prisma/generated/prisma/client'
+import { Prisma } from 'prisma/generated/prisma/client'
 
 type TShoppingListSourceForUpdate = {
 	listItemId: string

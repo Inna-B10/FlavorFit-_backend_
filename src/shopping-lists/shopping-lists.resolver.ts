@@ -1,5 +1,5 @@
 import { Args, Mutation, Parent, ResolveField, Resolver } from '@nestjs/graphql'
-import { type RecipeInShoppingListInput } from './inputs/recipe-in-shopping-list.input'
+import { RecipeInShoppingListInput } from './inputs/recipe-in-shopping-list.input'
 import { ShoppingListModel } from './models/shopping-list.model'
 import { ShoppingListsService } from './shopping-lists.service'
 
