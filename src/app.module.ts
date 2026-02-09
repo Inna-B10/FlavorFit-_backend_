@@ -5,6 +5,7 @@ import { GraphQLModule } from '@nestjs/graphql'
 import { AppController } from './app.controller'
 import { AppService } from './app.service'
 import { AuthModule } from './auth/auth.module'
+import { CartsModule } from './carts/carts.module'
 import { getGraphQLConfig } from './config/graphql.config'
 import { DecimalScalar } from './graphql/scalars/decimal.scalar'
 import { OrdersModule } from './orders/orders.module'
@@ -28,6 +29,7 @@ import { UsersModule } from './users/users.module'
 		ProductsModule,
 		RecipesModule,
 		ShoppingListsModule,
+		CartsModule,
 		OrdersModule,
 		PrismaModule
 	],
