@@ -3,14 +3,14 @@ import Decimal from 'decimal.js'
 
 //* ------------------------ Add Shopping List To Cart ----------------------- */
 @InputType()
-export class AddShoppingListToCartInput {
+export class AddManyItemsToCartInputInput {
 	@Field()
 	listId: string
 }
 
 //* ---------------------------- Add Item To Cart ---------------------------- */
 @InputType()
-export class AddListItemToCartInput {
+export class AddOneItemToCartInput {
 	@Field()
 	listItemId: string
 }

@@ -21,7 +21,7 @@ export class CartModel {
 	updatedAt: Date
 }
 
-//* -------------------------------- CartItem -------------------------------- */
+//* -------------------------------- Cart Item -------------------------------- */
 @ObjectType()
 export class CartItemModel {
 	@Field(() => String)
@@ -43,7 +43,7 @@ export class CartItemModel {
 	requiredByRecipes: CartItemRequiredAmountModel[]
 }
 
-//* --------------------------- CartItemRequirement -------------------------- */
+//* --------------------------- Cart Item Requirement -------------------------- */
 @ObjectType()
 export class CartItemRequirementModel {
 	@Field(() => String)
@@ -53,7 +53,7 @@ export class CartItemRequirementModel {
 	listItem: ShoppingListItemForCartModel
 }
 
-//* ------------------------- CartItemRequiredAmount ------------------------- */
+//* ------------------------- Cart Item Required Amount ------------------------- */
 @ObjectType()
 export class CartItemRequiredAmountModel {
 	@Field(() => RecipeUnit)
