@@ -3,6 +3,7 @@ model Order {
   orderReference String      @unique @map("order_reference")
   status         OrderStatus @default(PENDING)
   totalPrice     Decimal     @db.Decimal(10, 2)
+  orderNote      String?
 
   user   User   @relation(fields: [userId], references: [userId], onDelete: Cascade)
   userId String @map("user_id")
