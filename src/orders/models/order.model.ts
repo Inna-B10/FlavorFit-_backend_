@@ -1,6 +1,7 @@
 import { Field, ObjectType } from '@nestjs/graphql'
 import Decimal from 'decimal.js'
-import { OrderStatus } from 'prisma/generated/prisma/enums'
+
+import { OrderStatus } from 'src/graphql/graphql.enums'
 import { RecipeModel } from 'src/recipes/models/recipe.model'
 import { CourierModel } from './courier.model'
 import { OrderItemModel } from './order-item.model'

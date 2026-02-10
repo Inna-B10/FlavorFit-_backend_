@@ -17,7 +17,6 @@ export async function addOneItemToCartHelper(
 		create: {
 			cartId,
 			productId,
-			goodsCount: null,
 			productVariantId: null
 		},
 		update: {},

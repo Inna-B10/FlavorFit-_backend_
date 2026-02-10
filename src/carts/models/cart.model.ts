@@ -34,7 +34,7 @@ export class CartItemModel {
 	productVariant?: ProductVariantModel
 
 	@Field(() => Decimal, { nullable: true })
-	goodsCount?: Decimal
+	goodsCount: Decimal
 
 	@Field(() => [CartItemRequirementModel])
 	requirements: CartItemRequirementModel[]

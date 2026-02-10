@@ -1,9 +1,10 @@
 import { registerEnumType } from '@nestjs/graphql'
-import { Difficulty, RecipeUnit, Role, SaleUnit } from 'prisma/generated/prisma/enums'
+import { Difficulty, OrderStatus, RecipeUnit, Role, SaleUnit } from 'prisma/generated/prisma/enums'
 
 registerEnumType(RecipeUnit, { name: 'RecipeUnit' })
 registerEnumType(SaleUnit, { name: 'SaleUnit' })
 registerEnumType(Role, { name: 'Role' })
 registerEnumType(Difficulty, { name: 'Difficulty' })
+registerEnumType(OrderStatus, { name: 'OrderStatus' })
 
-export { Difficulty, RecipeUnit, Role, SaleUnit }
+export { Difficulty, OrderStatus, RecipeUnit, Role, SaleUnit }

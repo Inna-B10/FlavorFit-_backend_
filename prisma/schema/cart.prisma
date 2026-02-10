@@ -19,7 +19,7 @@ model CartItem {
   requirements CartItemRequirement[]
 
   // How much the user will buy, expressed in productVariant.pricingUnit
-  goodsCount Decimal? @map("goods_count")
+  goodsCount Decimal @default(0) @map("goods_count")
 
   cartId String @map("cart_id")
   cart   Cart   @relation(fields: [cartId], references: [cartId], onDelete: Cascade)

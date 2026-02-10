@@ -6,7 +6,7 @@ export async function validateCartItem(
 	tx: Prisma.TransactionClient,
 	productId: string,
 	productVariantId?: string | null,
-	goodsCount?: Decimal | null
+	goodsCount?: Decimal
 ) {
 	const variantProvided = productVariantId !== undefined
 	const countProvided = goodsCount !== undefined
@@ -30,6 +30,7 @@ export async function validateCartItem(
 	}
 
 	//5. validate goodsCount if provided & not null
-	if (goodsCount !== null && goodsCount!.lt(0))
+	if (goodsCount !== undefined && goodsCount.lt(0)) {
 		throw new BadRequestException('goodsCount must be greater or equal to 0')
+	}
 }

@@ -71,7 +71,7 @@ export class CartsService {
 	async updateCartItemPurchase(
 		userId: string,
 		cartItemId: string,
-		input: { productVariantId?: string | null; goodsCount?: Decimal | null }
+		input: { productVariantId?: string | null; goodsCount?: Decimal }
 	) {
 		return this.prisma.$transaction(async tx => {
 			//1. load cartItem + ownership check
@@ -145,6 +145,7 @@ export class CartsService {
 		})
 	}
 
+	//разорвать связь между одним из ингредиентов в Листе покупок и ингредиентом в корзине
 	// 	async removeCartItemRequirement(cartItemId: string, listItemId: string) {
 	// 		return this.prisma.$transaction(async tx => {
 	// 			const cartItem = await tx.cartItem.findUnique({
