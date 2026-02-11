@@ -1,5 +1,5 @@
 import { ForbiddenException, Injectable, NotFoundException } from '@nestjs/common'
-import { Role } from 'prisma/generated/prisma/client'
+import { Role } from 'prisma/generated/client'
 import { PrismaService } from 'src/prisma/prisma.service'
 import { CreateCommentInput, UpdateCommentInput } from './inputs/comment.input'
 

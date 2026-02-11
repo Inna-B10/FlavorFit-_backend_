@@ -1,4 +1,4 @@
-import { Prisma } from 'prisma/generated/prisma/client'
+import { Prisma } from 'prisma/generated/client'
 import { UpdateRecipeInput } from 'src/recipes/inputs/recipe/update-recipe.input'
 
 //* ---------------------------- Build Recipe Patch ---------------------------- */

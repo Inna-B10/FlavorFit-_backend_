@@ -1,6 +1,6 @@
 import { Injectable, NotFoundException } from '@nestjs/common'
 import Decimal from 'decimal.js'
-import { Prisma } from 'prisma/generated/prisma/client'
+import { Prisma } from 'prisma/generated/client'
 import { PrismaService } from 'src/prisma/prisma.service'
 import { addOneItemToCartHelper, linkRequirement } from './helpers/add-item.helper'
 import { getCartItems, getUpdatedCart } from './helpers/get.helper'

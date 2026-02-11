@@ -1,5 +1,5 @@
 import { BadRequestException, Injectable, NotFoundException } from '@nestjs/common'
-import { Prisma, Role } from 'prisma/generated/prisma/client'
+import { Prisma, Role } from 'prisma/generated/client'
 import { PrismaService } from 'src/prisma/prisma.service'
 import { rethrowPrismaKnownErrors } from 'src/utils/prisma-errors'
 import { buildOrderItemsSnapshot } from './helpers/build-order-items-snapshot.helper'

@@ -1,5 +1,5 @@
 import { BadRequestException } from '@nestjs/common'
-import { Prisma } from 'prisma/generated/prisma/client'
+import { Prisma } from 'prisma/generated/client'
 import { UpdateRecipeInput } from 'src/recipes/inputs/recipe/update-recipe.input'
 import { CreateRecipeStepInput } from 'src/recipes/inputs/step/create-step.input'
 import { UpdateRecipeStepInput } from 'src/recipes/inputs/step/update-step.input'

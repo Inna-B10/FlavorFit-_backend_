@@ -1,5 +1,5 @@
 import { BadRequestException } from '@nestjs/common'
-import { Prisma, SaleUnit } from 'prisma/generated/prisma/client'
+import { Prisma, SaleUnit } from 'prisma/generated/client'
 
 type ReadyCartItem = {
 	cartItemId: string

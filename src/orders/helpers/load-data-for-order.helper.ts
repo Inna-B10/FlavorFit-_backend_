@@ -1,4 +1,4 @@
-import type { Prisma } from 'prisma/generated/prisma/client'
+import type { Prisma } from 'prisma/generated/client'
 
 export async function loadDataForOrder(tx: Prisma.TransactionClient, userId: string) {
 	return tx.cart.findUnique({

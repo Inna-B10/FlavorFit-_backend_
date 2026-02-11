@@ -1,4 +1,4 @@
-import { Prisma } from 'prisma/generated/prisma/client'
+import { Prisma } from 'prisma/generated/client'
 
 //* ------------------- Create Order With Unique Reference ------------------- */
 export async function createOrderWithUniqueReference(

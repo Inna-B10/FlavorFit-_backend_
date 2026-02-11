@@ -1,4 +1,4 @@
-import { Prisma } from 'prisma/generated/prisma/client'
+import { Prisma } from 'prisma/generated/client'
 import { rethrowPrismaKnownErrors } from 'src/utils/prisma-errors'
 
 //* -------------------------- Add One Item To Cart -------------------------- */

@@ -1,4 +1,4 @@
-import { Prisma } from 'prisma/generated/prisma/client'
+import { Prisma } from 'prisma/generated/client'
 
 //* ------------------------------ Normalize Tags ----------------------------- */
 export function normalizeTags(tags?: string[]): string[] {

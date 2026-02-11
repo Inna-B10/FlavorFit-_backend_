@@ -1,5 +1,5 @@
 import { NotFoundException } from '@nestjs/common'
-import { Prisma } from 'prisma/generated/prisma/client'
+import { Prisma } from 'prisma/generated/client'
 
 //* --------------------------- Check Recipe Exists --------------------------- */
 export async function checkRecipeExists(

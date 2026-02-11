@@ -1,5 +1,5 @@
 import { NotFoundException } from '@nestjs/common'
-import { Prisma } from 'prisma/generated/prisma/client'
+import { Prisma } from 'prisma/generated/client'
 
 //* ---------------------------- Get Updated Cart ---------------------------- */
 export function getUpdatedCart(tx: Prisma.TransactionClient, cartId: string) {

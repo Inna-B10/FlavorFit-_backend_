@@ -1,4 +1,4 @@
-import { Prisma } from 'prisma/generated/prisma/client'
+import { Prisma } from 'prisma/generated/client'
 
 //* ------------------------ GetOrCreate Shopping List ----------------------- */
 export async function getOrCreateShoppingList(tx: Prisma.TransactionClient, userId: string) {

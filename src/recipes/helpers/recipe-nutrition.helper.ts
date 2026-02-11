@@ -1,4 +1,4 @@
-import { Prisma } from 'prisma/generated/prisma/client'
+import { Prisma } from 'prisma/generated/client'
 import { CreateRecipeInput } from 'src/recipes/inputs/recipe/create-recipe.input'
 import { UpdateRecipeInput } from 'src/recipes/inputs/recipe/update-recipe.input'
 

@@ -1,7 +1,7 @@
 import { ConsoleLogger, Injectable } from '@nestjs/common'
 import { ConfigService } from '@nestjs/config'
 import { PrismaPg } from '@prisma/adapter-pg'
-import { PrismaClient } from 'prisma/generated/prisma/client'
+import { PrismaClient } from 'prisma/generated/client'
 import { isDev } from 'src/utils/isDev.util'
 
 @Injectable()

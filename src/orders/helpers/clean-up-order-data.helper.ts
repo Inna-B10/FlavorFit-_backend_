@@ -1,4 +1,4 @@
-import { Prisma } from 'prisma/generated/prisma/client'
+import { Prisma } from 'prisma/generated/client'
 
 //* ----------------- Remove Ordered Items And Cleanup Links ----------------- */
 export async function removeOrderedItemsAndCleanupLinks(

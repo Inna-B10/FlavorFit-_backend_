@@ -1,5 +1,5 @@
 import { BadRequestException } from '@nestjs/common'
-import { Prisma, RecipeUnit } from 'prisma/generated/prisma/client'
+import { Prisma, RecipeUnit } from 'prisma/generated/client'
 import { CreateIngredientInput } from 'src/recipes/inputs/ingredient/create-ingredient.input'
 
 //* --------------------- getOrCreate ProductIds For Ingredients -------------------- */

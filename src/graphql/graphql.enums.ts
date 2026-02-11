@@ -8,7 +8,7 @@ import {
 	RecipeUnit,
 	Role,
 	SaleUnit
-} from 'prisma/generated/prisma/client'
+} from 'prisma/generated/client'
 
 registerEnumType(RecipeUnit, { name: 'RecipeUnit' })
 registerEnumType(SaleUnit, { name: 'SaleUnit' })
