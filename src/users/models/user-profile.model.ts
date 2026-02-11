@@ -1,11 +1,6 @@
-import { Field, Int, ObjectType, registerEnumType } from '@nestjs/graphql'
+import { Field, Int, ObjectType } from '@nestjs/graphql'
 
-import { ActivityLevel, Gender, NutritionGoal, Role } from 'prisma/generated/prisma/enums'
-
-registerEnumType(Role, { name: 'Role' })
-registerEnumType(Gender, { name: 'Gender' })
-registerEnumType(ActivityLevel, { name: 'ActivityLevel' })
-registerEnumType(NutritionGoal, { name: 'NutritionGoal' })
+import { ActivityLevel, Gender, NutritionGoal, Role } from 'src/graphql/graphql.enums'
 
 @ObjectType({ isAbstract: true })
 export class UserBaseModel {

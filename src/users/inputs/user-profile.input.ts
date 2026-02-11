@@ -1,5 +1,6 @@
 import { Field, InputType, Int } from '@nestjs/graphql'
-import { ActivityLevel, Gender, NutritionGoal } from 'prisma/generated/prisma/enums'
+import { ActivityLevel, NutritionGoal } from 'prisma/generated/prisma/enums'
+import { Gender } from 'src/graphql/graphql.enums'
 
 //* ------------------------------- User Update ------------------------------ */
 @InputType()

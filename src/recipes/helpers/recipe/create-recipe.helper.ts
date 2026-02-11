@@ -1,6 +1,5 @@
 import { BadRequestException } from '@nestjs/common'
-import type { Prisma } from 'prisma/generated/prisma/client'
-import { Difficulty } from 'src/graphql/graphql.enums'
+import { Difficulty, Prisma } from 'prisma/generated/prisma/client'
 import { CreateRecipeInput } from 'src/recipes/inputs/recipe/create-recipe.input'
 import { rethrowPrismaKnownErrors } from 'src/utils/prisma-errors'
 import { getOrCreateProductIdsForIngredients } from '../recipe-ingredient-products.helper'

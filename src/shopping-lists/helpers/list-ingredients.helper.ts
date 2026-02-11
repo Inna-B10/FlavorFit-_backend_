@@ -1,7 +1,6 @@
 import { BadRequestException } from '@nestjs/common'
 import Decimal from 'decimal.js'
-import { Prisma } from 'prisma/generated/prisma/client'
-import { RecipeUnit } from 'src/graphql/graphql.enums'
+import { Prisma, RecipeUnit } from 'prisma/generated/prisma/client'
 import { rethrowPrismaKnownErrors } from 'src/utils/prisma-errors'
 
 type TRecipeIngredientsPayload = {

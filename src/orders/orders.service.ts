@@ -1,7 +1,5 @@
 import { BadRequestException, Injectable, NotFoundException } from '@nestjs/common'
-import { Prisma } from 'prisma/generated/prisma/client'
-import { CartsService } from 'src/carts/carts.service'
-import { Role } from 'src/graphql/graphql.enums'
+import { Prisma, Role } from 'prisma/generated/prisma/client'
 import { PrismaService } from 'src/prisma/prisma.service'
 import { rethrowPrismaKnownErrors } from 'src/utils/prisma-errors'
 import { buildOrderItemsSnapshot } from './helpers/build-order-items-snapshot.helper'
@@ -13,10 +11,7 @@ import { CreateOrderInput } from './inputs/order.input'
 
 @Injectable()
 export class OrdersService {
-	constructor(
-		private readonly prisma: PrismaService,
-		private readonly cartsService: CartsService
-	) {}
+	constructor(private readonly prisma: PrismaService) {}
 
 	//* ----------------------------- Orders By UserId ---------------------------- */
 	getOrdersByUserId(userId: string, userRole: Role) {

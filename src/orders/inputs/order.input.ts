@@ -1,5 +1,5 @@
 import { Field, InputType } from '@nestjs/graphql'
-import { OrderStatus } from 'prisma/generated/prisma/enums'
+import { OrderStatus } from 'src/graphql/graphql.enums'
 
 //* --------------------------------- Create --------------------------------- */
 @InputType()

@@ -1,12 +1,11 @@
 import { BadRequestException } from '@nestjs/common'
-import Decimal from 'decimal.js'
 import { Prisma } from 'prisma/generated/prisma/client'
 
 export async function validateCartItem(
 	tx: Prisma.TransactionClient,
 	productId: string,
 	productVariantId?: string | null,
-	goodsCount?: Decimal
+	goodsCount?: Prisma.Decimal
 ) {
 	const variantProvided = productVariantId !== undefined
 	const countProvided = goodsCount !== undefined
