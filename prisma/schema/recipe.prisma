@@ -7,6 +7,7 @@ model Recipe {
   calories    Int?
   cookingTime Int?       @map("cooking_time")
   difficulty  Difficulty
+  dishType    DishType
 
   // increases only when ingredients change
   ingredientsVersion Int @default(1) @map("ingredients_version")
@@ -22,6 +23,7 @@ model Recipe {
 
   comments Comment[]
   likes    Like[]
+  views    Int       @default(0)
 
   listRecipes     ShoppingListRecipe[]
   listItemSources ShoppingListItemSource[]
@@ -57,7 +59,7 @@ model RecipeStep {
   recipeStepId String  @id @default(cuid()) @map("recipe_steps_id")
   stepNumber   Int?    @map("step_number")
   title        String?
-  description  String
+  content      String
 
   recipe   Recipe @relation(fields: [recipeId], references: [recipeId], onDelete: Cascade)
   recipeId String @map("recipe_id")

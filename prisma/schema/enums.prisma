@@ -25,6 +25,16 @@ enum Difficulty {
   HARD
 }
 
+enum DishType {
+  SOUP
+  MAIN
+  SALAD
+  SNACK
+  DESSERT
+  BAKING
+  DRINK
+}
+
 enum Role {
   USER
   ADMIN
