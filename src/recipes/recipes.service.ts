@@ -1,15 +1,27 @@
 import { Injectable, NotFoundException } from '@nestjs/common'
 import { PrismaService } from 'src/prisma/prisma.service'
+import { buildRecipesWhere, getOrderBy } from './helpers/recipe/build-recipes-query.helper'
+import { RecipesQueryInput } from './inputs/recipe/get-recipes-query.input'
 
 @Injectable()
 export class RecipesService {
 	constructor(private readonly prisma: PrismaService) {}
 
+	//pagination, filter(category, searchTerm:name, description, ingredient), sorting (default by date, recommended by likes, popularity by views, by cookingTime)
 	//* ------------------------------- All Recipes ------------------------------ */
-	async getAllRecipes() {
+	async getAllRecipes(input: RecipesQueryInput) {
+		const page = Math.max(1, input.page ?? 1)
+		const limit = Math.min(50, Math.max(1, input.limit ?? 10)) // safety cap
+		const skip = (page - 1) * limit
+
 		return this.prisma.recipe.findMany({
+			skip,
+			take: limit,
+			where: buildRecipesWhere(input),
+			orderBy: getOrderBy(input.sort),
 			include: {
-				likes: true
+				_count: { select: { likes: true } },
+				tags: { select: { tagId: true, tagName: true } }
 			}
 		})
 	}
@@ -31,12 +43,8 @@ export class RecipesService {
 						}
 					}
 				},
-				recipeSteps: {
-					orderBy: { stepNumber: 'asc' }
-				},
-				tags: {
-					select: { tagName: true }
-				},
+				recipeSteps: { orderBy: { stepNumber: 'asc' } },
+				tags: { select: { tagName: true } },
 				nutritionFacts: true,
 				author: {
 					select: {
@@ -44,9 +52,7 @@ export class RecipesService {
 						avatarUrl: true
 					}
 				},
-				_count: {
-					select: { likes: true }
-				}
+				_count: { select: { likes: true } }
 			}
 		})
 		if (!recipe) {

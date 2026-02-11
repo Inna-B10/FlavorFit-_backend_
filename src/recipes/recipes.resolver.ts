@@ -4,6 +4,7 @@ import { CurrentUser } from 'src/auth/decorators/current-user.decorator'
 import { Role } from 'src/graphql/graphql.enums'
 import { AdminRecipesService } from './admin-recipes.service'
 import { CreateRecipeInput } from './inputs/recipe/create-recipe.input'
+import { RecipesQueryInput } from './inputs/recipe/get-recipes-query.input'
 import { UpdateRecipeInput } from './inputs/recipe/update-recipe.input'
 import { RecipeModel } from './models/recipe.model'
 import { RecipesService } from './recipes.service'
@@ -17,8 +18,8 @@ export class RecipesResolver {
 
 	//* --------------------------- All Recipes - User --------------------------- */
 	@Query(() => [RecipeModel], { name: 'allRecipes' })
-	getAllRecipes() {
-		return this.recipesService.getAllRecipes()
+	getAllRecipes(@Args('input') input: RecipesQueryInput) {
+		return this.recipesService.getAllRecipes(input)
 	}
 
 	@ResolveField(() => Int)
