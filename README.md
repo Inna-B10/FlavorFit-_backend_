@@ -73,30 +73,22 @@ npm install decimal.js
 
 ### 📋 TODOs:
 
-- [ ] Cart
-- [ ] Order
-- [ ] Shopping list
-- [ ] pagination
-- [ ] popular, recommended recipes
-- [ ] **filtering:**
-  - [ ] searchTerm (name, desc, ingredient)
-  - [ ] difficulty
-  - [ ] tags (meal, dietary, dish types)
-- [ ] **sorting:**
-  - [ ] default (by data)
-  - [ ] recommended (by likes)
-  - [ ] popularity (by views)
-  - [ ] cookingTime
+#### **frontend:**
+
+- [ ] в Shopping list добавить возможность "отметить все ингредиенты данного рецепта"
+- [ ] product without variants in cart!! view message
+
+#### **backend:**
+
 - [ ] **Recipes, CRUD:**
   - [ ] ? при удалении проверка тегов на удаление
-  - [ ] обновить код после добавления isActive для товаров
+  - [ ] ? обновить код после добавления isActive для товаров
 - [ ] **Products, CRUD:**
-  - [ ] Get all products without productVariant (and delete?)
-  - [ ] add field "isActive"
+  - [ ] Get all products without productVariant
+  - [ ] ? add field "isActive"
 - [ ] **input rules** + password rules/auth.input.ts
 - [ ] ? meal type enum (breakfast, dinner, lunch,snacks desserts drinks)
-- [ ] dietary type enum (vegetar, gluten-free)
-- [ ] dish type (main, bowl, sandwich, salad, wrap)
+- [ ] ? dietary tags (vegetar, gluten-free)
 - [ ] **user info:** 2 separate pages
   - [ ] account
   - [ ] profile+fitness
@@ -109,14 +101,29 @@ npm install decimal.js
 
 <details style="border:1px solid #d4d4d4; border-radius:2px; padding:1rem;">
 <summary><h4 style="display:inline; padding-left:6px;">✅ Done</h4></summary>
+
+- [x] **filtering:**
+  - [x] searchTerm (name, desc, ingredient)
+  - [x] difficulty
+  - [x] tags (meal, dietary)
+  - [x] dish type (main, bowl, sandwich, salad, wrap)
+- [x] **sorting:**
+  - [x] default (by data)
+  - [x] recommended (by likes)
+  - [x] popularity (by views)
+  - [x] cookingTime
+- [x] Order
+- [x] Cart
+- [x] Shopping list
+- [x] pagination
 - [x] likes, comments
 - [x] **Recipes, CRUD:**
-  - [x] create, update delete recipe, get by slug, by ID 
+  - [x] create, update delete recipe, get by slug, by ID
   - [x] admin service
 - [x] **Products, CRUD:**
   - [x] Create, Edit, Delete, Get all, Get 1 by ID
-  - [x] Create table/schema for variants of product(productVariant) 
-  - [x] productVariant  CRUD
+  - [x] Create table/schema for variants of product(productVariant)
+  - [x] productVariant CRUD
 - [x] **Additional practice tasks:**
   - [x] Checking user existence before updating
 - [x] Updating user
