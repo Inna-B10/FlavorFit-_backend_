@@ -1,5 +1,5 @@
 import { Field, Int, ObjectType } from '@nestjs/graphql'
-import { Difficulty } from 'src/graphql/graphql.enums'
+import { Difficulty, DishType } from 'src/graphql/graphql.enums'
 import { UserModel } from 'src/users/models/user-profile.model'
 import { CommentModel } from '../reactions/models/comment.model'
 import { IngredientModel } from './ingredient.model'
@@ -29,6 +29,9 @@ export class RecipeModel {
 
 	@Field(() => Difficulty)
 	difficulty: Difficulty
+
+	@Field(() => DishType)
+	dishType: DishType
 
 	@Field(() => [IngredientModel])
 	ingredients: IngredientModel[]

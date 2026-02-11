@@ -1,5 +1,5 @@
 import { BadRequestException } from '@nestjs/common'
-import { Difficulty, Prisma } from 'prisma/generated/client'
+import { Difficulty, DishType, Prisma } from 'prisma/generated/client'
 import { CreateRecipeInput } from 'src/recipes/inputs/recipe/create-recipe.input'
 import { rethrowPrismaKnownErrors } from 'src/utils/prisma-errors'
 import { getOrCreateProductIdsForIngredients } from '../recipe-ingredient-products.helper'
@@ -26,6 +26,7 @@ export function validateCreateRecipeInput(
 		title: string
 		description: string
 		difficulty: Difficulty
+		dishType: DishType
 		ingredients: IngredientRefInput[]
 	}
 ) {
@@ -37,6 +38,7 @@ export function validateCreateRecipeInput(
 	if (!input.title?.trim()) throw new BadRequestException('title is required')
 	if (!input.description?.trim()) throw new BadRequestException('description is required')
 	if (!input.difficulty) throw new BadRequestException('difficulty is required')
+	if (!input.dishType) throw new BadRequestException('dishType is required')
 
 	// ingredients
 	if (!input.ingredients?.length) throw new BadRequestException('ingredients are required')

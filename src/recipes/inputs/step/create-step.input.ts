@@ -9,5 +9,5 @@ export class CreateRecipeStepInput {
 	title?: string
 
 	@Field(() => String)
-	description: string
+	content: string
 }

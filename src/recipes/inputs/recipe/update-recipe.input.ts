@@ -1,5 +1,5 @@
 import { Field, InputType, Int } from '@nestjs/graphql'
-import { Difficulty } from 'src/graphql/graphql.enums'
+import { Difficulty, DishType } from 'src/graphql/graphql.enums'
 import { CreateIngredientInput } from '../ingredient/create-ingredient.input'
 import { UpdateIngredientInput } from '../ingredient/update-ingredient.input'
 import { NutritionFactsInput } from '../nutrition-facts.input'
@@ -19,6 +19,9 @@ export class UpdateRecipeInput {
 
 	@Field(() => Difficulty, { nullable: true })
 	difficulty?: Difficulty
+
+	@Field(() => DishType, { nullable: true })
+	dishType?: DishType
 
 	@Field(() => Int, { nullable: true })
 	cookingTime?: number

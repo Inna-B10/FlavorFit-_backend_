@@ -12,7 +12,7 @@ export function normalizeSteps(steps?: CreateRecipeStepInput[]) {
 	const normalized = steps.map((s, index) => ({
 		stepNumber: s.stepNumber ?? index + 1,
 		title: s.title,
-		description: s.description
+		content: s.content
 	}))
 
 	// ensure unique stepNumber values
@@ -33,7 +33,7 @@ export function buildStepPatch(
 
 	if (step.stepNumber !== undefined) data.stepNumber = step.stepNumber
 	if (step.title !== undefined) data.title = step.title
-	if (step.description !== undefined) data.description = step.description
+	if (step.content !== undefined) data.content = step.content
 
 	return data
 }
@@ -81,7 +81,7 @@ export async function applyStepChanges(
 				recipeId,
 				stepNumber: s.stepNumber,
 				title: s.title,
-				description: s.description
+				content: s.content
 			}))
 		})
 	}

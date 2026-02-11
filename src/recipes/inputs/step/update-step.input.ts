@@ -12,5 +12,5 @@ export class UpdateRecipeStepInput {
 	title?: string
 
 	@Field(() => String, { nullable: true })
-	description?: string
+	content?: string
 }

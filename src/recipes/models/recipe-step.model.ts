@@ -12,7 +12,7 @@ export class RecipeStepModel {
 	title?: string
 
 	@Field()
-	description: string
+	content: string
 
 	@Field()
 	recipeId: string

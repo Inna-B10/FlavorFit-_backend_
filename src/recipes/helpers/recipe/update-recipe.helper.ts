@@ -12,6 +12,7 @@ export function buildRecipePatch(
 	if (input.title !== undefined) data.title = input.title
 	if (input.description !== undefined) data.description = input.description
 	if (input.difficulty !== undefined) data.difficulty = input.difficulty
+	if (input.dishType !== undefined) data.dishType = input.dishType
 	if (input.calories !== undefined) data.calories = input.calories
 	if (input.cookingTime !== undefined) data.cookingTime = input.cookingTime
 	if (shouldBumpIngredientsVersion) data.ingredientsVersion = { increment: 1 }
