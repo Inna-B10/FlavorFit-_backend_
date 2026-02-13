@@ -4,8 +4,8 @@ model User {
   password String
   role     Role   @default(USER)
 
-  firstName String? @map("first_name")
-  avatarUrl String? @map("avatar_url")
+  firstName String @map("first_name")
+  avatarUrl String @default("") @map("avatar_url")
 
   userProfile    UserProfile?
   fitnessProfile FitnessProfile?
