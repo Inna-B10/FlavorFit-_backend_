@@ -15,10 +15,10 @@ export class UserBaseModel {
 //* ---------------------------------- User ---------------------------------- */
 @ObjectType()
 export class UserModel extends UserBaseModel {
+	@Field()
+	firstName: string
 	@Field({ nullable: true })
-	firstName?: string
-	@Field({ nullable: true })
-	avatarUrl?: string
+	avatarUrl: string
 }
 
 //* ----------------------------- Fitness Profile ---------------------------- */

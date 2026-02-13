@@ -5,7 +5,7 @@ import { UserModel } from 'src/users/models/user-profile.model'
 // 	role: Role
 // }
 
-export type IAuthTokenData = Pick<UserModel, 'userId' | 'role'>
+export type IAuthTokenData = Pick<UserModel, 'userId' | 'role' | 'firstName' | 'avatarUrl'>
 
 //current user at the time of authorization
 export type TCurrentUser = Omit<UserModel, 'password'>

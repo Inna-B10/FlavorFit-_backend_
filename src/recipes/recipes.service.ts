@@ -21,7 +21,8 @@ export class RecipesService {
 			orderBy: getOrderBy(input.sort),
 			include: {
 				_count: { select: { likes: true } },
-				tags: { select: { tagId: true, tagName: true } }
+				tags: { select: { tagId: true, tagName: true } },
+				author: { select: { firstName: true, email: true } }
 			}
 		})
 	}

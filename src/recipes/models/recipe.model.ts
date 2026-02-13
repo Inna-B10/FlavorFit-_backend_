@@ -33,8 +33,8 @@ export class RecipeModel {
 	@Field(() => DishType)
 	dishType: DishType
 
-	@Field(() => [IngredientModel])
-	ingredients: IngredientModel[]
+	@Field(() => [IngredientModel], { nullable: true })
+	ingredients?: IngredientModel[]
 
 	@Field(() => [RecipeStepModel], { nullable: true })
 	recipeSteps?: RecipeStepModel[]

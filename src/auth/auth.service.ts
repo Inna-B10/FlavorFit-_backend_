@@ -7,7 +7,7 @@ import { PrismaService } from 'src/prisma/prisma.service'
 import { UsersService } from 'src/users/users.service'
 import { isDev } from 'src/utils/isDev.util'
 import type { IAuthTokenData } from './auth.interface'
-import { AuthInput } from './inputs/auth.input'
+import { AuthInput, RegisterInput } from './inputs/auth.input'
 
 @Injectable()
 export class AuthService {
@@ -22,7 +22,7 @@ export class AuthService {
 	REFRESH_TOKEN_COOKIE_NAME = 'refreshToken'
 
 	//* ------------------------------ Registration ------------------------------ */
-	async register(input: AuthInput) {
+	async register(input: RegisterInput) {
 		try {
 			const normalizedEmail = input.email.toLowerCase()
 
@@ -33,11 +33,17 @@ export class AuthService {
 			}
 
 			const hashedPassword = await hash(input.password)
-			const user = await this.usersService.createUser(normalizedEmail, hashedPassword)
+			const user = await this.usersService.createUser(
+				normalizedEmail,
+				hashedPassword,
+				input.firstName
+			)
 
 			const tokens = this.generateTokens({
 				userId: user.userId,
-				role: user.role
+				role: user.role,
+				firstName: user.firstName,
+				avatarUrl: user.avatarUrl
 			})
 
 			return { user, ...tokens }
@@ -54,7 +60,9 @@ export class AuthService {
 			const user = await this.validateUser(input)
 			const tokens = this.generateTokens({
 				userId: user.userId,
-				role: user.role
+				role: user.role,
+				firstName: user.firstName,
+				avatarUrl: user.avatarUrl
 			})
 			return { user, ...tokens }
 		} catch (error) {
@@ -113,7 +121,9 @@ export class AuthService {
 
 		const tokens = this.generateTokens({
 			userId: user.userId,
-			role: user.role
+			role: user.role,
+			firstName: user.firstName,
+			avatarUrl: user.avatarUrl
 		})
 
 		return { user, ...tokens }
