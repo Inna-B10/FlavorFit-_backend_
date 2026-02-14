@@ -42,12 +42,8 @@ export class FitnessProfileModel {
 	activityLevel?: ActivityLevel
 	@Field(() => NutritionGoal, { nullable: true })
 	nutritionGoal?: NutritionGoal
-
-	//[TODO] нужно ли это будет?? например для “Profile last updated”?
-	// @Field()
-	// createdAt: Date
-	// @Field()
-	// updatedAt: Date
+	@Field()
+	updatedAt: Date
 }
 
 //* ------------------------------ User Profile ------------------------------ */

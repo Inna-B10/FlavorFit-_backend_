@@ -35,10 +35,17 @@ export class UsersResolver {
 		return this.usersService.updateFullProfile(userId, input)
 	}
 
-	//*test*/
+	//* ------------------------------ Get All Users ----------------------------- */
 	@Query(() => [UserModel], { name: 'allUsers' })
 	@Auth(Role.ADMIN)
 	async getAllUsers() {
 		return this.usersService.findAllUsers()
+	}
+
+	//* ------------------------------ Delete User ------------------------------- */
+	@Mutation(() => Boolean)
+	@Auth(Role.ADMIN)
+	async deleteUser(@Args('userId') userId: string) {
+		return this.usersService.deleteUser(userId)
 	}
 }

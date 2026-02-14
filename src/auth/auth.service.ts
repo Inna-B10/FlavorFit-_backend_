@@ -7,7 +7,7 @@ import { PrismaService } from 'src/prisma/prisma.service'
 import { UsersService } from 'src/users/users.service'
 import { isDev } from 'src/utils/isDev.util'
 import type { IAuthTokenData } from './auth.interface'
-import { AuthInput, RegisterInput } from './inputs/auth.input'
+import { LoginInput, RegisterInput } from './inputs/auth.input'
 
 @Injectable()
 export class AuthService {
@@ -55,7 +55,7 @@ export class AuthService {
 	}
 
 	//* ---------------------------------- Login --------------------------------- */
-	async login(input: AuthInput) {
+	async login(input: LoginInput) {
 		try {
 			const user = await this.validateUser(input)
 			const tokens = this.generateTokens({
@@ -71,7 +71,7 @@ export class AuthService {
 	}
 
 	//* ------------------------------ Validate User ----------------------------- */
-	async validateUser(input: AuthInput) {
+	async validateUser(input: LoginInput) {
 		const email = input.email.toLowerCase()
 		const user = await this.usersService.findUserByEmail(email)
 

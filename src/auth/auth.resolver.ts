@@ -2,7 +2,7 @@ import { BadRequestException } from '@nestjs/common'
 import { Args, Context, Mutation, Query, Resolver } from '@nestjs/graphql'
 import type { IGqlContext } from 'src/app.interface'
 import { AuthService } from './auth.service'
-import { AuthInput, RegisterInput } from './inputs/auth.input'
+import { LoginInput, RegisterInput } from './inputs/auth.input'
 import { AuthResponse } from './models/auth-response.model'
 
 @Resolver()
@@ -22,7 +22,7 @@ export class AuthResolver {
 	//* ---------------------------------- Login --------------------------------- */
 	//[TODO] captcha
 	@Mutation(() => AuthResponse)
-	async login(@Args('data') input: AuthInput, @Context() { res }: IGqlContext) {
+	async login(@Args('data') input: LoginInput, @Context() { res }: IGqlContext) {
 		const { refreshToken, ...response } = await this.authService.login(input)
 		this.authService.toggleRefreshTokenCookie(res, refreshToken)
 

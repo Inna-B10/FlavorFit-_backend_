@@ -1,10 +1,5 @@
 import { UserModel } from 'src/users/models/user-profile.model'
 
-// export interface IAuthTokenData {
-// 	userId: string
-// 	role: Role
-// }
-
 export type IAuthTokenData = Pick<UserModel, 'userId' | 'role' | 'firstName' | 'avatarUrl'>
 
 //current user at the time of authorization

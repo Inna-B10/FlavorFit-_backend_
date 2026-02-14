@@ -1,6 +1,7 @@
 import { BadRequestException, Injectable } from '@nestjs/common'
 import { PrismaService } from 'src/prisma/prisma.service'
 import { FullProfileUpdateInput } from 'src/users/inputs/user-profile.input'
+import { rethrowPrismaKnownErrors } from 'src/utils/prisma-errors'
 
 @Injectable()
 export class UsersService {
@@ -53,13 +54,24 @@ export class UsersService {
 
 	//* ------------------------------- Create User ------------------------------ */
 	async createUser(email: string, password: string, firstName: string) {
-		return this.prisma.user.create({
+		const user = await this.prisma.user.create({
 			data: {
 				email,
 				password,
 				firstName
 			}
 		})
+
+		if (user) {
+			await this.prisma.cart.create({ data: { userId: user.userId }, select: { cartId: true } })
+
+			await this.prisma.shoppingList.create({
+				data: { userId: user.userId },
+				select: { listId: true }
+			})
+		}
+
+		return user
 	}
 	//* --------------------------- Update Full Profile -------------------------- */
 	async updateFullProfile(userId: string, input: FullProfileUpdateInput) {
@@ -101,5 +113,19 @@ export class UsersService {
 				fitnessProfile: true
 			}
 		})
+	}
+
+	//* ------------------------------ Delete User ------------------------------- */
+	async deleteUser(userId: string) {
+		try {
+			await this.prisma.user.delete({
+				where: {
+					userId
+				}
+			})
+			return true
+		} catch (e) {
+			rethrowPrismaKnownErrors(e, { notFound: { type: 'user', id: userId } })
+		}
 	}
 }
