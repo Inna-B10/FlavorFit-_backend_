@@ -3,6 +3,8 @@ model Product {
   name      String
   iconUrl   String? @map("icon_url")
 
+  isActive Boolean @default(false) @map("is_active")
+
   // how it is USED in recipes
   recipeUnit RecipeUnit @map("recipe_unit") // 150 MILLILITER
 
@@ -11,9 +13,8 @@ model Product {
 
   recipes          Ingredient[] // in what recipes is it used
   shoppingListItem ShoppingListItem[]
-
-  orderItems OrderItem[]
-  cartItems  CartItem[]
+  orderItems       OrderItem[]
+  cartItems        CartItem[]
 
   createdAt DateTime @default(now()) @map("created_at")
   updatedAt DateTime @updatedAt @map("updated_at")
