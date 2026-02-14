@@ -1,4 +1,4 @@
-import { Args, Mutation, Resolver } from '@nestjs/graphql'
+import { Args, Mutation, Query, Resolver } from '@nestjs/graphql'
 import { Auth } from 'src/auth/decorators/auth.decorator'
 import { CurrentUser } from 'src/auth/decorators/current-user.decorator'
 import { CartsService } from './carts.service'
@@ -14,6 +14,13 @@ import { CartModel } from './models/cart.model'
 export class CartsResolver {
 	constructor(private readonly cartsService: CartsService) {}
 
+	@Query(() => CartModel)
+	@Auth()
+	async getCartByUserId(@CurrentUser('userId') userId: string) {
+		const { cartId } = await this.cartsService.getCartId(userId)
+		return this.cartsService.getCartByUserId(cartId)
+	}
+
 	//* -------------------------- Add One Item To Cart -------------------------- */
 	@Mutation(() => CartModel)
 	@Auth()
@@ -21,7 +28,7 @@ export class CartsResolver {
 		@CurrentUser('userId') userId: string,
 		@Args('input') input: AddOneItemToCartInput
 	) {
-		const { cartId } = await this.cartsService.getOrCreateCartByUserId(userId)
+		const { cartId } = await this.cartsService.getCartId(userId)
 		return this.cartsService.addOneItemToCart(cartId, input.listItemId)
 	}
 
@@ -31,7 +38,7 @@ export class CartsResolver {
 		@CurrentUser('userId') userId: string,
 		@Args('input') input: AddManyItemsToCartInputInput
 	) {
-		const { cartId } = await this.cartsService.getOrCreateCartByUserId(userId)
+		const { cartId } = await this.cartsService.getCartId(userId)
 		return this.cartsService.addManyItemsToCart(cartId, input.listId)
 	}
 

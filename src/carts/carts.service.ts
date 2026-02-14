@@ -3,15 +3,15 @@ import Decimal from 'decimal.js'
 import { Prisma } from 'prisma/generated/client'
 import { PrismaService } from 'src/prisma/prisma.service'
 import { addOneItemToCartHelper, linkRequirement } from './helpers/add-item.helper'
-import { getCartItems, getUpdatedCart } from './helpers/get.helper'
+import { getCartItem, getUpdatedCart } from './helpers/get.helper'
 import { validateCartItem } from './helpers/validation-item.helper'
 
 @Injectable()
 export class CartsService {
 	constructor(private readonly prisma: PrismaService) {}
 
-	//* ----------------------- GetOrCreate Cart By UserId ----------------------- */
-	async getOrCreateCartByUserId(userId: string) {
+	//* ----------------------- Get CartId By UserId ----------------------- */
+	async getCartId(userId: string) {
 		return this.prisma.cart.upsert({
 			where: { userId },
 			create: { userId },
@@ -19,6 +19,14 @@ export class CartsService {
 			select: { cartId: true }
 		})
 	}
+
+	//* --------------------------- Get Cart By User Id -------------------------- */
+	async getCartByUserId(cartId: string) {
+		return this.prisma.$transaction(async tx => {
+			return getUpdatedCart(tx, cartId)
+		})
+	}
+
 	//* ---------------------------- Add One Item --------------------------- */
 	async addOneItemToCart(cartId: string, listItemId: string) {
 		return this.prisma.$transaction(async tx => {
@@ -75,7 +83,7 @@ export class CartsService {
 	) {
 		return this.prisma.$transaction(async tx => {
 			//1. load cartItem + ownership check
-			const cartItem = await getCartItems(tx, userId, cartItemId)
+			const cartItem = await getCartItem(tx, userId, cartItemId)
 
 			//2-5. validations
 			await validateCartItem(tx, cartItem.productId, input.productVariantId, input.goodsCount)

@@ -21,8 +21,8 @@ export function getUpdatedCart(tx: Prisma.TransactionClient, cartId: string) {
 	})
 }
 
-//* ----------------------------- Get Cart Items ----------------------------- */
-export async function getCartItems(
+//* ----------------------------- Get Cart Item ----------------------------- */
+export async function getCartItem(
 	tx: Prisma.TransactionClient,
 	userId: string,
 	cartItemId: string

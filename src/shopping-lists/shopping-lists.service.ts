@@ -17,11 +17,6 @@ import { getOrCreateShoppingList, getUpdatedShoppingList } from './helpers/shopp
 export class ShoppingListsService {
 	constructor(private readonly prisma: PrismaService) {}
 
-	//* ---------------------------- All ShoppingLists --------------------------- */
-	async getAllShoppingLists() {
-		return this.prisma.shoppingList.findMany({ include: { listItems: true } })
-	}
-
 	//* --------------------------------- By User Id --------------------------------- */
 	async getShoppingListByUserId(userId: string) {
 		const shoppingList = await this.prisma.shoppingList.findUnique({
@@ -105,5 +100,10 @@ export class ShoppingListsService {
 			//7. return updated list
 			return getUpdatedShoppingList(tx, listId)
 		})
+	}
+
+	//* ---------------------------- All ShoppingLists --------------------------- */
+	async getAllShoppingLists() {
+		return this.prisma.shoppingList.findMany({ include: { listItems: true } })
 	}
 }

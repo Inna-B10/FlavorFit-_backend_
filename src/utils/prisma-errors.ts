@@ -3,7 +3,9 @@ import { Prisma } from 'prisma/generated/client'
 
 type NotFoundContext =
 	| { type: 'recipe'; id?: string }
+	| { type: 'user'; id?: string }
 	| { type: 'product'; id?: string }
+	| { type: 'cart'; id?: string }
 	| { type: 'productVariant'; id?: string }
 	| { type: 'custom'; message: string }
 
@@ -25,6 +27,12 @@ export function rethrowPrismaKnownErrors(e: unknown, ctx?: PrismaErrorContext): 
 			switch (nf.type) {
 				case 'recipe':
 					throw new NotFoundException(`Recipe${nf.id ? ` with ID '${nf.id}'` : ''} not found`)
+				case 'user':
+					throw new NotFoundException(`User${nf.id ? ` with ID '${nf.id}'` : ''} not found`)
+				case 'cart':
+					throw new NotFoundException(
+						`User${nf.id ? ` with ID '${nf.id}'` : ''} does not have a cart`
+					)
 				case 'product':
 					throw new NotFoundException(`Product${nf.id ? ` with ID '${nf.id}'` : ''} not found`)
 				case 'productVariant':
