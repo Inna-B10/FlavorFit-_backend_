@@ -1,5 +1,5 @@
 import { BadRequestException, Injectable, NotFoundException } from '@nestjs/common'
-import { Prisma, Role } from 'prisma/generated/client'
+import { Prisma } from 'prisma/generated/client'
 import { PrismaService } from 'src/prisma/prisma.service'
 import { rethrowPrismaKnownErrors } from 'src/utils/prisma-errors'
 import { buildOrderItemsSnapshot } from './helpers/build-order-items-snapshot.helper'
@@ -14,14 +14,9 @@ export class OrdersService {
 	constructor(private readonly prisma: PrismaService) {}
 
 	//* ----------------------------- Orders By UserId ---------------------------- */
-	getOrdersByUserId(userId: string, userRole: Role) {
-		const where =
-			userRole === Role.ADMIN
-				? {} // admin can read any
-				: { userId } // user can read only own
-
+	getOrdersByUserId(userId: string) {
 		return this.prisma.order.findMany({
-			where,
+			where: { userId },
 			orderBy: { createdAt: 'desc' },
 			include: {
 				orderItems: true,
@@ -31,14 +26,9 @@ export class OrdersService {
 	}
 
 	//* ------------------------------ Order By Id ------------------------------- */
-	async getOrderById(userId: string, orderId: string, userRole: Role) {
-		const where =
-			userRole === Role.ADMIN
-				? { orderId } // admin can read any
-				: { orderId, userId } // user can read only own
-
+	async getOrderById(userId: string, orderId: string) {
 		const order = await this.prisma.order.findFirst({
-			where,
+			where: { orderId, userId },
 			include: {
 				orderItems: true,
 				orderRecipes: { include: { recipe: true } },
@@ -52,14 +42,9 @@ export class OrdersService {
 	}
 
 	//* ------------------------- Order By Reference -------------------------- */
-	async getOrderByReference(userId: string, orderReference: string, userRole: Role) {
-		const where =
-			userRole === Role.ADMIN
-				? { orderReference } // admin can read any
-				: { orderReference, userId } // user can read only own
-
+	async getOrderByReference(userId: string, orderReference: string) {
 		const order = await this.prisma.order.findFirst({
-			where,
+			where: { orderReference, userId },
 			include: {
 				orderItems: true,
 				orderRecipes: { include: { recipe: true } },
@@ -158,7 +143,21 @@ export class OrdersService {
 		}
 	}
 
-	//* ---------------------------- Delete Order By Id --------------------------- */
+	/* ========================================================================== */
+	/*                                    ADMIN                                   */
+	/* ========================================================================== */
+
+	//* ------------------------------- All Orders ------------------------------ */
+	async getAllOrders() {
+		return this.prisma.order.findMany({
+			include: {
+				orderItems: true,
+				orderRecipes: { include: { recipe: true } },
+				courier: true
+			}
+		})
+	}
+	//* ------------------------------ Delete Order ---------------------------- */
 	async deleteOrderById(orderId: string) {
 		await this.prisma.order.delete({ where: { orderId } })
 		// return true

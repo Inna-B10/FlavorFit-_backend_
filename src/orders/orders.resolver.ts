@@ -20,33 +20,42 @@ export class OrdersResolver {
 		return (order.orderRecipes ?? []).map(or => or.recipe)
 	}
 
-	//* --------------------------- Get Order By UserId -------------------------- */
-	@Query(() => [OrderModel])
+	//* --------------------------- All Orders By UserId ------------------------- */
+	@Query(() => [OrderModel], { name: 'allOrdersByUserId' })
 	@Auth()
-	getOrdersByUserId(@CurrentUser('role') userRole: Role, @CurrentUser('userId') userId: string) {
-		return this.ordersService.getOrdersByUserId(userId, userRole)
+	getOrdersByUserId(
+		@CurrentUser('userId') currentUserId: string,
+		@CurrentUser('role') role: Role,
+		@Args('userId', { nullable: true }) userId?: string
+	) {
+		const targetUserId = role === Role.ADMIN && userId ? userId : currentUserId
+		return this.ordersService.getOrdersByUserId(targetUserId)
 	}
 
-	//* ---------------------------- Get Order By ID ---------------------------- */
-	@Query(() => OrderModel)
+	//* ------------------------------ Order By ID ------------------------------ */
+	@Query(() => OrderModel, { name: 'orderById' })
 	@Auth()
 	getOrderById(
-		@CurrentUser('role') userRole: Role,
-		@CurrentUser('userId') userId: string,
-		@Args('orderId') orderId: string
+		@CurrentUser('userId') currentUserId: string,
+		@CurrentUser('role') role: Role,
+		@Args('orderId') orderId: string,
+		@Args('userId', { nullable: true }) userId?: string
 	) {
-		return this.ordersService.getOrderById(userId, orderId, userRole)
+		const targetUserId = role === Role.ADMIN && userId ? userId : currentUserId
+		return this.ordersService.getOrderById(targetUserId, orderId)
 	}
 
-	//* ------------------------- Get Order By Reference ------------------------- */
-	@Query(() => OrderModel)
+	//* --------------------------- Order By Reference -------------------------- */
+	@Query(() => OrderModel, { name: 'orderByReference' })
 	@Auth()
 	getOrderByReference(
-		@CurrentUser('userId') userId: string,
-		@CurrentUser('role') userRole: Role,
-		@Args('orderReference') orderReference: string
+		@CurrentUser('userId') currentUserId: string,
+		@CurrentUser('role') role: Role,
+		@Args('orderReference') orderReference: string,
+		@Args('userId', { nullable: true }) userId?: string
 	) {
-		return this.ordersService.getOrderByReference(userId, orderReference, userRole)
+		const targetUserId = role === Role.ADMIN && userId ? userId : currentUserId
+		return this.ordersService.getOrderByReference(targetUserId, orderReference)
 	}
 
 	//* ------------------------------ Create Order ------------------------------ */
@@ -56,10 +65,20 @@ export class OrdersResolver {
 		return this.ordersService.createOrder(userId, input)
 	}
 
+	/* ========================================================================== */
+	/*                                    ADMIN                                   */
+	/* ========================================================================== */
+
+	@Query(() => [OrderModel], { name: 'allOrders' })
+	@Auth(Role.ADMIN)
+	getAllOrders() {
+		return this.ordersService.getAllOrders()
+	}
+
 	//* ---------------------------- Delete Order By Id --------------------------- */
 	@Mutation(() => Boolean)
 	@Auth(Role.ADMIN)
-	async deleteOrderById(@Args('orderId') orderId: string) {
+	async deleteOrder(@Args('orderId') orderId: string) {
 		await this.ordersService.deleteOrderById(orderId)
 		return true
 	}

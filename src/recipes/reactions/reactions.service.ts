@@ -1,6 +1,7 @@
-import { ForbiddenException, Injectable, NotFoundException } from '@nestjs/common'
+import { Injectable, NotFoundException } from '@nestjs/common'
 import { Role } from 'prisma/generated/client'
 import { PrismaService } from 'src/prisma/prisma.service'
+import { buildWhereWithAccess } from 'src/utils/build-where-with-access.helper'
 import { CreateCommentInput, UpdateCommentInput } from './inputs/comment.input'
 
 @Injectable()
@@ -72,14 +73,10 @@ export class ReactionsService {
 			throw new NotFoundException('Comment not found')
 		}
 
-		if (comment.authorId !== userId && userRole !== Role.ADMIN) {
-			throw new ForbiddenException('You dont have permission to update this comment')
-		}
+		const where = buildWhereWithAccess(userId, userRole, { commentId })
 
 		return this.prisma.comment.update({
-			where: {
-				commentId
-			},
+			where,
 			data: {
 				message: input.message
 			},
@@ -100,14 +97,10 @@ export class ReactionsService {
 			throw new NotFoundException('Comment not found')
 		}
 
-		if (comment.authorId !== userId && userRole !== Role.ADMIN) {
-			throw new ForbiddenException('You dont have permission to delete this comment')
-		}
+		const where = buildWhereWithAccess(userId, userRole, { commentId })
 
 		return this.prisma.comment.delete({
-			where: {
-				commentId
-			}
+			where
 		})
 	}
 }

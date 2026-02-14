@@ -9,36 +9,12 @@ import { UpdateProductInput } from './inputs/product/update-product.input'
 export class ProductsService {
 	constructor(private readonly prisma: PrismaService) {}
 
-	// * ------------------------------- All Products ------------------------------ */
-	async getAllProducts() {
-		return this.prisma.product.findMany({
-			include: {
-				productVariants: true
-			}
-		})
-	}
-
-	//* ------------------------------ Product ById ------------------------------ */
-	async getProductById(productId: string) {
-		const product = await this.prisma.product.findUnique({
-			where: {
-				productId
-			},
-			include: {
-				productVariants: true
-			}
-		})
-		if (!product) {
-			throw new NotFoundException(`Product with ID ${productId} not found`)
-		}
-		return product
-	}
-
 	//* ------------------------------ Create Product ------------------------------ */
 	async createProduct(input: CreateProductInput) {
 		const { productVariants, ...productData } = input
 		return await this.prisma.$transaction(async tx => {
 			const existing = await checkUniqueProduct(tx, productData.name, productData.recipeUnit)
+
 			if (existing)
 				throw new NotFoundException(
 					`Product with name ${productData.name} and recipeUnit ${productData.recipeUnit} already exists`
@@ -64,6 +40,35 @@ export class ProductsService {
 				}
 			})
 		})
+	}
+
+	/* ========================================================================== */
+	/*                                    ADMIN                                   */
+	/* ========================================================================== */
+
+	// * ------------------------------- All Products ------------------------------ */
+	async getAllProducts() {
+		return this.prisma.product.findMany({
+			include: {
+				productVariants: true
+			}
+		})
+	}
+
+	//* ------------------------------ Product ById ------------------------------ */
+	async getProductById(productId: string) {
+		const product = await this.prisma.product.findUnique({
+			where: {
+				productId
+			},
+			include: {
+				productVariants: true
+			}
+		})
+		if (!product) {
+			throw new NotFoundException(`Product with ID ${productId} not found`)
+		}
+		return product
 	}
 
 	//* ------------------------------ Update Product ------------------------------ */

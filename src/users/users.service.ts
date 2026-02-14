@@ -45,18 +45,6 @@ export class UsersService {
 		return user
 	}
 
-	//* --------------------------- Find User By Email --------------------------- */
-	async findUserByEmail(email: string) {
-		return this.prisma.user.findFirst({
-			where: {
-				email: {
-					equals: email,
-					mode: 'insensitive'
-				}
-			}
-		})
-	}
-
 	//* ---------------------------- Find Full Profile --------------------------- */
 	async findFullProfile(userId: string) {
 		return this.prisma.user.findUnique({
@@ -122,9 +110,25 @@ export class UsersService {
 		})
 	}
 
+	/* ========================================================================== */
+	/*                                    ADMIN                                   */
+	/* ========================================================================== */
+
 	//* ----------------------------- Find All Users ----------------------------- */
 	async findAllUsers() {
 		return this.prisma.user.findMany()
+	}
+
+	//* --------------------------- Find User By Email --------------------------- */
+	async findUserByEmail(email: string) {
+		return this.prisma.user.findFirst({
+			where: {
+				email: {
+					equals: email,
+					mode: 'insensitive'
+				}
+			}
+		})
 	}
 
 	//* ------------------------------ Delete User ------------------------------- */

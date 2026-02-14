@@ -14,6 +14,7 @@ import { CartModel } from './models/cart.model'
 export class CartsResolver {
 	constructor(private readonly cartsService: CartsService) {}
 
+	//* --------------------------- Get Cart By User Id -------------------------- */
 	@Query(() => CartModel)
 	@Auth()
 	async getCartByUserId(@CurrentUser('userId') userId: string) {

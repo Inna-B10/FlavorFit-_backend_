@@ -102,6 +102,10 @@ export class ShoppingListsService {
 		})
 	}
 
+	/* ========================================================================== */
+	/*                                    ADMIN                                   */
+	/* ========================================================================== */
+
 	//* ---------------------------- All ShoppingLists --------------------------- */
 	async getAllShoppingLists() {
 		return this.prisma.shoppingList.findMany({ include: { listItems: true } })

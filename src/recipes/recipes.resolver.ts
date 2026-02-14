@@ -16,23 +16,41 @@ export class RecipesResolver {
 		private readonly adminRecipesService: AdminRecipesService
 	) {}
 
-	//* --------------------------- All Recipes - User --------------------------- */
-	@Query(() => [RecipeModel], { name: 'allRecipes' })
-	getAllRecipes(@Args('input') input: RecipesQueryInput) {
-		return this.recipesService.getAllRecipes(input)
-	}
-
 	@ResolveField(() => Int)
 	likesCount(@Parent() recipe: { _count?: { likes?: number } }): number {
 		// likes count is resolved from Prisma _count
 		return recipe._count?.likes ?? 0
 	}
 
-	//* ------------------------------- By Slug - User --------------------------- */
+	//* --------------------------- All Recipes --------------------------- */
+	@Query(() => [RecipeModel], { name: 'allRecipes' })
+	getAllRecipes(@Args('input') input: RecipesQueryInput) {
+		return this.recipesService.getAllRecipes(input)
+	}
+
+	//* ------------------------------- By Slug --------------------------- */
 	@Query(() => RecipeModel, { name: 'recipeBySlug' })
 	getRecipeBySlug(@Args('slug') slug: string) {
 		return this.recipesService.getRecipeBySlug(slug)
 	}
+
+	//* ----------------------------- Create ----------------------------- */
+	@Mutation(() => RecipeModel)
+	@Auth()
+	createRecipe(@CurrentUser('userId') userId: string, @Args('input') input: CreateRecipeInput) {
+		return this.recipesService.createRecipe(userId, input)
+	}
+
+	//* --------------------------------- Update --------------------------------- */
+	@Mutation(() => RecipeModel)
+	@Auth()
+	updateRecipe(@Args('recipeId') recipeId: string, @Args('input') input: UpdateRecipeInput) {
+		return this.recipesService.updateRecipe(recipeId, input)
+	}
+
+	/* ========================================================================== */
+	/*                                    ADMIN                                   */
+	/* ========================================================================== */
 
 	//* --------------------------- All Recipes - Admin -------------------------- */
 	@Query(() => [RecipeModel], { name: 'adminAllRecipes' })
@@ -46,20 +64,6 @@ export class RecipesResolver {
 	@Auth(Role.ADMIN)
 	getRecipeById(@Args('recipeId') recipeId: string) {
 		return this.adminRecipesService.getRecipeById(recipeId)
-	}
-
-	//* ----------------------------- Create ----------------------------- */
-	@Mutation(() => RecipeModel)
-	@Auth(Role.ADMIN)
-	createRecipe(@CurrentUser('userId') userId: string, @Args('input') input: CreateRecipeInput) {
-		return this.adminRecipesService.createRecipe(userId, input)
-	}
-
-	//* --------------------------------- Update --------------------------------- */
-	@Mutation(() => RecipeModel)
-	@Auth(Role.ADMIN)
-	updateRecipe(@Args('recipeId') recipeId: string, @Args('input') input: UpdateRecipeInput) {
-		return this.adminRecipesService.updateRecipe(recipeId, input)
 	}
 
 	//* --------------------------------- Delete --------------------------------- */

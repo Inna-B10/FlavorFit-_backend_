@@ -10,6 +10,17 @@ import { ProductsService } from './products.service'
 export class ProductsResolver {
 	constructor(private readonly productsService: ProductsService) {}
 
+	//* ------------------------------ Create Product ------------------------------ */
+	@Mutation(() => ProductModel)
+	@Auth()
+	createProduct(@Args('input') input: CreateProductInput) {
+		return this.productsService.createProduct(input)
+	}
+
+	/* ========================================================================== */
+	/*                                    ADMIN                                   */
+	/* ========================================================================== */
+
 	//* ------------------------------ All Products ------------------------------ */
 	@Query(() => [ProductModel], { name: 'allProducts' })
 	@Auth(Role.ADMIN)
@@ -22,13 +33,6 @@ export class ProductsResolver {
 	@Auth(Role.ADMIN)
 	getProductById(@Args('productId') productId: string) {
 		return this.productsService.getProductById(productId)
-	}
-
-	//* ------------------------------ Create Product ------------------------------ */
-	@Mutation(() => ProductModel)
-	@Auth(Role.ADMIN)
-	createProduct(@Args('input') input: CreateProductInput) {
-		return this.productsService.createProduct(input)
 	}
 
 	//* ------------------------------ Update Product ------------------------------ */

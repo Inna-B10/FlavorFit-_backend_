@@ -1,4 +1,6 @@
-import { Args, Mutation, Parent, ResolveField, Resolver } from '@nestjs/graphql'
+import { Args, Mutation, Parent, Query, ResolveField, Resolver } from '@nestjs/graphql'
+import { Role } from 'prisma/generated/enums'
+import { Auth } from 'src/auth/decorators/auth.decorator'
 import { RecipeInShoppingListInput } from './inputs/recipe-in-shopping-list.input'
 import { ShoppingListModel } from './models/shopping-list.model'
 import { ShoppingListsService } from './shopping-lists.service'
@@ -44,5 +46,16 @@ export class ShoppingListsResolver {
 	@Mutation(() => ShoppingListModel)
 	removeRecipeFromShoppingList(@Args('input') input: RecipeInShoppingListInput) {
 		return this.shoppingListsService.removeRecipeFromShoppingList(input.listId, input.recipeId)
+	}
+
+	/* ========================================================================== */
+	/*                                    ADMIN                                   */
+	/* ========================================================================== */
+
+	//* ---------------------------- All ShoppingLists --------------------------- */
+	@Query(() => [ShoppingListModel])
+	@Auth(Role.ADMIN)
+	async getAllShoppingLists() {
+		return this.shoppingListsService.getAllShoppingLists()
 	}
 }

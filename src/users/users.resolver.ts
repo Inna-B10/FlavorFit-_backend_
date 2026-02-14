@@ -13,8 +13,13 @@ export class UsersResolver {
 	//* -------------------------------- User By Id -------------------------------- */
 	@Query(() => UserModel, { name: 'userById' })
 	@Auth()
-	getUserById(@CurrentUser('userId') userId: string) {
-		return this.usersService.findUserById(userId)
+	getUserById(
+		@CurrentUser('userId') currentUserId: string,
+		@CurrentUser('role') role: Role,
+		@Args('userId', { nullable: true }) userId?: string
+	) {
+		const targetUserId = role === Role.ADMIN && userId ? userId : currentUserId
+		return this.usersService.findUserById(targetUserId)
 	}
 
 	//* -------------------------- Get Full Profile ------------------------- */
@@ -40,6 +45,10 @@ export class UsersResolver {
 	) {
 		return this.usersService.updateFullProfile(userId, input)
 	}
+
+	/* ========================================================================== */
+	/*                                    ADMIN                                   */
+	/* ========================================================================== */
 
 	//* ------------------------------ Get All Users ----------------------------- */
 	@Query(() => [UserModel], { name: 'allUsers' })
