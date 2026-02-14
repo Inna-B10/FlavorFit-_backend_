@@ -1,6 +1,6 @@
 model User {
   userId   String @id @default(cuid()) @map("user_id")
-  email    String @unique
+  email    String @unique @db.VarChar(100)
   password String
   role     Role   @default(USER)
 

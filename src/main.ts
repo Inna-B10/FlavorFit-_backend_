@@ -1,4 +1,4 @@
-import { ConsoleLogger } from '@nestjs/common'
+import { ConsoleLogger, ValidationPipe } from '@nestjs/common'
 import { NestFactory } from '@nestjs/core'
 import { NestExpressApplication } from '@nestjs/platform-express'
 import cookieParser from 'cookie-parser'
@@ -16,6 +16,14 @@ async function bootstrap() {
 		credentials: true
 		// allowedHeaders: ['Content-Type', 'Authorization']
 	})
+
+	app.useGlobalPipes(
+		new ValidationPipe({
+			whitelist: true,
+			forbidNonWhitelisted: true,
+			transform: true
+		})
+	)
 
 	app.disable('x-powered-by')
 	const port = process.env.PORT ?? 4200

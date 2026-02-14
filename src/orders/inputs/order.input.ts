@@ -1,21 +1,28 @@
 import { Field, InputType } from '@nestjs/graphql'
+import { IsEnum, IsOptional, IsString, MaxLength } from 'class-validator'
 import { OrderStatus } from 'src/graphql/graphql.enums'
 
 //* --------------------------------- Create --------------------------------- */
 @InputType()
 export class CreateOrderInput {
 	// optional: user note for courier
-	@Field({ nullable: true })
+	@Field(() => String, { nullable: true })
+	@IsOptional()
+	@IsString()
+	@MaxLength(500)
 	orderNote?: string
 }
 
 //* --------------------------------- Update --------------------------------- */
 @InputType()
 export class UpdateOrderStatusInput {
-	@Field()
+	@Field(() => String)
+	@IsString()
+	@MaxLength(30)
 	orderId: string
 
 	@Field(() => OrderStatus)
+	@IsEnum(OrderStatus)
 	status: OrderStatus
 }
 
