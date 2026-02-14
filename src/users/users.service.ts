@@ -1,4 +1,5 @@
 import { BadRequestException, Injectable } from '@nestjs/common'
+import { UserUpdateInput } from 'prisma/generated/models'
 import { PrismaService } from 'src/prisma/prisma.service'
 import { FullProfileUpdateInput } from 'src/users/inputs/user-profile.input'
 import { rethrowPrismaKnownErrors } from 'src/utils/prisma-errors'
@@ -7,9 +8,26 @@ import { rethrowPrismaKnownErrors } from 'src/utils/prisma-errors'
 export class UsersService {
 	constructor(private readonly prisma: PrismaService) {}
 
-	//* ----------------------------- Find All Users ----------------------------- */
-	async findAllUsers() {
-		return this.prisma.user.findMany()
+	//* ------------------------------- Create User ------------------------------ */
+	async createUser(email: string, password: string, firstName: string) {
+		const user = await this.prisma.user.create({
+			data: {
+				email,
+				password,
+				firstName
+			}
+		})
+
+		if (user) {
+			await this.prisma.cart.create({ data: { userId: user.userId }, select: { cartId: true } })
+
+			await this.prisma.shoppingList.create({
+				data: { userId: user.userId },
+				select: { listId: true }
+			})
+		}
+
+		return user
 	}
 
 	//* ----------------------------- Find User By Id ---------------------------- */
@@ -52,30 +70,20 @@ export class UsersService {
 		})
 	}
 
-	//* ------------------------------- Create User ------------------------------ */
-	async createUser(email: string, password: string, firstName: string) {
-		const user = await this.prisma.user.create({
+	//* ------------------------------- Update User ------------------------------ */
+	async updateUser(userId: string, input: UserUpdateInput) {
+		return this.prisma.user.update({
+			where: {
+				userId
+			},
 			data: {
-				email,
-				password,
-				firstName
+				...input
 			}
 		})
-
-		if (user) {
-			await this.prisma.cart.create({ data: { userId: user.userId }, select: { cartId: true } })
-
-			await this.prisma.shoppingList.create({
-				data: { userId: user.userId },
-				select: { listId: true }
-			})
-		}
-
-		return user
 	}
 	//* --------------------------- Update Full Profile -------------------------- */
 	async updateFullProfile(userId: string, input: FullProfileUpdateInput) {
-		const { user, profile, fitnessProfile } = input
+		const { profile, fitnessProfile } = input
 
 		const updateUserProfile = profile
 			? {
@@ -104,7 +112,6 @@ export class UsersService {
 				userId
 			},
 			data: {
-				...user,
 				...updateUserProfile,
 				...updateFitnessProfile
 			},
@@ -113,6 +120,11 @@ export class UsersService {
 				fitnessProfile: true
 			}
 		})
+	}
+
+	//* ----------------------------- Find All Users ----------------------------- */
+	async findAllUsers() {
+		return this.prisma.user.findMany()
 	}
 
 	//* ------------------------------ Delete User ------------------------------- */

@@ -62,9 +62,6 @@ export class FitnessProfileUpdateInput {
 //* --------------------------- FullProfile Update --------------------------- */
 @InputType()
 export class FullProfileUpdateInput {
-	@Field(() => UserUpdateInput, { nullable: true })
-	user?: UserUpdateInput
-
 	@Field(() => UserProfileUpdateInput, { nullable: true })
 	profile?: UserProfileUpdateInput
 

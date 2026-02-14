@@ -61,7 +61,7 @@ export class UserProfileModel {
 
 //* ------------------------- User With Full Profile ------------------------- */
 @ObjectType()
-export class UserWithProfileModel extends UserModel {
+export class UserWithProfileModel {
 	@Field(() => UserProfileModel, { nullable: true })
 	userProfile?: UserProfileModel
 
