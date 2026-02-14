@@ -1,5 +1,6 @@
 import { BadRequestException } from '@nestjs/common'
 import { Prisma, RecipeUnit } from 'prisma/generated/client'
+import { checkUniqueProduct } from 'src/products/helpers/check-unique-product.helper'
 import { CreateIngredientInput } from 'src/recipes/inputs/ingredient/create-ingredient.input'
 
 //* --------------------- getOrCreate ProductIds For Ingredients -------------------- */
@@ -35,12 +36,8 @@ export async function getOrCreateProductIdForIngredient(
 	const recipeUnit = (ing.productRecipeUnit ?? ing.recipeUnit) as unknown as RecipeUnit
 
 	// best-effort reuse by name + recipeUnit (name is not unique)
-	const existing = await tx.product.findFirst({
-		where: {
-			name: { equals: name, mode: 'insensitive' },
-			recipeUnit
-		}
-	})
+	const existing = await checkUniqueProduct(tx, name, recipeUnit)
+
 	if (existing) return existing.productId
 
 	const created = await tx.product.create({

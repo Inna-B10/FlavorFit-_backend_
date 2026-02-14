@@ -1,6 +1,7 @@
 import { Injectable, NotFoundException } from '@nestjs/common'
 import { PrismaService } from 'src/prisma/prisma.service'
 import { rethrowPrismaKnownErrors } from 'src/utils/prisma-errors'
+import { checkUniqueProduct } from './helpers/check-unique-product.helper'
 import { CreateProductInput } from './inputs/product/create-product.input'
 import { UpdateProductInput } from './inputs/product/update-product.input'
 
@@ -36,25 +37,32 @@ export class ProductsService {
 	//* ------------------------------ Create Product ------------------------------ */
 	async createProduct(input: CreateProductInput) {
 		const { productVariants, ...productData } = input
+		return await this.prisma.$transaction(async tx => {
+			const existing = await checkUniqueProduct(tx, productData.name, productData.recipeUnit)
+			if (existing)
+				throw new NotFoundException(
+					`Product with name ${productData.name} and recipeUnit ${productData.recipeUnit} already exists`
+				)
 
-		return this.prisma.product.create({
-			data: {
-				...productData,
-				...(!!productVariants?.length && {
-					productVariants: {
-						create: productVariants.map(po => ({
-							pricingAmount: po.pricingAmount,
-							pricingUnit: po.pricingUnit,
-							price: po.price,
-							label: po.label,
-							note: po.note
-						}))
-					}
-				})
-			},
-			include: {
-				productVariants: true
-			}
+			return this.prisma.product.create({
+				data: {
+					...productData,
+					...(!!productVariants?.length && {
+						productVariants: {
+							create: productVariants.map(po => ({
+								pricingAmount: po.pricingAmount,
+								pricingUnit: po.pricingUnit,
+								price: po.price,
+								label: po.label,
+								note: po.note
+							}))
+						}
+					})
+				},
+				include: {
+					productVariants: true
+				}
+			})
 		})
 	}
 
