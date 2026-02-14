@@ -13,6 +13,9 @@ export class ProductModel {
 	@Field({ nullable: true })
 	iconUrl?: string
 
+	@Field(() => Boolean)
+	isActive: boolean
+
 	@Field(() => RecipeUnit)
 	recipeUnit: RecipeUnit
 

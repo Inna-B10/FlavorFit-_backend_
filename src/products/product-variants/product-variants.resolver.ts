@@ -17,6 +17,13 @@ export class ProductVariantsResolver {
 		return this.productVariantsService.getAllProductVariantsByProductId(productId)
 	}
 
+	//* ------------------------------ Variant By Id ------------------------------ */
+	@Query(() => ProductVariantModel, { name: 'variantById' })
+	@Auth(Role.ADMIN)
+	getVariantById(@Args('variantId') variantId: string) {
+		return this.productVariantsService.getVariantById(variantId)
+	}
+
 	//* ------------------------------ Create Variant ------------------------------ */
 	@Mutation(() => ProductVariantModel)
 	@Auth(Role.ADMIN)

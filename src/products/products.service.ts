@@ -1,4 +1,5 @@
 import { Injectable, NotFoundException } from '@nestjs/common'
+import { Role } from 'prisma/generated/enums'
 import { PrismaService } from 'src/prisma/prisma.service'
 import { rethrowPrismaKnownErrors } from 'src/utils/prisma-errors'
 import { checkUniqueProduct } from './helpers/check-unique-product.helper'
@@ -10,7 +11,7 @@ export class ProductsService {
 	constructor(private readonly prisma: PrismaService) {}
 
 	//* ------------------------------ Create Product ------------------------------ */
-	async createProduct(input: CreateProductInput) {
+	async createProduct(input: CreateProductInput, role: Role) {
 		const { productVariants, ...productData } = input
 		return await this.prisma.$transaction(async tx => {
 			const existing = await checkUniqueProduct(tx, productData.name, productData.recipeUnit)
@@ -20,10 +21,13 @@ export class ProductsService {
 					`Product with name ${productData.name} and recipeUnit ${productData.recipeUnit} already exists`
 				)
 
+			const hasVariants = !!productVariants?.length
+
 			return this.prisma.product.create({
 				data: {
 					...productData,
-					...(!!productVariants?.length && {
+					isActive: role === Role.ADMIN ? hasVariants : false,
+					...(hasVariants && {
 						productVariants: {
 							create: productVariants.map(po => ({
 								pricingAmount: po.pricingAmount,
@@ -49,6 +53,17 @@ export class ProductsService {
 	// * ------------------------------- All Products ------------------------------ */
 	async getAllProducts() {
 		return this.prisma.product.findMany({
+			include: {
+				productVariants: true
+			}
+		})
+	}
+
+	async getWithoutVariants() {
+		return this.prisma.product.findMany({
+			where: {
+				productVariants: { none: {} }
+			},
 			include: {
 				productVariants: true
 			}

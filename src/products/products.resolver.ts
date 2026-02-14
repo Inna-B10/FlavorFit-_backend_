@@ -1,5 +1,6 @@
 import { Args, Mutation, Query, Resolver } from '@nestjs/graphql'
 import { Auth } from 'src/auth/decorators/auth.decorator'
+import { CurrentUser } from 'src/auth/decorators/current-user.decorator'
 import { Role } from 'src/graphql/graphql.enums'
 import { CreateProductInput } from './inputs/product/create-product.input'
 import { UpdateProductInput } from './inputs/product/update-product.input'
@@ -13,8 +14,8 @@ export class ProductsResolver {
 	//* ------------------------------ Create Product ------------------------------ */
 	@Mutation(() => ProductModel)
 	@Auth()
-	createProduct(@Args('input') input: CreateProductInput) {
-		return this.productsService.createProduct(input)
+	createProduct(@Args('input') input: CreateProductInput, @CurrentUser('role') role: Role) {
+		return this.productsService.createProduct(input, role)
 	}
 
 	/* ========================================================================== */
@@ -26,6 +27,13 @@ export class ProductsResolver {
 	@Auth(Role.ADMIN)
 	getAllProducts() {
 		return this.productsService.getAllProducts()
+	}
+
+	//* -------------------------- All Without Variants --------------------------- */
+	@Query(() => [ProductModel], { name: 'productsWithoutVariants' })
+	@Auth(Role.ADMIN)
+	getWithoutVariants() {
+		return this.productsService.getWithoutVariants()
 	}
 
 	//* ------------------------------ Product ById ------------------------------ */

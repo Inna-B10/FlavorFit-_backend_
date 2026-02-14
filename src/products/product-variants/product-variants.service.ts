@@ -13,6 +13,11 @@ export class ProductVariantsService {
 		return await this.prisma.productVariant.findMany({ where: { productId } })
 	}
 
+	//* ------------------------------ Variant ById ------------------------------ */
+	async getVariantById(productVariantId: string) {
+		return await this.prisma.productVariant.findUnique({ where: { productVariantId } })
+	}
+
 	//* ------------------------------ Create Variant ------------------------------ */
 	async createProductVariant(productId: string, input: CreateProductVariantInput) {
 		try {
