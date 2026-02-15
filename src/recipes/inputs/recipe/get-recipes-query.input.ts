@@ -6,8 +6,10 @@ import {
 	IsInt,
 	IsOptional,
 	IsString,
+	Matches,
 	MaxLength,
-	Min
+	Min,
+	MinLength
 } from 'class-validator'
 import { Difficulty, DishType, RecipeSort } from 'src/graphql/graphql.enums'
 
@@ -39,14 +41,20 @@ export class RecipesQueryInput {
 	@IsEnum(DishType)
 	dishType?: DishType
 
+	@Field(() => [String], { nullable: true })
+	@IsOptional()
 	@IsArray()
 	@IsString({ each: true })
+	@MinLength(2, { each: true })
+	@MaxLength(24, { each: true })
+	@Matches(/^[\p{L}\p{N}][\p{L}\p{N}\s-]*$/u, {
+		each: true,
+		message: 'Each tag must contain only letters/numbers/spaces/hyphens'
+	})
 	@ArrayMaxSize(10)
-	@Field(() => [String], { nullable: true })
 	tags?: string[]
 
 	@Field(() => RecipeSort, { nullable: true })
-	@IsOptional()
 	@IsOptional()
 	@IsEnum(RecipeSort)
 	sort?: RecipeSort

@@ -19,13 +19,14 @@ export class CreateIngredientInput {
 	@Field(() => String, { nullable: true })
 	@IsOptional()
 	@IsString()
+	@Trim()
 	@MaxLength(120)
 	productName?: string
 
 	@Field(() => String, { nullable: true })
 	@IsOptional()
-	@MaxLength(500)
 	@IsUrl()
+	@MaxLength(500)
 	productIconUrl?: string
 
 	@Field(() => RecipeUnit, { nullable: true })
@@ -44,6 +45,7 @@ export class CreateIngredientInput {
 	@Field(() => String, { nullable: true })
 	@IsOptional()
 	@IsString()
+	@Trim()
 	@MaxLength(300)
 	note?: string
 }

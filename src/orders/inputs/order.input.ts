@@ -10,6 +10,7 @@ export class CreateOrderInput {
 	@Field(() => String, { nullable: true })
 	@IsOptional()
 	@IsString()
+	@Trim()
 	@MaxLength(500)
 	orderNote?: string
 }

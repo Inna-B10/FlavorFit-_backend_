@@ -1,14 +1,19 @@
 import { Field, InputType, Int } from '@nestjs/graphql'
+import { Type } from 'class-transformer'
 import {
 	ArrayMaxSize,
+	IsArray,
 	IsEnum,
 	IsInt,
 	IsOptional,
 	IsString,
 	Matches,
 	MaxLength,
-	Min
+	Min,
+	MinLength,
+	ValidateNested
 } from 'class-validator'
+import { Trim } from 'src/common/class-transformer/string.decorators'
 import { Difficulty, DishType } from 'src/graphql/graphql.enums'
 import { CreateIngredientInput } from '../ingredient/create-ingredient.input'
 import { NutritionFactsInput } from '../nutrition-facts.input'
@@ -18,17 +23,23 @@ import { CreateRecipeStepInput } from '../step/create-step.input'
 export class CreateRecipeInput {
 	@Field(() => String)
 	@IsString()
+	@Trim()
 	@MaxLength(160)
+	@MinLength(1)
 	@Matches(/^[a-z0-9-]+$/)
 	slug: string
 
 	@Field(() => String)
 	@IsString()
+	@Trim()
+	@MinLength(1)
 	@MaxLength(200)
 	title: string
 
 	@Field(() => String)
 	@IsString()
+	@Trim()
+	@MinLength(1)
 	@MaxLength(500)
 	description: string
 
@@ -53,16 +64,34 @@ export class CreateRecipeInput {
 	calories?: number
 
 	@Field(() => [String], { nullable: true })
-	@ArrayMaxSize(15)
-	@MaxLength(50, { each: true })
+	@IsOptional()
+	@IsArray()
+	@IsString({ each: true })
+	@MinLength(2, { each: true })
+	@MaxLength(24, { each: true })
+	@Matches(/^[\p{L}\p{N}][\p{L}\p{N}\s-]*$/u, {
+		each: true,
+		message: 'Each tag must contain only letters/numbers/spaces/hyphens'
+	})
+	@ArrayMaxSize(20)
 	tags?: string[]
 
 	@Field(() => [CreateIngredientInput])
+	@IsArray()
+	@ValidateNested({ each: true })
+	@Type(() => CreateIngredientInput)
 	ingredients: CreateIngredientInput[]
 
 	@Field(() => [CreateRecipeStepInput], { nullable: true })
+	@IsOptional()
+	@IsArray()
+	@ValidateNested({ each: true })
+	@Type(() => CreateRecipeStepInput)
 	recipeSteps?: CreateRecipeStepInput[]
 
 	@Field(() => NutritionFactsInput, { nullable: true })
+	@IsOptional()
+	@ValidateNested()
+	@Type(() => NutritionFactsInput)
 	nutritionFacts?: NutritionFactsInput
 }

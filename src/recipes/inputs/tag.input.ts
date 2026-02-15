@@ -1,11 +1,14 @@
 import { Field, InputType } from '@nestjs/graphql'
-import { IsOptional, IsString, MaxLength } from 'class-validator'
+import { IsOptional, IsString, MaxLength, MinLength } from 'class-validator'
+import { Trim } from 'src/common/class-transformer/string.decorators'
 
 @InputType()
 export class RecipeTagInput {
 	@Field(() => String, { nullable: true })
 	@IsOptional()
 	@IsString()
-	@MaxLength(50)
+	@Trim()
+	@MinLength(1)
+	@MaxLength(24)
 	name?: string
 }

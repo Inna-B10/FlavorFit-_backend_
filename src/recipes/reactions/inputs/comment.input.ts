@@ -1,11 +1,13 @@
 import { Field, InputType } from '@nestjs/graphql'
-import { IsString, MaxLength } from 'class-validator'
+import { IsString, MaxLength, MinLength } from 'class-validator'
 import { IsCuid, Trim } from 'src/common/class-transformer/string.decorators'
 
 @InputType()
 export class CreateCommentInput {
 	@Field(() => String)
 	@IsString()
+	@Trim()
+	@MinLength(1)
 	@MaxLength(1500)
 	message: string
 
@@ -18,6 +20,8 @@ export class CreateCommentInput {
 export class UpdateCommentInput {
 	@Field(() => String)
 	@IsString()
-	@MaxLength(100)
+	@Trim()
+	@MinLength(1)
+	@MaxLength(1500)
 	message: string
 }

@@ -26,6 +26,7 @@ export class UpdateIngredientInput {
 	@Field(() => String, { nullable: true })
 	@IsOptional()
 	@IsString()
+	@Trim()
 	@MaxLength(300)
 	note?: string
 }

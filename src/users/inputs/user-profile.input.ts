@@ -1,7 +1,20 @@
 import { Field, InputType, Int } from '@nestjs/graphql'
-import { IsEnum, IsInt, IsOptional, IsString, IsUrl, Max, MaxLength, Min } from 'class-validator'
+import { Type } from 'class-transformer'
+import {
+	IsEnum,
+	IsInt,
+	IsOptional,
+	IsString,
+	IsUrl,
+	Max,
+	MaxLength,
+	Min,
+	MinLength,
+	ValidateNested
+} from 'class-validator'
 import Decimal from 'decimal.js'
 import { Amount } from 'src/common/class-transformer/decimal/decimal.decorators'
+import { Trim } from 'src/common/class-transformer/string.decorators'
 import { ActivityLevel, Gender, NutritionGoal } from 'src/graphql/graphql.enums'
 import { DecimalScalar } from 'src/graphql/scalars/decimal.scalar'
 
@@ -11,13 +24,15 @@ export class UserUpdateInput {
 	@Field(() => String, { nullable: true })
 	@IsOptional()
 	@IsString()
+	@Trim()
+	@MinLength(2)
 	@MaxLength(64)
 	firstName?: string
 
 	@Field(() => String, { nullable: true })
 	@IsOptional()
-	@MaxLength(500)
 	@IsUrl()
+	@MaxLength(500)
 	avatarUrl?: string
 }
 
@@ -27,6 +42,8 @@ export class UserProfileUpdateInput {
 	@Field(() => String, { nullable: true })
 	@IsOptional()
 	@IsString()
+	@Trim()
+	@MinLength(2)
 	@MaxLength(120)
 	fullName?: string
 
@@ -45,6 +62,7 @@ export class UserProfileUpdateInput {
 	@Field(() => String, { nullable: true })
 	@IsOptional()
 	@IsString()
+	@Trim()
 	@MaxLength(1000)
 	bio?: string
 }
@@ -109,8 +127,14 @@ export class FitnessProfileUpdateInput {
 @InputType()
 export class FullProfileUpdateInput {
 	@Field(() => UserProfileUpdateInput, { nullable: true })
+	@IsOptional()
+	@ValidateNested()
+	@Type(() => UserProfileUpdateInput)
 	profile?: UserProfileUpdateInput
 
 	@Field(() => FitnessProfileUpdateInput, { nullable: true })
+	@IsOptional()
+	@ValidateNested()
+	@Type(() => FitnessProfileUpdateInput)
 	fitnessProfile?: FitnessProfileUpdateInput
 }
