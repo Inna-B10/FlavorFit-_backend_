@@ -12,7 +12,7 @@ export class CommentModel {
 	recipeId: string
 
 	@Field()
-	authorId: string
+	userId: string
 
 	@Field()
 	createdAt: Date

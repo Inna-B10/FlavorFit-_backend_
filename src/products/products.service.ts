@@ -1,7 +1,7 @@
 import { Injectable, NotFoundException } from '@nestjs/common'
 import { Role } from 'prisma/generated/enums'
+import { rethrowPrismaKnownErrors } from 'src/common/prisma/prisma-errors'
 import { PrismaService } from 'src/prisma/prisma.service'
-import { rethrowPrismaKnownErrors } from 'src/utils/prisma-errors'
 import { checkUniqueProduct } from './helpers/check-unique-product.helper'
 import { CreateProductInput } from './inputs/product/create-product.input'
 import { UpdateProductInput } from './inputs/product/update-product.input'

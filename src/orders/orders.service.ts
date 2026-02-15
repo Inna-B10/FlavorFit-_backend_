@@ -1,7 +1,7 @@
 import { BadRequestException, Injectable, NotFoundException } from '@nestjs/common'
 import { Prisma } from 'prisma/generated/client'
+import { rethrowPrismaKnownErrors } from 'src/common/prisma/prisma-errors'
 import { PrismaService } from 'src/prisma/prisma.service'
-import { rethrowPrismaKnownErrors } from 'src/utils/prisma-errors'
 import { buildOrderItemsSnapshot } from './helpers/build-order-items-snapshot.helper'
 import { removeOrderedItemsAndCleanupLinks } from './helpers/clean-up-order-data.helper'
 import { collectOrderRelatedRefs } from './helpers/collect-order-related-refs.helper'

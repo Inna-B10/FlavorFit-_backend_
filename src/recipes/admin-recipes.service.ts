@@ -1,6 +1,6 @@
 import { Injectable, NotFoundException } from '@nestjs/common'
+import { rethrowPrismaKnownErrors } from 'src/common/prisma/prisma-errors'
 import { PrismaService } from 'src/prisma/prisma.service'
-import { rethrowPrismaKnownErrors } from 'src/utils/prisma-errors'
 
 @Injectable()
 export class AdminRecipesService {
@@ -29,7 +29,7 @@ export class AdminRecipesService {
 				recipeSteps: true,
 				tags: true,
 				nutritionFacts: true,
-				author: true,
+				user: true,
 				_count: { select: { likes: true } },
 				comments: true
 			}

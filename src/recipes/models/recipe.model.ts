@@ -46,10 +46,10 @@ export class RecipeModel {
 	nutritionFacts?: NutritionFactsModel
 
 	@Field()
-	authorId: string
+	userId: string
 
 	@Field(() => UserModel, { nullable: true })
-	author?: UserModel
+	user?: UserModel
 
 	@Field(() => [CommentModel], { nullable: true })
 	comments?: [CommentModel]

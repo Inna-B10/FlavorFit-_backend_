@@ -1,6 +1,6 @@
 import { Injectable } from '@nestjs/common'
+import { rethrowPrismaKnownErrors } from 'src/common/prisma/prisma-errors'
 import { PrismaService } from 'src/prisma/prisma.service'
-import { rethrowPrismaKnownErrors } from 'src/utils/prisma-errors'
 import { CreateProductVariantInput } from '../inputs/product-variant/create-product-variants.input'
 import { UpdateProductVariantInput } from '../inputs/product-variant/update-product-variants.input'
 

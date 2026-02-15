@@ -1,7 +1,7 @@
 import { Injectable, NotFoundException } from '@nestjs/common'
 import { Role } from 'prisma/generated/client'
+import { buildWhereWithAccess } from 'src/common/access/build-where-with-access.helper'
 import { PrismaService } from 'src/prisma/prisma.service'
-import { buildWhereWithAccess } from 'src/utils/build-where-with-access.helper'
 import { CreateCommentInput, UpdateCommentInput } from './inputs/comment.input'
 
 @Injectable()
@@ -49,7 +49,7 @@ export class ReactionsService {
 				recipe: {
 					connect: { recipeId: input.recipeId }
 				},
-				author: {
+				user: {
 					connect: { userId }
 				}
 			}
@@ -81,7 +81,7 @@ export class ReactionsService {
 				message: input.message
 			},
 			include: {
-				author: true
+				user: true
 			}
 		})
 	}

@@ -7,11 +7,12 @@ export function buildWhereWithAccess<T extends Record<string, unknown>>(
 	userRole: Role,
 	where: T
 ): T & { userId?: string } {
-	if (userRole === Role.ADMIN) {
-		return where
+	switch (userRole) {
+		case Role.ADMIN:
+			return where
+		case Role.USER:
+			return { ...where, userId }
+		default:
+			throw new ForbiddenError("You don't have permission")
 	}
-	if (userRole === Role.USER) {
-		return { ...where, userId }
-	}
-	throw new ForbiddenError("You don't have permission")
 }

@@ -1,6 +1,6 @@
 import { Injectable, NotFoundException } from '@nestjs/common'
+import { rethrowPrismaKnownErrors } from 'src/common/prisma/prisma-errors'
 import { PrismaService } from 'src/prisma/prisma.service'
-import { rethrowPrismaKnownErrors } from 'src/utils/prisma-errors'
 import { applyIngredientChanges } from './helpers/recipe-ingredient.helper'
 import { upsertNutritionFacts } from './helpers/recipe-nutrition.helper'
 import { applyStepChanges } from './helpers/recipe-steps.helper'
@@ -35,7 +35,7 @@ export class RecipesService {
 			include: {
 				_count: { select: { likes: true } },
 				tags: { select: { tagId: true, tagName: true } },
-				author: { select: { firstName: true, email: true } }
+				user: { select: { firstName: true, email: true } }
 			}
 		})
 	}
@@ -60,7 +60,7 @@ export class RecipesService {
 				recipeSteps: { orderBy: { stepNumber: 'asc' } },
 				tags: { select: { tagName: true } },
 				nutritionFacts: true,
-				author: {
+				user: {
 					select: {
 						firstName: true,
 						avatarUrl: true
@@ -77,13 +77,13 @@ export class RecipesService {
 
 	//* ------------------------------ Create Recipe ----------------------------- */
 	async createRecipe(
-		authorId: string,
+		userId: string,
 		{ recipeSteps, ingredients, nutritionFacts, tags, ...recipeData }: CreateRecipeInput
 	) {
 		// Basic guards
-		validateCreateRecipeInput(authorId, { ingredients, ...recipeData })
+		validateCreateRecipeInput(userId, { ingredients, ...recipeData })
 		return this.prisma.$transaction(tx =>
-			createRecipeHelper(tx, authorId, {
+			createRecipeHelper(tx, userId, {
 				recipeSteps,
 				ingredients,
 				nutritionFacts,

@@ -1,8 +1,8 @@
 import { BadRequestException, Injectable } from '@nestjs/common'
 import { UserUpdateInput } from 'prisma/generated/models'
+import { rethrowPrismaKnownErrors } from 'src/common/prisma/prisma-errors'
 import { PrismaService } from 'src/prisma/prisma.service'
 import { FullProfileUpdateInput } from 'src/users/inputs/user-profile.input'
-import { rethrowPrismaKnownErrors } from 'src/utils/prisma-errors'
 
 @Injectable()
 export class UsersService {

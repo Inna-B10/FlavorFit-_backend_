@@ -1,7 +1,7 @@
 import { BadRequestException } from '@nestjs/common'
 import { Difficulty, DishType, Prisma } from 'prisma/generated/client'
+import { rethrowPrismaKnownErrors } from 'src/common/prisma/prisma-errors'
 import { CreateRecipeInput } from 'src/recipes/inputs/recipe/create-recipe.input'
-import { rethrowPrismaKnownErrors } from 'src/utils/prisma-errors'
 import { getOrCreateProductIdsForIngredients } from '../recipe-ingredient-products.helper'
 import { buildNutritionData } from '../recipe-nutrition.helper'
 import { normalizeSteps } from '../recipe-steps.helper'
@@ -20,7 +20,7 @@ type CreatedRecipe = Prisma.RecipeGetPayload<{
 
 //* ------------------------ Validate Create Recipe Input ----------------------- */
 export function validateCreateRecipeInput(
-	authorId: string,
+	userId: string,
 	input: {
 		slug: string
 		title: string
@@ -31,7 +31,7 @@ export function validateCreateRecipeInput(
 	}
 ) {
 	// author
-	if (!authorId || authorId.trim() === '') throw new BadRequestException('authorId is required')
+	if (!userId || userId.trim() === '') throw new BadRequestException('userId is required')
 
 	// recipe basics
 	if (!input.slug?.trim()) throw new BadRequestException('slug is required')
@@ -59,7 +59,7 @@ export function validateCreateRecipeInput(
 //* ------------------------------ Create Recipe ----------------------------- */
 export async function createRecipeHelper(
 	tx: Prisma.TransactionClient,
-	authorId: string,
+	userId: string,
 	input: CreateRecipeInput
 ): Promise<CreatedRecipe> {
 	const { recipeSteps, ingredients, nutritionFacts, tags, ...recipeData } = input
@@ -73,7 +73,7 @@ export async function createRecipeHelper(
 		const recipe = await tx.recipe.create({
 			data: {
 				...recipeData,
-				author: { connect: { userId: authorId } },
+				user: { connect: { userId: userId } },
 
 				ingredients: {
 					create: ingredients.map((ing, idx) => ({

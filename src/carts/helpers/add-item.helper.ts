@@ -1,5 +1,5 @@
 import { Prisma } from 'prisma/generated/client'
-import { rethrowPrismaKnownErrors } from 'src/utils/prisma-errors'
+import { rethrowPrismaKnownErrors } from 'src/common/prisma/prisma-errors'
 
 //* -------------------------- Add One Item To Cart -------------------------- */
 export async function addOneItemToCartHelper(
