@@ -1,17 +1,21 @@
 import { Field, InputType } from '@nestjs/graphql'
 import { IsEnum, IsOptional, IsString, MaxLength } from 'class-validator'
 import Decimal from 'decimal.js'
+import { Amount } from 'src/common/class-transformer/decimal/decimal.decorators'
+import { IsCuid, Trim } from 'src/common/class-transformer/string.decorators'
 import { RecipeUnit } from 'src/graphql/graphql.enums'
+import { DecimalScalar } from 'src/graphql/scalars/decimal.scalar'
 
 @InputType()
 export class UpdateIngredientInput {
 	@Field(() => String)
-	@IsString()
-	@MaxLength(30)
+	@Trim()
+	@IsCuid()
 	ingredientId: string
 
-	@Field(() => Decimal, { nullable: true })
+	@Field(() => DecimalScalar, { nullable: true })
 	@IsOptional()
+	@Amount()
 	quantity?: Decimal
 
 	@Field(() => RecipeUnit, { nullable: true })

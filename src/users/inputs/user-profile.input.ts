@@ -1,7 +1,9 @@
 import { Field, InputType, Int } from '@nestjs/graphql'
-import { IsEnum, IsOptional, IsString, IsUrl, MaxLength } from 'class-validator'
-
+import { IsEnum, IsInt, IsOptional, IsString, IsUrl, Max, MaxLength, Min } from 'class-validator'
+import Decimal from 'decimal.js'
+import { Amount } from 'src/common/class-transformer/decimal/decimal.decorators'
 import { ActivityLevel, Gender, NutritionGoal } from 'src/graphql/graphql.enums'
+import { DecimalScalar } from 'src/graphql/scalars/decimal.scalar'
 
 //* ------------------------------- User Update ------------------------------ */
 @InputType()
@@ -35,6 +37,9 @@ export class UserProfileUpdateInput {
 
 	@Field(() => Int, { nullable: true })
 	@IsOptional()
+	@IsInt()
+	@Min(1900)
+	@Max(2022)
 	birthYear?: number
 
 	@Field(() => String, { nullable: true })
@@ -49,30 +54,44 @@ export class UserProfileUpdateInput {
 export class FitnessProfileUpdateInput {
 	@Field(() => Int, { nullable: true })
 	@IsOptional()
+	@IsInt()
+	@Min(1)
+	@Max(300)
 	heightCm?: number
 
-	@Field(() => Int, { nullable: true })
+	@Field(() => DecimalScalar, { nullable: true })
 	@IsOptional()
-	currentWeight?: number
+	@Amount()
+	currentWeight?: Decimal
 
 	@Field(() => Int, { nullable: true })
 	@IsOptional()
+	@IsInt()
+	@Min(1)
 	targetWeight?: number
 
 	@Field(() => Int, { nullable: true })
 	@IsOptional()
+	@IsInt()
+	@Min(1)
 	chestCm?: number
 
 	@Field(() => Int, { nullable: true })
 	@IsOptional()
+	@IsInt()
+	@Min(1)
 	waistCm?: number
 
 	@Field(() => Int, { nullable: true })
 	@IsOptional()
+	@IsInt()
+	@Min(1)
 	thighCm?: number
 
 	@Field(() => Int, { nullable: true })
 	@IsOptional()
+	@IsInt()
+	@Min(1)
 	armCm?: number
 
 	@Field(() => ActivityLevel, { nullable: true })

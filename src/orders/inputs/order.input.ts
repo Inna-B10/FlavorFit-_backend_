@@ -1,5 +1,6 @@
 import { Field, InputType } from '@nestjs/graphql'
 import { IsEnum, IsOptional, IsString, MaxLength } from 'class-validator'
+import { IsCuid, Trim } from 'src/common/class-transformer/string.decorators'
 import { OrderStatus } from 'src/graphql/graphql.enums'
 
 //* --------------------------------- Create --------------------------------- */
@@ -17,8 +18,8 @@ export class CreateOrderInput {
 @InputType()
 export class UpdateOrderStatusInput {
 	@Field(() => String)
-	@IsString()
-	@MaxLength(30)
+	@Trim()
+	@IsCuid()
 	orderId: string
 
 	@Field(() => OrderStatus)

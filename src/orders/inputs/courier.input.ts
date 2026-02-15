@@ -1,15 +1,15 @@
 import { Field, InputType } from '@nestjs/graphql'
-import { IsString, MaxLength } from 'class-validator'
+import { IsCuid, Trim } from 'src/common/class-transformer/string.decorators'
 
 @InputType()
 export class AssignCourierToOrderInput {
 	@Field(() => String)
-	@IsString()
-	@MaxLength(30)
+	@Trim()
+	@IsCuid()
 	orderId: string
 
 	@Field(() => String)
-	@IsString()
-	@MaxLength(30)
+	@Trim()
+	@IsCuid()
 	courierId: string
 }

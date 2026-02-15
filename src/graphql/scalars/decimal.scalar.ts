@@ -8,6 +8,9 @@ export class DecimalScalar implements CustomScalar<string, Decimal> {
 
 	parseValue(value: string | number): Decimal {
 		// value from client
+		if (typeof value === 'string') {
+			return new Decimal(value.replace(',', '.'))
+		}
 		return new Decimal(value)
 	}
 
@@ -18,7 +21,7 @@ export class DecimalScalar implements CustomScalar<string, Decimal> {
 
 	parseLiteral(ast: ValueNode): Decimal {
 		if (ast.kind === Kind.STRING || ast.kind === Kind.INT || ast.kind === Kind.FLOAT) {
-			return new Decimal(ast.value)
+			return new Decimal(ast.value.replace(',', '.'))
 		}
 		throw new Error('Decimal can only parse string, int or float values')
 	}

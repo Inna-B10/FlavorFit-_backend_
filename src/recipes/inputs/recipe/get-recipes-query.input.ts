@@ -1,13 +1,26 @@
 import { Field, InputType, Int } from '@nestjs/graphql'
-import { ArrayMaxSize, IsArray, IsEnum, IsOptional, IsString, MaxLength } from 'class-validator'
+import {
+	ArrayMaxSize,
+	IsArray,
+	IsEnum,
+	IsInt,
+	IsOptional,
+	IsString,
+	MaxLength,
+	Min
+} from 'class-validator'
 import { Difficulty, DishType, RecipeSort } from 'src/graphql/graphql.enums'
 
 @InputType()
 export class RecipesQueryInput {
 	@Field(() => Int, { defaultValue: 1 })
+	@IsInt()
+	@Min(1)
 	page: number
 
 	@Field(() => Int, { defaultValue: 10 })
+	@IsInt()
+	@Min(10)
 	limit: number
 
 	@Field(() => String, { nullable: true })

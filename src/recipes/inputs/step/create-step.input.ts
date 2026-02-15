@@ -1,10 +1,12 @@
 import { Field, InputType, Int } from '@nestjs/graphql'
-import { IsOptional, IsString, MaxLength } from 'class-validator'
+import { IsInt, IsOptional, IsString, MaxLength, Min } from 'class-validator'
 
 @InputType()
 export class CreateRecipeStepInput {
 	@Field(() => Int, { nullable: true })
 	@IsOptional()
+	@IsInt()
+	@Min(1)
 	stepNumber?: number
 
 	@Field(() => String, { nullable: true })

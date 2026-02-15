@@ -3,10 +3,12 @@ import {
 	ArrayMaxSize,
 	IsArray,
 	IsEnum,
+	IsInt,
 	IsOptional,
 	IsString,
 	Matches,
-	MaxLength
+	MaxLength,
+	Min
 } from 'class-validator'
 import { Difficulty, DishType } from 'src/graphql/graphql.enums'
 import { CreateIngredientInput } from '../ingredient/create-ingredient.input'
@@ -48,10 +50,14 @@ export class UpdateRecipeInput {
 
 	@Field(() => Int, { nullable: true })
 	@IsOptional()
+	@IsInt()
+	@Min(1)
 	cookingTime?: number
 
 	@Field(() => Int, { nullable: true })
 	@IsOptional()
+	@IsInt()
+	@Min(0)
 	calories?: number
 
 	@Field(() => [String], { nullable: true })

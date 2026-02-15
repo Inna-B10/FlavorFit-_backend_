@@ -1,13 +1,16 @@
 import { Field, InputType } from '@nestjs/graphql'
-import { IsOptional, IsString, MaxLength } from 'class-validator'
+import { IsOptional } from 'class-validator'
 import Decimal from 'decimal.js'
+import { Amount } from 'src/common/class-transformer/decimal/decimal.decorators'
+import { IsCuid, Trim } from 'src/common/class-transformer/string.decorators'
+import { DecimalScalar } from 'src/graphql/scalars/decimal.scalar'
 
 //* ------------------------ Add Shopping List To Cart ----------------------- */
 @InputType()
 export class AddManyItemsToCartInputInput {
 	@Field(() => String)
-	@IsString()
-	@MaxLength(30)
+	@Trim()
+	@IsCuid()
 	listId: string
 }
 
@@ -15,26 +18,27 @@ export class AddManyItemsToCartInputInput {
 @InputType()
 export class AddOneItemToCartInput {
 	@Field(() => String)
-	@IsString()
-	@MaxLength(30)
+	@Trim()
+	@IsCuid()
 	listItemId: string
 }
 //* --------------------------- Update Item In Cart -------------------------- */
 @InputType()
 export class UpdateCartItemPurchaseInput {
 	@Field(() => String)
-	@IsString()
-	@MaxLength(30)
+	@Trim()
+	@IsCuid()
 	cartItemId: string
 
 	@Field(() => String, { nullable: true })
 	@IsOptional()
-	@IsString()
-	@MaxLength(30)
+	@Trim()
+	@IsCuid()
 	productVariantId?: string
 
-	@Field(() => Decimal, { nullable: true })
+	@Field(() => DecimalScalar, { nullable: true })
 	@IsOptional()
+	@Amount()
 	goodsCount?: Decimal
 }
 
@@ -42,8 +46,8 @@ export class UpdateCartItemPurchaseInput {
 @InputType()
 export class RemoveCartItemInput {
 	@Field(() => String)
-	@IsString()
-	@MaxLength(30)
+	@Trim()
+	@IsCuid()
 	cartItemId: string
 }
 
