@@ -18,8 +18,8 @@ model Recipe {
   tags           RecipeTag[]
   nutritionFacts NutritionFact?
 
-  author   User   @relation(fields: [authorId], references: [userId])
-  authorId String @map("author_id")
+  user   User   @relation(fields: [userId], references: [userId])
+  userId String @map("user_id")
 
   comments Comment[]
   likes    Like[]
