@@ -8,6 +8,7 @@ import {
 	IsString,
 	IsUrl,
 	MaxLength,
+	MinLength,
 	ValidateNested
 } from 'class-validator'
 import { Trim } from 'src/common/class-transformer/string.decorators'
@@ -20,6 +21,7 @@ export class CreateProductInput {
 	@IsString()
 	@Trim()
 	@MaxLength(120)
+	@MinLength(2)
 	name: string
 
 	@Field(() => String, { nullable: true })

@@ -1,5 +1,5 @@
 import { Field, InputType } from '@nestjs/graphql'
-import { IsEnum, IsOptional, IsString, MaxLength } from 'class-validator'
+import { IsEnum, IsOptional, IsString, MaxLength, MinLength } from 'class-validator'
 import { IsCuid, Trim } from 'src/common/class-transformer/string.decorators'
 import { OrderStatus } from 'src/graphql/graphql.enums'
 
@@ -12,6 +12,7 @@ export class CreateOrderInput {
 	@IsString()
 	@Trim()
 	@MaxLength(500)
+	@MinLength(3)
 	orderNote?: string
 }
 

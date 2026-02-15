@@ -1,5 +1,5 @@
 import { Field, InputType } from '@nestjs/graphql'
-import { IsEnum, IsOptional, IsString, IsUrl, MaxLength } from 'class-validator'
+import { IsEnum, IsOptional, IsString, IsUrl, MaxLength, MinLength } from 'class-validator'
 import Decimal from 'decimal.js'
 import { Amount } from 'src/common/class-transformer/decimal/decimal.decorators'
 import { IsCuid, Trim } from 'src/common/class-transformer/string.decorators'
@@ -21,6 +21,7 @@ export class CreateIngredientInput {
 	@IsString()
 	@Trim()
 	@MaxLength(120)
+	@MinLength(2)
 	productName?: string
 
 	@Field(() => String, { nullable: true })
@@ -46,6 +47,7 @@ export class CreateIngredientInput {
 	@IsOptional()
 	@IsString()
 	@Trim()
+	@MinLength(1)
 	@MaxLength(300)
 	note?: string
 }

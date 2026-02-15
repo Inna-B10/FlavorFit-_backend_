@@ -1,5 +1,5 @@
 import { Field, InputType } from '@nestjs/graphql'
-import { IsEnum, IsOptional, IsString, IsUrl, MaxLength } from 'class-validator'
+import { IsEnum, IsOptional, IsString, IsUrl, MaxLength, MinLength } from 'class-validator'
 import { Trim } from 'src/common/class-transformer/string.decorators'
 import { RecipeUnit } from 'src/graphql/graphql.enums'
 
@@ -10,6 +10,7 @@ export class UpdateProductInput {
 	@IsString()
 	@Trim()
 	@MaxLength(120)
+	@MinLength(2)
 	name?: string
 
 	@Field(() => String, { nullable: true })

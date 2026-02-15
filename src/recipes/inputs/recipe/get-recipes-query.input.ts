@@ -11,6 +11,7 @@ import {
 	Min,
 	MinLength
 } from 'class-validator'
+import { Trim } from 'src/common/class-transformer/string.decorators'
 import { Difficulty, DishType, RecipeSort } from 'src/graphql/graphql.enums'
 
 @InputType()
@@ -28,6 +29,7 @@ export class RecipesQueryInput {
 	@Field(() => String, { nullable: true })
 	@IsOptional()
 	@IsString()
+	@Trim()
 	@MaxLength(100)
 	searchTerm?: string
 

@@ -63,6 +63,7 @@ export class UserProfileUpdateInput {
 	@IsOptional()
 	@IsString()
 	@Trim()
+	@MinLength(1)
 	@MaxLength(1000)
 	bio?: string
 }
