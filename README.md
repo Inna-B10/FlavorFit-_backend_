@@ -74,7 +74,8 @@ npm install graphql-type-json
 npm install decimal.js
 npm i class-validator
 npm i class-transformer
-
+npm i express-rate-limit
+npm i helmet
 
 ```
 
