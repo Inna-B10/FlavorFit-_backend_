@@ -1,4 +1,4 @@
-import { Prisma } from 'prisma/generated/client'
+import { Prisma, RecipeSort } from 'prisma/generated/client'
 import { RecipesQueryInput } from 'src/recipes/inputs/recipe/get-recipes-query.input'
 import { normalizeTags } from '../recipe-tags'
 
@@ -59,20 +59,18 @@ export const buildRecipesWhere = (input: RecipesQueryInput): Prisma.RecipeWhereI
 }
 
 //* -------------------------------- Order By -------------------------------- */
-export const getOrderBy = (
-	sort?: RecipesQueryInput['sort']
-): Prisma.RecipeOrderByWithRelationInput[] => {
+export const getOrderBy = (sort?: RecipeSort): Prisma.RecipeOrderByWithRelationInput[] => {
 	switch (sort) {
-		case 'recommended':
+		case RecipeSort.RECOMMENDED:
 			return [{ likes: { _count: Prisma.SortOrder.desc } }, { createdAt: Prisma.SortOrder.desc }]
 
-		case 'popular':
+		case RecipeSort.POPULAR:
 			return [{ views: Prisma.SortOrder.desc }, { createdAt: Prisma.SortOrder.desc }]
 
-		case 'cookingTime':
+		case RecipeSort.COOKING_TIME:
 			return [{ cookingTime: Prisma.SortOrder.asc }, { createdAt: Prisma.SortOrder.desc }]
 
-		case 'new':
+		case RecipeSort.NEW:
 		default:
 			return [{ createdAt: Prisma.SortOrder.asc }]
 	}

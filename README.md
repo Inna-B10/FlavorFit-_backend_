@@ -32,15 +32,23 @@ Backend for the project [**FlavorFit**](https://github.com/Inna-B10/FlavorFit), 
 
 #### **⚙️ Libraries & Technologies**
 
-![dotenv](https://img.shields.io/badge/dotenv_17.2.3-424242?logo=dotenv)
 ![graphql](https://img.shields.io/badge/graphql_16.12.0-424242?logo=graphql&logoColor=E10098)
+![@as-integrations/express5](https://img.shields.io/badge/%40as--integrations%2Fexpress5_1.1.2-424242)
+![@nestjs/graphql](https://img.shields.io/badge/%40nestjs%2Fgraphql_13.2.3-424242?logo=nestjs&logoColor=E0234E)
+![@nestjs/apollo](https://img.shields.io/badge/%40nestjs%2Fapollo_13.2.3-424242?logo=nestjs&logoColor=E0234E)
+![@nestjs/jwt](https://img.shields.io/badge/%40nestjs%2Fjwt_11.0.2-424242?logo=nestjs&logoColor=E0234E)
+![@nestjs/passport](https://img.shields.io/badge/%40nestjs%2Fpassport_11.0.5-424242?logo=nestjs&logoColor=E0234E)
+![@nestjs/config](https://img.shields.io/badge/%40nestjs%2Fconfig_4.0.2-424242?logo=nestjs&logoColor=E0234E)
+![dotenv](https://img.shields.io/badge/dotenv_17.2.3-424242?logo=dotenv)
+![passport-jwt](https://img.shields.io/badge/passport--jwt_4.0.1-424242)
 ![argon2](https://img.shields.io/badge/argon2_0.44.0-424242)
 ![cookie-parser](https://img.shields.io/badge/cookie--parser_1.4.7-424242)
-![passport-jwt](https://img.shields.io/badge/passport--jwt_4.0.1-424242)
-![@nestjs/apollo](https://img.shields.io/badge/%40nestjs%2Fapollo_13.2.3-424242?logo=apollographql)
 ![@prisma/client](https://img.shields.io/badge/%40prisma%2Fclient_7.3.0-424242)
 ![@prisma/adapter-pg](https://img.shields.io/badge/%40prisma%2Fadapter--pg_7.3.0-424242)
-![@nestjs/cli](https://img.shields.io/badge/%40nestjs%2Fcli_11.0.0-424242)
+![decimal.js](https://img.shields.io/badge/decimal.js_10.6.0-424242)
+![class-validator](https://img.shields.io/badge/class--validator_0.14.3-424242)
+![class-transformer](https://img.shields.io/badge/class--transformer_0.5.1-424242)
+![reflect-metadata](https://img.shields.io/badge/reflect--metadata_0.2.2-424242)
 
 <details style="border:1px solid #d4d4d4; border-radius:2px; padding:1rem;">
 <summary><h4 style="display:inline; padding-left:6px;">🗃 Dependencies</h4></summary>
@@ -64,6 +72,9 @@ npm install -D @types/cookie-parser
 npm install -D prisma-nestjs-graphql
 npm install graphql-type-json
 npm install decimal.js
+npm i class-validator
+npm i class-transformer
+
 
 ```
 
@@ -82,26 +93,20 @@ npm install decimal.js
 
 - [ ] **Recipes, CRUD:**
   - [ ] ? при удалении проверка тегов на удаление
-  - [ ] ? обновить код после добавления isActive для товаров
 - [ ] **Products, CRUD:**
-  - [ ] Get all products without productVariant
-  - [ ] ? add field "isActive"
-- [ ] **input rules** + password rules/auth.input.ts
 - [ ] ? meal type enum (breakfast, dinner, lunch,snacks desserts drinks)
 - [ ] ? dietary tags (vegetar, gluten-free)
-- [ ] **user info:** 2 separate pages
-  - [ ] account
-  - [ ] profile+fitness
-  - [ ] **split user update and test it** = account/profile+fitness
 - [ ] Captcha
 - [ ] CORS-configuration
-- [ ] **Additional:**
-  - [ ] ?? FASTIFY
-  - [ ] Read about graphql-codegen
 
 <details style="border:1px solid #d4d4d4; border-radius:2px; padding:1rem;">
 <summary><h4 style="display:inline; padding-left:6px;">✅ Done</h4></summary>
 
+- [x] **input rules** + password rules/auth.input.ts
+- [x] **user info:** 2 separate pages
+  - [x] account
+  - [x] profile+fitness
+  - [x] **split user update and test it** = account/profile+fitness
 - [x] **filtering:**
   - [x] searchTerm (name, desc, ingredient)
   - [x] difficulty
@@ -118,9 +123,12 @@ npm install decimal.js
 - [x] pagination
 - [x] likes, comments
 - [x] **Recipes, CRUD:**
+  - [x] обновить код после добавления isActive для товаров
   - [x] create, update delete recipe, get by slug, by ID
   - [x] admin service
 - [x] **Products, CRUD:**
+  - [x] Get all products without productVariant
+  - [x] add field "isActive"
   - [x] Create, Edit, Delete, Get all, Get 1 by ID
   - [x] Create table/schema for variants of product(productVariant)
   - [x] productVariant CRUD
