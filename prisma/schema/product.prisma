@@ -1,7 +1,7 @@
 model Product {
-  productId String  @id @default(cuid()) @map("product_id")
-  name      String
-  iconUrl   String? @map("icon_url")
+  productId   String  @id @default(cuid()) @map("product_id")
+  productName String  @map("product_name")
+  iconUrl     String? @map("icon_url")
 
   isActive Boolean @default(false) @map("is_active")
 

@@ -66,7 +66,7 @@ model OrderRecipe {
 model Courier {
   courierId String @id @default(cuid()) @map("courier_id")
 
-  name        String
+  courierName String @map("courier_name")
   phoneNumber String @unique @map("phone_number")
 
   orders Order[]
