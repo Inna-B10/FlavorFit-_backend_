@@ -10,7 +10,7 @@ export async function loadDataForOrder(tx: Prisma.TransactionClient, userId: str
 					cartItemId: true,
 					goodsCount: true,
 					productId: true,
-					product: { select: { name: true } },
+					product: { select: { productName: true } },
 					productVariantId: true,
 					productVariant: {
 						select: {

@@ -8,7 +8,7 @@ export class ProductModel {
 	productId: string
 
 	@Field()
-	name: string
+	productName: string
 
 	@Field({ nullable: true })
 	iconUrl?: string

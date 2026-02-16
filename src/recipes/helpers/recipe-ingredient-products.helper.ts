@@ -28,20 +28,21 @@ export async function getOrCreateProductIdForIngredient(
 		return found.productId
 	}
 
-	// case B: create product from name (no variants)
-	const name = (ing.productName || '').trim()
-	if (!name) throw new BadRequestException('productName is required when productId is not provided')
+	// case B: create product from productName (no variants)
+	const productName = (ing.productName || '').trim()
+	if (!productName)
+		throw new BadRequestException('productName is required when productId is not provided')
 
 	// if no productRecipeUnit provided, fallback to ingredient recipeUnit
 	const recipeUnit = (ing.productRecipeUnit ?? ing.recipeUnit) as unknown as RecipeUnit
 
-	// best-effort reuse by name + recipeUnit (name is not unique)
-	const existing = await checkUniqueProduct(tx, name, recipeUnit)
+	// best-effort reuse by productName + recipeUnit (productName is not unique)
+	const existing = await checkUniqueProduct(tx, productName, recipeUnit)
 
 	if (existing) return existing.productId
 
 	const created = await tx.product.create({
-		data: { name, recipeUnit } // variants intentionally not created
+		data: { productName, recipeUnit } // variants intentionally not created
 	})
 	return created.productId
 }

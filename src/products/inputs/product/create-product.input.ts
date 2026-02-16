@@ -22,7 +22,7 @@ export class CreateProductInput {
 	@Trim()
 	@MaxLength(120)
 	@MinLength(2)
-	name: string
+	productName: string
 
 	@Field(() => String, { nullable: true })
 	@IsOptional()

@@ -6,7 +6,7 @@ type ReadyCartItem = {
 	goodsCount: Prisma.Decimal
 	productId: string
 	product: {
-		name: string
+		productName: string
 	}
 	productVariantId: string
 	productVariant: {
@@ -42,7 +42,7 @@ export function buildOrderItemsSnapshot(readyItems: ReadyCartItem[]) {
 
 		orderItemsData.push({
 			goodsCount: new Prisma.Decimal(goodsCount.toString()),
-			productNameAtPurchase: ci.product.name,
+			productNameAtPurchase: ci.product.productName,
 			productVariantLabelAtPurchase: v.label,
 			priceAtPurchase: new Prisma.Decimal(price.toString()),
 			pricingAmountAtPurchase: new Prisma.Decimal(pricingAmount.toString()),

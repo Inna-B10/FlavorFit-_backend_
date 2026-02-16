@@ -8,7 +8,7 @@ export const buildRecipesWhere = (input: RecipesQueryInput): Prisma.RecipeWhereI
 
 	const and: Prisma.RecipeWhereInput[] = []
 
-	//1. search term across title/description/ingredient=>product name
+	//1. search term across title/description/ingredient=>productName
 	if (searchTerm?.trim()) {
 		const term = searchTerm.trim()
 
@@ -19,7 +19,7 @@ export const buildRecipesWhere = (input: RecipesQueryInput): Prisma.RecipeWhereI
 				{
 					ingredients: {
 						some: {
-							product: { name: { contains: term, mode: 'insensitive' } }
+							product: { productName: { contains: term, mode: 'insensitive' } }
 						}
 					}
 				}

@@ -20,7 +20,7 @@ import { UpdateRecipeInput } from './inputs/recipe/update-recipe.input'
 export class RecipesService {
 	constructor(private readonly prisma: PrismaService) {}
 
-	//pagination, filter(category, searchTerm:name, description, ingredient), sorting (default by date, recommended by likes, popularity by views, by cookingTime)
+	//pagination, filter(category, searchTerm:title, description, ingredient=>productName), sorting (default by date, recommended by likes, popularity by views, by cookingTime)
 	//* ------------------------------- All Recipes ------------------------------ */
 	async getAllRecipes(input: RecipesQueryInput) {
 		const page = Math.max(1, input.page ?? 1)
@@ -51,7 +51,7 @@ export class RecipesService {
 					include: {
 						product: {
 							select: {
-								name: true,
+								productName: true,
 								iconUrl: true
 							}
 						}

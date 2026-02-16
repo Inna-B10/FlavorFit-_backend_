@@ -14,11 +14,11 @@ export class ProductsService {
 	async createProduct(input: CreateProductInput, role: Role) {
 		const { productVariants, ...productData } = input
 		return await this.prisma.$transaction(async tx => {
-			const existing = await checkUniqueProduct(tx, productData.name, productData.recipeUnit)
+			const existing = await checkUniqueProduct(tx, productData.productName, productData.recipeUnit)
 
 			if (existing)
 				throw new NotFoundException(
-					`Product with name ${productData.name} and recipeUnit ${productData.recipeUnit} already exists`
+					`Product with name ${productData.productName} and recipeUnit ${productData.recipeUnit} already exists`
 				)
 
 			const hasVariants = !!productVariants?.length
