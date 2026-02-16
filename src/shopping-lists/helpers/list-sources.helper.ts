@@ -3,7 +3,7 @@ import { Prisma } from 'prisma/generated/client'
 
 type TShoppingListSourceForUpdate = {
 	listItemId: string
-	amount: Prisma.Decimal
+	quantity: Prisma.Decimal
 }
 
 //* ----------------------- Find All Sources For Recipe ---------------------- */
@@ -15,7 +15,7 @@ export async function findAllSourcesForRecipe(
 		where: { recipeId, listItem: { listId } },
 		select: {
 			listItemId: true,
-			amount: true
+			quantity: true
 		}
 	})
 	// double check: if something went wrong earlier
@@ -33,7 +33,7 @@ export async function subtractRecipeSourcesFromListItems(
 	for (const s of sources) {
 		await tx.shoppingListItem.update({
 			where: { listItemId: s.listItemId },
-			data: { requiredAmount: { decrement: s.amount } }
+			data: { requiredAmount: { decrement: s.quantity } }
 		})
 	}
 }

@@ -55,7 +55,7 @@ model ShoppingListItemSource {
   ingredientsVersionUsed Int @default(1) @map("ingredients_version_used")
 
   // snapshot of what this recipe contributed (so later recipe edits won't break the list)
-  amount         Decimal    @db.Decimal(10, 3)
+  quantity       Decimal    @db.Decimal(10, 3)
   recipeUnit     RecipeUnit @map("recipe_unit")
   ingredientNote String?    @map("ingredient_note")
 

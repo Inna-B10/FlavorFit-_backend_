@@ -12,7 +12,7 @@ export class ShoppingListItemSourceModel {
 	recipe: RecipeModel
 
 	@Field(() => Decimal)
-	amount: Decimal
+	quantity: Decimal
 
 	@Field(() => RecipeUnit)
 	recipeUnit: RecipeUnit

@@ -80,7 +80,7 @@ export async function applyIngredientsToShoppingList(
 				listItemId: listItem.listItemId,
 				recipeId,
 				ingredientsVersionUsed: recipe.ingredientsVersion,
-				amount: ing.quantity,
+				quantity: ing.quantity,
 				recipeUnit: ing.recipeUnit,
 				ingredientNote: ing.ingredientNote ?? null
 			}
