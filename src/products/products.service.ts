@@ -34,7 +34,7 @@ export class ProductsService {
 								pricingUnit: po.pricingUnit,
 								price: po.price,
 								label: po.label,
-								note: po.note
+								variantNote: po.variantNote
 							}))
 						}
 					})

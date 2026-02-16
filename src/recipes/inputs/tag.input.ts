@@ -10,5 +10,5 @@ export class RecipeTagInput {
 	@Trim()
 	@MinLength(1)
 	@MaxLength(24)
-	name?: string
+	tagName?: string
 }

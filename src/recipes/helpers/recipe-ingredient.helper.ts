@@ -55,7 +55,7 @@ export async function applyIngredientChanges(
 				productId: productIds[idx],
 				quantity: ing.quantity,
 				recipeUnit: ing.recipeUnit,
-				note: ing.note
+				ingredientNote: ing.ingredientNote
 			}))
 		})
 	}
@@ -69,7 +69,7 @@ export function buildIngredientPatch(
 
 	if (ing.quantity !== undefined) data.quantity = ing.quantity
 	if (ing.recipeUnit !== undefined) data.recipeUnit = ing.recipeUnit
-	if (ing.note !== undefined) data.note = ing.note
+	if (ing.ingredientNote !== undefined) data.ingredientNote = ing.ingredientNote
 
 	return data
 }

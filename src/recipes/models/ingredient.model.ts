@@ -15,7 +15,7 @@ export class IngredientModel {
 	recipeUnit: RecipeUnit
 
 	@Field({ nullable: true })
-	note?: string
+	ingredientNote?: string
 
 	@HideField()
 	recipeId: string

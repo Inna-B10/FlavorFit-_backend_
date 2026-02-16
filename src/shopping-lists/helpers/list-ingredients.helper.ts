@@ -9,7 +9,7 @@ type TRecipeIngredientsPayload = {
 		productId: string
 		quantity: Decimal
 		recipeUnit: RecipeUnit
-		note: string | null
+		ingredientNote: string | null
 	}>
 }
 
@@ -25,7 +25,7 @@ export async function getRecipeIngredients(tx: Prisma.TransactionClient, recipeI
 					select: {
 						quantity: true,
 						recipeUnit: true,
-						note: true,
+						ingredientNote: true,
 						productId: true
 					}
 				}
@@ -82,7 +82,7 @@ export async function applyIngredientsToShoppingList(
 				ingredientsVersionUsed: recipe.ingredientsVersion,
 				amount: ing.quantity,
 				recipeUnit: ing.recipeUnit,
-				note: ing.note ?? null
+				ingredientNote: ing.ingredientNote ?? null
 			}
 		})
 	}

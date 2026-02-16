@@ -20,5 +20,5 @@ export class ProductVariantModel {
 	label: string
 
 	@Field({ nullable: true })
-	note?: string
+	variantNote?: string
 }

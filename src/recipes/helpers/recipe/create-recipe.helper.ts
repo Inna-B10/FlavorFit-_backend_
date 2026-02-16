@@ -79,7 +79,7 @@ export async function createRecipeHelper(
 					create: ingredients.map((ing, idx) => ({
 						quantity: ing.quantity,
 						recipeUnit: ing.recipeUnit,
-						note: ing.note,
+						ingredientNote: ing.ingredientNote,
 						product: { connect: { productId: productIdsByIndex[idx] } }
 					}))
 				},

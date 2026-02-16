@@ -33,5 +33,5 @@ export class CreateProductVariantInput {
 	@Trim()
 	@MinLength(1)
 	@MaxLength(300)
-	note?: string
+	variantNote?: string
 }

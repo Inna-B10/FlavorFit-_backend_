@@ -49,5 +49,5 @@ export class CreateIngredientInput {
 	@Trim()
 	@MinLength(1)
 	@MaxLength(300)
-	note?: string
+	ingredientNote?: string
 }

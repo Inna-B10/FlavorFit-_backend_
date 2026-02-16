@@ -18,7 +18,7 @@ export class ShoppingListItemSourceModel {
 	recipeUnit: RecipeUnit
 
 	@Field({ nullable: true })
-	note?: string
+	ingredientNote?: string
 
 	@Field(() => Int)
 	ingredientsVersionUsed: number
