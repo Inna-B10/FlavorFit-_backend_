@@ -1,4 +1,5 @@
 import { Field, Int, ObjectType } from '@nestjs/graphql'
+import Decimal from 'decimal.js'
 
 import { ActivityLevel, Gender, NutritionGoal, Role } from 'src/graphql/graphql.enums'
 
@@ -26,8 +27,8 @@ export class UserModel extends UserBaseModel {
 export class FitnessProfileModel {
 	@Field(() => Int, { nullable: true })
 	heightCm?: number
-	@Field(() => Int, { nullable: true })
-	currentWeight?: number
+	@Field(() => Decimal, { nullable: true })
+	currentWeight?: Decimal
 	@Field(() => Int, { nullable: true })
 	targetWeight?: number
 	@Field(() => Int, { nullable: true })

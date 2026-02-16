@@ -3,7 +3,6 @@ import { IsOptional } from 'class-validator'
 import Decimal from 'decimal.js'
 import { Amount } from 'src/common/class-transformer/decimal/decimal.decorators'
 import { IsCuid, Trim } from 'src/common/class-transformer/string.decorators'
-import { DecimalScalar } from 'src/graphql/scalars/decimal.scalar'
 
 //* ------------------------ Add Shopping List To Cart ----------------------- */
 @InputType()
@@ -36,7 +35,7 @@ export class UpdateCartItemPurchaseInput {
 	@IsCuid()
 	productVariantId?: string
 
-	@Field(() => DecimalScalar, { nullable: true })
+	@Field(() => Decimal, { nullable: true })
 	@IsOptional()
 	@Amount()
 	goodsCount?: Decimal

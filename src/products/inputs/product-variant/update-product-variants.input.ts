@@ -4,11 +4,10 @@ import Decimal from 'decimal.js'
 import { Amount, Money } from 'src/common/class-transformer/decimal/decimal.decorators'
 import { Trim } from 'src/common/class-transformer/string.decorators'
 import { SaleUnit } from 'src/graphql/graphql.enums'
-import { DecimalScalar } from 'src/graphql/scalars/decimal.scalar'
 
 @InputType()
 export class UpdateProductVariantInput {
-	@Field(() => DecimalScalar, { nullable: true })
+	@Field(() => Decimal, { nullable: true })
 	@IsOptional()
 	@Amount()
 	pricingAmount?: Decimal
@@ -18,7 +17,7 @@ export class UpdateProductVariantInput {
 	@IsEnum(SaleUnit)
 	pricingUnit?: SaleUnit
 
-	@Field(() => DecimalScalar, { nullable: true })
+	@Field(() => Decimal, { nullable: true })
 	@IsOptional()
 	@Money()
 	price?: Decimal

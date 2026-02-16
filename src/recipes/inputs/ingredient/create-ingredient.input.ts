@@ -4,7 +4,6 @@ import Decimal from 'decimal.js'
 import { Amount } from 'src/common/class-transformer/decimal/decimal.decorators'
 import { IsCuid, Trim } from 'src/common/class-transformer/string.decorators'
 import { RecipeUnit } from 'src/graphql/graphql.enums'
-import { DecimalScalar } from 'src/graphql/scalars/decimal.scalar'
 
 @InputType()
 export class CreateIngredientInput {
@@ -35,7 +34,7 @@ export class CreateIngredientInput {
 	@IsEnum(RecipeUnit)
 	productRecipeUnit?: RecipeUnit
 
-	@Field(() => DecimalScalar)
+	@Field(() => Decimal)
 	@Amount()
 	quantity: Decimal
 

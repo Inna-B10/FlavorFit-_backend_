@@ -16,7 +16,6 @@ import Decimal from 'decimal.js'
 import { Amount } from 'src/common/class-transformer/decimal/decimal.decorators'
 import { Trim } from 'src/common/class-transformer/string.decorators'
 import { ActivityLevel, Gender, NutritionGoal } from 'src/graphql/graphql.enums'
-import { DecimalScalar } from 'src/graphql/scalars/decimal.scalar'
 
 //* ------------------------------- User Update ------------------------------ */
 @InputType()
@@ -78,7 +77,7 @@ export class FitnessProfileUpdateInput {
 	@Max(300)
 	heightCm?: number
 
-	@Field(() => DecimalScalar, { nullable: true })
+	@Field(() => Decimal, { nullable: true })
 	@IsOptional()
 	@Amount()
 	currentWeight?: Decimal
