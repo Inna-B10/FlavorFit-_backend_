@@ -27,7 +27,7 @@ model ProductVariant {
   label            String //Green grape, ground beef,
 
   // optional: description for UI
-  note String? // "500g pack", organic...
+  variantNote String? @map("variant_note") // "500g pack", organic...
 
   cartItems CartItem[]
 

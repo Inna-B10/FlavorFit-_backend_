@@ -40,7 +40,7 @@ model Ingredient {
   quantity     Decimal    @db.Decimal(10, 3)
   recipeUnit   RecipeUnit @map("recipe_unit")
 
-  note String? //3–4 depending on size
+  ingredientNote String? @map("ingredient_note") //3–4 depending on size
 
   recipe   Recipe @relation(fields: [recipeId], references: [recipeId], onDelete: Cascade)
   recipeId String @map("recipe_id")
