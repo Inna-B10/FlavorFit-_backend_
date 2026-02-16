@@ -44,9 +44,9 @@ model UserProfile {
 model FitnessProfile {
   fitnessProfileId String @id @default(cuid()) @map("fitness_profile_id")
 
-  heightCm      Int? @map("height_cm")
-  currentWeight Int? @map("current_weight")
-  targetWeight  Int? @map("target_weight")
+  heightCm      Int?     @map("height_cm")
+  currentWeight Decimal? @map("current_weight")
+  targetWeight  Int?     @map("target_weight")
 
   chestCm Int? @map("chest_cm")
   waistCm Int? @map("waist_cm")
