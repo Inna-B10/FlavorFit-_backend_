@@ -30,8 +30,7 @@ export async function getOrCreateProductIdForIngredient(
 
 	// case B: create product from productName (no variants)
 	const productName = (ing.productName || '').trim()
-	if (!productName)
-		throw new BadRequestException('productName is required when productId is not provided')
+	if (!productName) throw new BadRequestException('Product name is required')
 
 	// if no productRecipeUnit provided, fallback to ingredient recipeUnit
 	const recipeUnit = (ing.productRecipeUnit ?? ing.recipeUnit) as unknown as RecipeUnit

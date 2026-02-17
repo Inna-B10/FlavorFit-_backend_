@@ -26,7 +26,7 @@ export class UpdateIngredientInput {
 	@IsOptional()
 	@IsString()
 	@Trim()
-	@MaxLength(300)
-	@MinLength(1)
+	@MinLength(1, { message: 'Note is too short' })
+	@MaxLength(200, { message: 'Note is too long' })
 	ingredientNote?: string
 }

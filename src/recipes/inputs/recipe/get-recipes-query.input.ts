@@ -30,7 +30,7 @@ export class RecipesQueryInput {
 	@IsOptional()
 	@IsString()
 	@Trim()
-	@MaxLength(100)
+	@MaxLength(100, { message: 'Search term is too long' })
 	searchTerm?: string
 
 	@Field(() => Difficulty, { nullable: true })

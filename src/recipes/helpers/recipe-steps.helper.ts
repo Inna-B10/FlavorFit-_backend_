@@ -19,7 +19,7 @@ export function normalizeSteps(steps?: CreateRecipeStepInput[]) {
 	const stepNumbers = normalized.map(s => s.stepNumber)
 	const duplicates = stepNumbers.filter((o, i) => stepNumbers.indexOf(o) !== i)
 	if (duplicates.length) {
-		throw new BadRequestException('Recipe steps have duplicate "stepNumber" values')
+		throw new BadRequestException('Recipe steps have duplicate "step number" values')
 	}
 
 	return normalized

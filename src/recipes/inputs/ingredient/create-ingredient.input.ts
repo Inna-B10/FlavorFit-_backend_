@@ -19,8 +19,8 @@ export class CreateIngredientInput {
 	@IsOptional()
 	@IsString()
 	@Trim()
-	@MaxLength(120)
-	@MinLength(2)
+	@MaxLength(120, { message: 'Product name is too long' })
+	@MinLength(2, { message: 'Product name is too short' })
 	productName?: string
 
 	@Field(() => String, { nullable: true })
@@ -46,7 +46,7 @@ export class CreateIngredientInput {
 	@IsOptional()
 	@IsString()
 	@Trim()
-	@MinLength(1)
-	@MaxLength(300)
+	@MinLength(1, { message: 'Note is too short' })
+	@MaxLength(200, { message: 'Note is too long' })
 	ingredientNote?: string
 }

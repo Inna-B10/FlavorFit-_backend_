@@ -8,7 +8,7 @@ export class RecipeTagInput {
 	@IsOptional()
 	@IsString()
 	@Trim()
-	@MinLength(1)
-	@MaxLength(24)
+	@MinLength(2, { message: 'Tag name is too short' })
+	@MaxLength(24, { message: 'Tag name is too long' })
 	tagName?: string
 }

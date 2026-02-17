@@ -38,7 +38,7 @@ export function validateCreateRecipeInput(
 	if (!input.title?.trim()) throw new BadRequestException('title is required')
 	if (!input.description?.trim()) throw new BadRequestException('description is required')
 	if (!input.difficulty) throw new BadRequestException('difficulty is required')
-	if (!input.dishType) throw new BadRequestException('dishType is required')
+	if (!input.dishType) throw new BadRequestException('dish type is required')
 
 	// ingredients
 	if (!input.ingredients?.length) throw new BadRequestException('ingredients are required')

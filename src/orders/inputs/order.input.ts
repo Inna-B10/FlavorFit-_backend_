@@ -11,8 +11,8 @@ export class CreateOrderInput {
 	@IsOptional()
 	@IsString()
 	@Trim()
-	@MaxLength(500)
-	@MinLength(3)
+	@MaxLength(500, { message: 'Massage is too long' })
+	@MinLength(3, { message: 'Massage is too short' })
 	orderNote?: string
 }
 

@@ -7,8 +7,8 @@ export class CreateCommentInput {
 	@Field(() => String)
 	@IsString()
 	@Trim()
-	@MinLength(1)
-	@MaxLength(1500)
+	@MinLength(1, { message: 'Message is too short' })
+	@MaxLength(1500, { message: 'Message is too long' })
 	message: string
 
 	@Field(() => String)
@@ -21,7 +21,7 @@ export class UpdateCommentInput {
 	@Field(() => String)
 	@IsString()
 	@Trim()
-	@MinLength(1)
-	@MaxLength(1500)
+	@MinLength(1, { message: 'Message is too short' })
+	@MaxLength(1500, { message: 'Message is too long' })
 	message: string
 }

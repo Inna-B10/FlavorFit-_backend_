@@ -6,22 +6,22 @@ import { Trim } from 'src/common/class-transformer/string.decorators'
 export class CreateRecipeStepInput {
 	@Field(() => Int, { nullable: true })
 	@IsOptional()
-	@IsInt()
-	@Min(1)
+	@IsInt({ message: 'Step number must be a number' })
+	@Min(1, { message: 'Step number must be higher than 0' })
 	stepNumber?: number
 
 	@Field(() => String, { nullable: true })
 	@IsOptional()
 	@IsString()
 	@Trim()
-	@MinLength(1)
-	@MaxLength(200)
+	@MinLength(1, { message: 'Title is too short' })
+	@MaxLength(200, { message: 'Title is too long' })
 	title?: string
 
 	@Field(() => String)
 	@IsString()
 	@Trim()
-	@MinLength(1)
-	@MaxLength(2000)
+	@MinLength(1, { message: 'Content is too short' })
+	@MaxLength(2000, { message: 'Content is too long' })
 	content: string
 }

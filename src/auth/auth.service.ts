@@ -50,7 +50,7 @@ export class AuthService {
 		} catch (error) {
 			const message = error instanceof Error ? error.message : 'Unknown error'
 
-			throw new BadRequestException('Registration failed: ' + message)
+			throw new BadRequestException(message)
 		}
 	}
 
@@ -66,7 +66,7 @@ export class AuthService {
 			})
 			return { user, ...tokens }
 		} catch (error) {
-			throw new NotFoundException(error || 'Invalid email or password')
+			throw new NotFoundException('Invalid email or password')
 		}
 	}
 
@@ -143,7 +143,7 @@ export class AuthService {
 		res.cookie(this.REFRESH_TOKEN_COOKIE_NAME, refreshToken || '', {
 			httpOnly: true,
 			expires: expiresIn,
-			sameSite: isDev(this.configService) ? 'none' : 'strict',
+			sameSite: isDev(this.configService) ? 'lax' : 'none',
 			secure: !isDev(this.configService)
 			//domain:... really needed only if there are multiple subdomains and the cookie must be shared
 			// domain: isDev(this.configService) ? 'localhost' : '...',

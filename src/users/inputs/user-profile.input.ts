@@ -24,8 +24,8 @@ export class UserUpdateInput {
 	@IsOptional()
 	@IsString()
 	@Trim()
-	@MinLength(2)
-	@MaxLength(64)
+	@MinLength(2, { message: 'First name is too short' })
+	@MaxLength(64, { message: 'First name is too long' })
 	firstName?: string
 
 	@Field(() => String, { nullable: true })
@@ -42,8 +42,8 @@ export class UserProfileUpdateInput {
 	@IsOptional()
 	@IsString()
 	@Trim()
-	@MinLength(2)
-	@MaxLength(120)
+	@MinLength(2, { message: 'Full name is too short' })
+	@MaxLength(120, { message: 'Full name is too long' })
 	fullName?: string
 
 	@Field(() => Gender, { nullable: true })
@@ -53,17 +53,17 @@ export class UserProfileUpdateInput {
 
 	@Field(() => Int, { nullable: true })
 	@IsOptional()
-	@IsInt()
-	@Min(1900)
-	@Max(2022)
+	@IsInt({ message: 'Birth year must be a number' })
+	@Min(1900, { message: 'Birth year: the value is invalid' })
+	@Max(2022, { message: 'Birth year: the value is invalid' })
 	birthYear?: number
 
 	@Field(() => String, { nullable: true })
 	@IsOptional()
 	@IsString()
 	@Trim()
-	@MinLength(1)
-	@MaxLength(1000)
+	@MinLength(1, { message: 'Bio is too short' })
+	@MaxLength(1000, { message: 'Bio is too long' })
 	bio?: string
 }
 
@@ -72,9 +72,9 @@ export class UserProfileUpdateInput {
 export class FitnessProfileUpdateInput {
 	@Field(() => Int, { nullable: true })
 	@IsOptional()
-	@IsInt()
-	@Min(1)
-	@Max(300)
+	@IsInt({ message: 'Height must be a number' })
+	@Min(1, { message: 'Height: the value is invalid' })
+	@Max(300, { message: 'Height: the value is invalid' })
 	heightCm?: number
 
 	@Field(() => Decimal, { nullable: true })
@@ -84,32 +84,32 @@ export class FitnessProfileUpdateInput {
 
 	@Field(() => Int, { nullable: true })
 	@IsOptional()
-	@IsInt()
-	@Min(1)
+	@IsInt({ message: 'Target weight must be a number' })
+	@Min(1, { message: 'Target weight: the value is invalid' })
 	targetWeight?: number
 
 	@Field(() => Int, { nullable: true })
 	@IsOptional()
-	@IsInt()
-	@Min(1)
+	@IsInt({ message: 'Chest must be a number' })
+	@Min(1, { message: 'Chest: the value is invalid' })
 	chestCm?: number
 
 	@Field(() => Int, { nullable: true })
 	@IsOptional()
-	@IsInt()
-	@Min(1)
+	@IsInt({ message: 'Waist must be a number' })
+	@Min(1, { message: 'Waist: the value is invalid' })
 	waistCm?: number
 
 	@Field(() => Int, { nullable: true })
 	@IsOptional()
-	@IsInt()
-	@Min(1)
+	@IsInt({ message: 'Thigh must be a number' })
+	@Min(1, { message: 'Thigh: the value is invalid' })
 	thighCm?: number
 
 	@Field(() => Int, { nullable: true })
 	@IsOptional()
-	@IsInt()
-	@Min(1)
+	@IsInt({ message: 'Arm must be a number' })
+	@Min(1, { message: 'Arm: the value is invalid' })
 	armCm?: number
 
 	@Field(() => ActivityLevel, { nullable: true })

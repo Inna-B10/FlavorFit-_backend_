@@ -12,9 +12,9 @@ export class LoginInput {
 
 	@Field(() => String)
 	@Trim()
-	@MinLength(6)
-	@MaxLength(64)
-	// @MinLength(8)
+	@MinLength(6, { message: 'Password is too short' })
+	@MaxLength(64, { message: 'Password is too long' })
+	// @MinLength(8, { message: 'Password is too short' })
 	// @Matches(/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d).+$/, {
 	// 	message: 'Password must contain uppercase, lowercase and number'
 	// })
@@ -30,9 +30,9 @@ export class RegisterInput {
 
 	@Field(() => String)
 	@Trim()
-	@MinLength(6)
-	@MaxLength(64)
-	// @MinLength(8)
+	@MinLength(6, { message: 'Password is too short' })
+	@MaxLength(64, { message: 'Password is too long' })
+	// @MinLength(8, { message: 'Password is too short' })
 	// @Matches(/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d).+$/, {
 	// 	message: 'Password must contain uppercase, lowercase and number'
 	// })
@@ -41,8 +41,8 @@ export class RegisterInput {
 	@Field(() => String)
 	@IsString()
 	@Trim()
-	@MinLength(2)
-	@MaxLength(64)
+	@MinLength(2, { message: 'First name is too short' })
+	@MaxLength(64, { message: 'First name is too long' })
 	// @Matches(/^[A-Za-zÀ-ÿ\s-]+$/, {
 	// 	message: 'First name contains invalid characters'
 	// })
