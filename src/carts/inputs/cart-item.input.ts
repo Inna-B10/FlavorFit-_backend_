@@ -1,7 +1,8 @@
 import { Field, InputType } from '@nestjs/graphql'
+import { Type } from 'class-transformer'
 import { IsOptional } from 'class-validator'
 import Decimal from 'decimal.js'
-import { Amount } from 'src/common/class-transformer/decimal/decimal.decorators'
+import { Amount, ToDecimal } from 'src/common/class-transformer/decimal/decimal.decorators'
 import { IsCuid, Trim } from 'src/common/class-transformer/string.decorators'
 
 //* ------------------------ Add Shopping List To Cart ----------------------- */
@@ -37,6 +38,8 @@ export class UpdateCartItemPurchaseInput {
 
 	@Field(() => Decimal, { nullable: true })
 	@IsOptional()
+	@Type(() => String)
+	@ToDecimal()
 	@Amount()
 	goodsCount?: Decimal
 }

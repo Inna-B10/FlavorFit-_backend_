@@ -6,12 +6,10 @@ import { Kind, ValueNode } from 'graphql'
 export class DecimalScalar implements CustomScalar<string, Decimal> {
 	description = 'Decimal custom scalar type'
 
-	parseValue(value: string | number): Decimal {
-		// value from client
-		if (typeof value === 'string') {
-			return new Decimal(value.replace(',', '.'))
-		}
-		return new Decimal(value)
+	parseValue(value: unknown): Decimal {
+		if (value === null || value === undefined || value === '') return null as any
+		if (typeof value === 'string') return new Decimal(value.replace(',', '.'))
+		return new Decimal(value as any)
 	}
 
 	serialize(value: Decimal): string {

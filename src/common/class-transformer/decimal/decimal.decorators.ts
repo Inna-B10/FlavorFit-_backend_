@@ -1,8 +1,16 @@
 import { applyDecorators } from '@nestjs/common'
+import { Transform } from 'class-transformer'
 import { registerDecorator, ValidationOptions } from 'class-validator'
 import Decimal from 'decimal.js'
 
 /** --- low-level validators (tiny + reusable) --- */
+export const ToDecimal = () =>
+	Transform(({ value }: { value: unknown }) => {
+		if (value === undefined || value === null || value === '') return undefined
+		if (value instanceof Decimal) return value
+		if (typeof value === 'string') return new Decimal(value.replace(',', '.'))
+		return new Decimal(value as any)
+	})
 
 function IsDecimalJs(options?: ValidationOptions) {
 	return (obj: object, prop: string) =>

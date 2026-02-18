@@ -18,6 +18,9 @@ export class NutritionFactsModel {
 	@Field(() => Decimal, { nullable: true })
 	fiber?: Decimal
 
+	@Field(() => Decimal, { nullable: true })
+	sugar?: Decimal
+
 	@Field()
 	recipeId: string
 }
