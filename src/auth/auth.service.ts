@@ -5,7 +5,6 @@ import { hash, verify } from 'argon2'
 import { Response } from 'express'
 import { PrismaService } from 'src/prisma/prisma.service'
 import { UsersService } from 'src/users/users.service'
-import { isDev } from 'src/utils/isDev.util'
 import type { IAuthTokenData } from './auth.interface'
 import { LoginInput, RegisterInput } from './inputs/auth.input'
 
@@ -143,8 +142,10 @@ export class AuthService {
 		res.cookie(this.REFRESH_TOKEN_COOKIE_NAME, refreshToken || '', {
 			httpOnly: true,
 			expires: expiresIn,
-			sameSite: isDev(this.configService) ? 'lax' : 'none',
-			secure: !isDev(this.configService)
+			// sameSite: isDev(this.configService) ? 'lax' : 'none',
+			sameSite: 'none',
+			// secure: !isDev(this.configService)
+			secure: true
 			//domain:... really needed only if there are multiple subdomains and the cookie must be shared
 			// domain: isDev(this.configService) ? 'localhost' : '...',
 		})

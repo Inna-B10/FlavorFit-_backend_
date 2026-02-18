@@ -37,10 +37,21 @@ async function bootstrap() {
 
 	app.use(cookieParser())
 
+	const allowedOrigins = [
+		'http://localhost:3000',
+		'http://localhost:3001',
+		'https://flavor-fit-alekinna.vercel.app'
+	]
+
 	app.enableCors({
-		origin: ['http://localhost:3000', 'http://localhost:3001'],
-		credentials: true
-		// allowedHeaders: ['Content-Type', 'Authorization']
+		origin: (origin, callback) => {
+			// Allow requests with no origin (like Postman) and allow listed origins
+			if (!origin || allowedOrigins.includes(origin)) return callback(null, true)
+			return callback(new Error(`CORS blocked for origin: ${origin}`), false)
+		},
+		credentials: true,
+		methods: ['GET', 'POST', 'OPTIONS'],
+		allowedHeaders: ['Content-Type', 'Authorization', 'Apollo-Require-Preflight']
 	})
 
 	app.useGlobalPipes(

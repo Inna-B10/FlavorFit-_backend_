@@ -92,6 +92,7 @@ npm i helmet
 
 #### **backend:**
 
+- [ ] verification email
 - [ ] **Recipes, CRUD:**
   - [ ] ? при удалении проверка тегов на удаление
 - [ ] **Products, CRUD:**
