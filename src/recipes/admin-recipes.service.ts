@@ -9,6 +9,18 @@ export class AdminRecipesService {
 	//* ------------------------------- All Recipes ------------------------------ */
 	async getAllRecipes() {
 		return this.prisma.recipe.findMany()
+		// ({
+		// 	include: {
+		// 		ingredients: {
+		// 			include: {
+		// 				product: true
+		// 			}
+		// 		},
+		// 		recipeSteps: true,
+		// 		tags: true,
+		// 		nutritionFacts: true
+		// 	}
+		// })
 	}
 	//* ------------------------------ Recipe By Id ------------------------------ */
 	async getRecipeById(recipeId: string) {

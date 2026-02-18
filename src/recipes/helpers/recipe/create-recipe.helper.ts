@@ -2,7 +2,7 @@ import { BadRequestException } from '@nestjs/common'
 import { Difficulty, DishType, Prisma } from 'prisma/generated/client'
 import { rethrowPrismaKnownErrors } from 'src/common/prisma/prisma-errors'
 import { CreateRecipeInput } from 'src/recipes/inputs/recipe/create-recipe.input'
-import { getOrCreateProductIdsForIngredients } from '../recipe-ingredient-products.helper'
+import { getOrCreateProductIdForIngredient } from '../recipe-ingredient-products.helper'
 import { buildNutritionData } from '../recipe-nutrition.helper'
 import { normalizeSteps } from '../recipe-steps.helper'
 import { buildTagsConnectOrCreate } from '../recipe-tags'
@@ -64,9 +64,6 @@ export async function createRecipeHelper(
 ): Promise<CreatedRecipe> {
 	const { recipeSteps, ingredients, nutritionFacts, tags, ...recipeData } = input
 
-	// Resolve productIds (existing or newly created)
-	const productIdsByIndex = await getOrCreateProductIdsForIngredients(tx, ingredients)
-
 	const stepsData = normalizeSteps(recipeSteps)
 
 	try {
@@ -75,21 +72,39 @@ export async function createRecipeHelper(
 				...recipeData,
 				user: { connect: { userId: userId } },
 
-				ingredients: {
-					create: ingredients.map((ing, idx) => ({
-						quantity: ing.quantity,
-						recipeUnit: ing.recipeUnit,
-						ingredientNote: ing.ingredientNote,
-						product: { connect: { productId: productIdsByIndex[idx] } }
-					}))
-				},
-
 				recipeSteps: { create: stepsData },
 
 				tags: buildTagsConnectOrCreate(tags),
 
 				nutritionFacts: buildNutritionData(nutritionFacts)
 			},
+			include: {
+				recipeSteps: true,
+				tags: true,
+				nutritionFacts: true
+			}
+		})
+
+		const productIds: string[] = []
+		for (const ing of ingredients) {
+			productIds.push(await getOrCreateProductIdForIngredient(tx, ing))
+		}
+		if (productIds.length !== ingredients.length) {
+			throw new BadRequestException('Resolved productIds mismatch')
+		}
+
+		await tx.ingredient.createMany({
+			data: ingredients.map((ing, idx) => ({
+				recipeId: recipe.recipeId,
+				productId: productIds[idx],
+				quantity: ing.quantity,
+				recipeUnit: ing.recipeUnit,
+				ingredientNote: ing.ingredientNote ?? null // IMPORTANT
+			}))
+		})
+
+		const fullRecipe = await tx.recipe.findUnique({
+			where: { recipeId: recipe.recipeId },
 			include: {
 				ingredients: { include: { product: true } },
 				recipeSteps: true,
@@ -98,7 +113,7 @@ export async function createRecipeHelper(
 			}
 		})
 
-		return recipe
+		return fullRecipe!
 	} catch (e) {
 		// unique constraint for slug
 		rethrowPrismaKnownErrors(e, {

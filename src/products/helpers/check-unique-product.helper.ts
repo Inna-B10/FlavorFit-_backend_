@@ -9,6 +9,7 @@ export async function checkUniqueProduct(
 		where: {
 			productName: { equals: productName, mode: 'insensitive' },
 			recipeUnit
-		}
+		},
+		select: { productId: true }
 	})
 }

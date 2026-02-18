@@ -1,5 +1,5 @@
 import { BadRequestException } from '@nestjs/common'
-import { Prisma, RecipeUnit } from 'prisma/generated/client'
+import { Prisma } from 'prisma/generated/client'
 import { checkUniqueProduct } from 'src/products/helpers/check-unique-product.helper'
 import { CreateIngredientInput } from 'src/recipes/inputs/ingredient/create-ingredient.input'
 
@@ -32,8 +32,7 @@ export async function getOrCreateProductIdForIngredient(
 	const productName = (ing.productName || '').trim()
 	if (!productName) throw new BadRequestException('Product name is required')
 
-	// if no productRecipeUnit provided, fallback to ingredient recipeUnit
-	const recipeUnit = (ing.productRecipeUnit ?? ing.recipeUnit) as unknown as RecipeUnit
+	const recipeUnit = ing.recipeUnit
 
 	// best-effort reuse by productName + recipeUnit (productName is not unique)
 	const existing = await checkUniqueProduct(tx, productName, recipeUnit)

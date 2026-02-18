@@ -48,6 +48,10 @@ export async function applyIngredientChanges(
 			productIds.push(await getOrCreateProductIdForIngredient(tx, ing))
 		}
 
+		if (productIds.length !== input.addIngredients.length) {
+			throw new BadRequestException('Resolved productIds mismatch')
+		}
+
 		// @@unique([recipeId, productId]) means duplicates will throw P2002
 		await tx.ingredient.createMany({
 			data: input.addIngredients.map((ing, idx) => ({
@@ -55,7 +59,7 @@ export async function applyIngredientChanges(
 				productId: productIds[idx],
 				quantity: ing.quantity,
 				recipeUnit: ing.recipeUnit,
-				ingredientNote: ing.ingredientNote
+				ingredientNote: ing.ingredientNote || null
 			}))
 		})
 	}
