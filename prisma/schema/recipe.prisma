@@ -78,6 +78,7 @@ model NutritionFact {
   fats          Decimal?
   carbohydrates Decimal?
   fiber         Decimal?
+  sugar         Decimal?
 
   recipeId String @unique @map("recipe_id")
   recipe   Recipe @relation(fields: [recipeId], references: [recipeId], onDelete: Cascade)
