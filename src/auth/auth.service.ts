@@ -7,6 +7,7 @@ import { Response } from 'express'
 import { EmailService } from 'src/email/email.service'
 import { PrismaService } from 'src/prisma/prisma.service'
 import { UsersService } from 'src/users/users.service'
+import { isDev } from 'src/utils/isDev.util'
 import type { IAuthTokenData } from './auth.interface'
 import { LoginInput, RegisterInput } from './inputs/auth.input'
 
@@ -43,6 +44,11 @@ export class AuthService {
 
 			const frontendUrl = this.configService.get<string>('FRONTEND_URL')
 			const link = `${frontendUrl}/auth/verify-email?token=${user.verificationToken}`
+
+			if (isDev(this.configService)) {
+				console.log('[DEV] Verification link:', link)
+				return { user }
+			}
 
 			await this.emailService.sendVerification(user.email, user.firstName, link)
 
@@ -104,8 +110,14 @@ export class AuthService {
 				verificationToken: newToken
 			}
 		})
+
 		const frontendUrl = this.configService.get<string>('FRONTEND_URL')
 		const link = `${frontendUrl}/auth/verify-email?token=${user.verificationToken}`
+
+		if (isDev(this.configService)) {
+			console.log('[DEV] Verification link:', link)
+			return true
+		}
 
 		await this.emailService.sendVerification(user.email, user.firstName, link)
 
