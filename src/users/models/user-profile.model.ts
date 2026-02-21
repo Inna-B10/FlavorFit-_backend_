@@ -20,6 +20,8 @@ export class UserModel extends UserBaseModel {
 	firstName: string
 	@Field({ nullable: true })
 	avatarUrl: string
+	@Field({ nullable: true })
+	verificationToken?: string
 }
 
 //* ----------------------------- Fitness Profile ---------------------------- */

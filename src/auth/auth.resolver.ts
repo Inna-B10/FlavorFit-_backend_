@@ -71,8 +71,8 @@ export class AuthResolver {
 	}
 
 	//* ---------------------------- Resend Verification ------------------------- */
-	@Mutation(() => String)
-	async resendVerification(email: string) {
+	@Mutation(() => Boolean)
+	resendVerification(@Args('email') email: string) {
 		return this.authService.resendVerification(email)
 	}
 }

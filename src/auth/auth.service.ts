@@ -2,6 +2,7 @@ import { BadRequestException, Injectable, NotFoundException } from '@nestjs/comm
 import { ConfigService } from '@nestjs/config'
 import { JwtService } from '@nestjs/jwt'
 import { hash, verify } from 'argon2'
+import { randomUUID } from 'crypto'
 import { Response } from 'express'
 import { EmailService } from 'src/email/email.service'
 import { PrismaService } from 'src/prisma/prisma.service'
@@ -41,7 +42,7 @@ export class AuthService {
 			)
 
 			const frontendUrl = this.configService.get<string>('FRONTEND_URL')
-			const link = `${frontendUrl}/verify-email?token=${user.verificationToken}`
+			const link = `${frontendUrl}/auth/verify-email?token=${user.verificationToken}`
 
 			await this.emailService.sendVerification(user.email, user.firstName, link)
 
@@ -89,22 +90,26 @@ export class AuthService {
 	}
 
 	//* ---------------------------- Resend Verification ------------------------- */
-	async resendVerification(email: string) {
-		const user = await this.usersService.findUserByEmail(email)
-		if (!user) {
-			throw new NotFoundException('User not found')
-		}
+	async resendVerification(email: string): Promise<boolean> {
+		const normalizedEmail = email.toLowerCase()
+		const user = await this.usersService.findUserByEmail(normalizedEmail)
+		if (!user) return true
 
-		if (!user.verificationToken) {
-			throw new BadRequestException('User is already verified')
-		}
+		if (!user.verificationToken) return true
 
+		const newToken = randomUUID()
+		await this.prisma.user.update({
+			where: { userId: user.userId },
+			data: {
+				verificationToken: newToken
+			}
+		})
 		const frontendUrl = this.configService.get<string>('FRONTEND_URL')
-		const link = `${frontendUrl}/verify-email?token=${user.verificationToken}`
+		const link = `${frontendUrl}/auth/verify-email?token=${user.verificationToken}`
 
 		await this.emailService.sendVerification(user.email, user.firstName, link)
 
-		return { message: 'Verification email resent' }
+		return true
 	}
 
 	//* ---------------------------------- Login --------------------------------- */
