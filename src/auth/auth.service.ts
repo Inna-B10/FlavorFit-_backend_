@@ -3,6 +3,7 @@ import { ConfigService } from '@nestjs/config'
 import { JwtService } from '@nestjs/jwt'
 import { hash, verify } from 'argon2'
 import { Response } from 'express'
+import { EmailService } from 'src/email/email.service'
 import { PrismaService } from 'src/prisma/prisma.service'
 import { UsersService } from 'src/users/users.service'
 import type { IAuthTokenData } from './auth.interface'
@@ -14,6 +15,7 @@ export class AuthService {
 		private prisma: PrismaService,
 		private configService: ConfigService,
 		private jwt: JwtService,
+		private emailService: EmailService,
 		private usersService: UsersService
 	) {}
 
@@ -38,19 +40,71 @@ export class AuthService {
 				input.firstName
 			)
 
-			const tokens = this.generateTokens({
-				userId: user.userId,
-				role: user.role,
-				firstName: user.firstName,
-				avatarUrl: user.avatarUrl
-			})
+			const frontendUrl = this.configService.get<string>('FRONTEND_URL')
+			const link = `${frontendUrl}/verify-email?token=${user.verificationToken}`
 
-			return { user, ...tokens }
+			await this.emailService.sendVerification(user.email, user.firstName, link)
+
+			return { user }
+			// return { userId: user.userId, email: user.email }
 		} catch (error) {
 			const message = error instanceof Error ? error.message : 'Unknown error'
 
 			throw new BadRequestException(message)
 		}
+	}
+
+	//* ------------------------------ Verify Email ------------------------------ */
+	async verifyEmail(token: string) {
+		const user = await this.prisma.user.findFirst({
+			where: {
+				verificationToken: token
+			}
+		})
+
+		if (!user) throw new NotFoundException('Invalid token!')
+
+		if (user.verificationToken) {
+			await this.prisma.user.update({
+				where: { userId: user.userId },
+				data: {
+					verificationToken: null
+				}
+			})
+		}
+
+		const freshUser = await this.prisma.user.findUnique({
+			where: { userId: user.userId }
+		})
+		if (!freshUser) throw new BadRequestException('User not found')
+
+		const tokens = this.generateTokens({
+			userId: freshUser.userId,
+			role: freshUser.role,
+			firstName: freshUser.firstName,
+			avatarUrl: freshUser.avatarUrl
+		})
+
+		return { user: freshUser, ...tokens }
+	}
+
+	//* ---------------------------- Resend Verification ------------------------- */
+	async resendVerification(email: string) {
+		const user = await this.usersService.findUserByEmail(email)
+		if (!user) {
+			throw new NotFoundException('User not found')
+		}
+
+		if (!user.verificationToken) {
+			throw new BadRequestException('User is already verified')
+		}
+
+		const frontendUrl = this.configService.get<string>('FRONTEND_URL')
+		const link = `${frontendUrl}/verify-email?token=${user.verificationToken}`
+
+		await this.emailService.sendVerification(user.email, user.firstName, link)
+
+		return { message: 'Verification email resent' }
 	}
 
 	//* ---------------------------------- Login --------------------------------- */

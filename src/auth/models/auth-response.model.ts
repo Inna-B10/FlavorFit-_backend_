@@ -9,3 +9,8 @@ export class AuthResponse {
 	@Field()
 	accessToken: string
 }
+@ObjectType()
+export class RegisterResponse {
+	@Field(() => UserModel)
+	user: UserModel
+}

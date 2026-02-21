@@ -76,6 +76,10 @@ npm i class-validator
 npm i class-transformer
 npm i express-rate-limit
 npm i helmet
+npm i @nestjs-modules/mailer
+npm i nodemailer
+npm i @react-email/components
+npm i -D react-email
 
 ```
 

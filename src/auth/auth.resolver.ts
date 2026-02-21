@@ -1,9 +1,9 @@
-import { BadRequestException } from '@nestjs/common'
+import { BadRequestException, UnauthorizedException } from '@nestjs/common'
 import { Args, Context, Mutation, Query, Resolver } from '@nestjs/graphql'
 import type { IGqlContext } from 'src/app.interface'
 import { AuthService } from './auth.service'
 import { LoginInput, RegisterInput } from './inputs/auth.input'
-import { AuthResponse } from './models/auth-response.model'
+import { AuthResponse, RegisterResponse } from './models/auth-response.model'
 
 @Resolver()
 export class AuthResolver {
@@ -11,12 +11,9 @@ export class AuthResolver {
 
 	//* -------------------------------- Register -------------------------------- */
 	//[TODO] captcha
-	@Mutation(() => AuthResponse)
-	async register(@Args('data') input: RegisterInput, @Context() { res }: IGqlContext) {
-		const { refreshToken, ...response } = await this.authService.register(input)
-		this.authService.toggleRefreshTokenCookie(res, refreshToken)
-
-		return response
+	@Mutation(() => RegisterResponse)
+	async register(@Args('data') input: RegisterInput) {
+		return await this.authService.register(input)
 	}
 
 	//* ---------------------------------- Login --------------------------------- */
@@ -59,5 +56,23 @@ export class AuthResolver {
 		this.authService.toggleRefreshTokenCookie(res, newRefreshToken)
 
 		return response
+	}
+
+	//* ------------------------------ Verify Email ------------------------------ */
+	@Mutation(() => AuthResponse)
+	async verifyEmail(@Args('token') token: string, @Context() { res }: IGqlContext) {
+		if (!token) {
+			throw new UnauthorizedException('Token not passed')
+		}
+
+		const { refreshToken, ...response } = await this.authService.verifyEmail(token)
+		this.authService.toggleRefreshTokenCookie(res, refreshToken)
+		return response
+	}
+
+	//* ---------------------------- Resend Verification ------------------------- */
+	@Mutation(() => String)
+	async resendVerification(email: string) {
+		return this.authService.resendVerification(email)
 	}
 }

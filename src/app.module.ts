@@ -7,6 +7,7 @@ import { AppService } from './app.service'
 import { AuthModule } from './auth/auth.module'
 import { CartsModule } from './carts/carts.module'
 import { getGraphQLConfig } from './config/graphql.config'
+import { EmailModule } from './email/email.module'
 import { DecimalScalar } from './graphql/scalars/decimal.scalar'
 import { OrdersModule } from './orders/orders.module'
 import { PrismaModule } from './prisma/prisma.module'
@@ -25,6 +26,7 @@ import { UsersModule } from './users/users.module'
 			inject: [ConfigService]
 		}),
 		AuthModule,
+		EmailModule,
 		UsersModule,
 		ProductsModule,
 		RecipesModule,
