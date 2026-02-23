@@ -9,7 +9,7 @@ enum RecipeUnit {
   CLOVES
   SLICE
   PINCH
-  CUP
+  STALK
 }
 
 enum SaleUnit {
