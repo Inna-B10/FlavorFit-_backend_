@@ -3,7 +3,7 @@ import { Args, Context, Mutation, Query, Resolver } from '@nestjs/graphql'
 import type { IGqlContext } from 'src/app.interface'
 import { AuthService } from './auth.service'
 import { LoginInput, RegisterInput } from './inputs/auth.input'
-import { AuthResponse, RegisterResponse } from './models/auth-response.model'
+import { AuthResponse } from './models/auth-response.model'
 
 @Resolver()
 export class AuthResolver {
@@ -11,7 +11,7 @@ export class AuthResolver {
 
 	//* -------------------------------- Register -------------------------------- */
 	//[TODO] captcha
-	@Mutation(() => RegisterResponse)
+	@Mutation(() => AuthResponse)
 	async register(@Args('data') input: RegisterInput) {
 		return await this.authService.register(input)
 	}
@@ -20,7 +20,8 @@ export class AuthResolver {
 	//[TODO] captcha
 	@Mutation(() => AuthResponse)
 	async login(@Args('data') input: LoginInput, @Context() { res }: IGqlContext) {
-		const { refreshToken, ...response } = await this.authService.login(input)
+		const { refreshToken, accessToken, ...response } = await this.authService.login(input)
+		this.authService.toggleAccessTokenCookie(res, accessToken)
 		this.authService.toggleRefreshTokenCookie(res, refreshToken)
 
 		return response
@@ -32,11 +33,13 @@ export class AuthResolver {
 		const refreshToken = req.cookies?.[this.authService.REFRESH_TOKEN_COOKIE_NAME]
 
 		if (!refreshToken) {
-			this.authService.toggleRefreshTokenCookie(res, null)
+			this.authService.toggleAccessTokenCookie(res, null)
 			throw new BadRequestException('Refresh token is missing')
 		}
 
+		this.authService.toggleAccessTokenCookie(res, null)
 		this.authService.toggleRefreshTokenCookie(res, null)
+
 		return true
 	}
 
@@ -46,13 +49,19 @@ export class AuthResolver {
 		const refreshToken = req.cookies?.[this.authService.REFRESH_TOKEN_COOKIE_NAME]
 
 		if (!refreshToken) {
+			this.authService.toggleAccessTokenCookie(res, null)
 			this.authService.toggleRefreshTokenCookie(res, null)
+
 			throw new BadRequestException('Refresh token is missing')
 		}
 
-		const { refreshToken: newRefreshToken, ...response } =
-			await this.authService.getNewTokens(refreshToken)
+		const {
+			refreshToken: newRefreshToken,
+			accessToken,
+			...response
+		} = await this.authService.getNewTokens(refreshToken)
 
+		this.authService.toggleAccessTokenCookie(res, accessToken)
 		this.authService.toggleRefreshTokenCookie(res, newRefreshToken)
 
 		return response
@@ -65,8 +74,11 @@ export class AuthResolver {
 			throw new UnauthorizedException('Token not passed')
 		}
 
-		const { refreshToken, ...response } = await this.authService.verifyEmail(token)
+		const { refreshToken, accessToken, ...response } = await this.authService.verifyEmail(token)
+
+		this.authService.toggleAccessTokenCookie(res, accessToken)
 		this.authService.toggleRefreshTokenCookie(res, refreshToken)
+
 		return response
 	}
 

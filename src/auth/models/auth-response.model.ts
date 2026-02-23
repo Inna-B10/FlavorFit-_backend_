@@ -5,12 +5,4 @@ import { UserModel } from 'src/users/models/user-profile.model'
 export class AuthResponse {
 	@Field(() => UserModel)
 	user: UserModel
-
-	@Field()
-	accessToken: string
-}
-@ObjectType()
-export class RegisterResponse {
-	@Field(() => UserModel)
-	user: UserModel
 }

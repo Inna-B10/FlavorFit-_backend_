@@ -21,8 +21,11 @@ export class AuthService {
 		private usersService: UsersService
 	) {}
 
-	private EXPIRE_DAY_REFRESH_TOKEN = 3
-	REFRESH_TOKEN_COOKIE_NAME = 'refreshToken'
+	private readonly EXPIRE_DAYS_REFRESH_TOKEN = 3
+	readonly REFRESH_TOKEN_COOKIE_NAME = 'refreshToken'
+
+	private readonly EXPIRE_MINUTES_ACCESS_TOKEN = 60
+	readonly ACCESS_TOKEN_COOKIE_NAME = 'accessToken'
 
 	//* ------------------------------ Registration ------------------------------ */
 	async register(input: RegisterInput) {
@@ -44,7 +47,7 @@ export class AuthService {
 
 			const frontendUrl = this.configService.get<string>('FRONTEND_URL')
 			const link = `${frontendUrl}/auth/verify-email?token=${user.verificationToken}`
-
+			//[TODO] remove it
 			if (isDev(this.configService)) {
 				console.log('[DEV] Verification link:', link)
 				return { user }
@@ -166,7 +169,7 @@ export class AuthService {
 		const refreshToken = this.jwt.sign(
 			{ userId: data.userId },
 			{
-				expiresIn: `${this.EXPIRE_DAY_REFRESH_TOKEN}d`
+				expiresIn: `${this.EXPIRE_DAYS_REFRESH_TOKEN}d`
 			}
 		)
 		return {
@@ -199,18 +202,42 @@ export class AuthService {
 		return { user, ...tokens }
 	}
 
-	//* ---------------------- Add/Remove Refresh Token Cookie ---------------------- */
-	toggleRefreshTokenCookie(res: Response, refreshToken: string | null) {
-		const isRemoveCookie = !refreshToken
+	//* ---------------------- Add/Remove Tokens Cookie ---------------------- */
+	toggleAccessTokenCookie(res: Response, token: string | null) {
+		this.toggleAuthTokenCookie({
+			res,
+			name: this.ACCESS_TOKEN_COOKIE_NAME,
+			token,
+			expires: new Date(Date.now() + this.EXPIRE_MINUTES_ACCESS_TOKEN * 60 * 1000)
+		})
+	}
+	toggleRefreshTokenCookie(res: Response, token: string | null) {
+		this.toggleAuthTokenCookie({
+			res,
+			name: this.REFRESH_TOKEN_COOKIE_NAME,
+			token,
+			expires: new Date(Date.now() + this.EXPIRE_DAYS_REFRESH_TOKEN * 24 * 60 * 60 * 1000)
+		})
+	}
 
-		if (isRemoveCookie) {
-			res.clearCookie(this.REFRESH_TOKEN_COOKIE_NAME)
-			return
-		}
+	private toggleAuthTokenCookie({
+		res,
+		name,
+		token,
+		expires
+	}: {
+		res: Response
+		name: AuthService['ACCESS_TOKEN_COOKIE_NAME'] | AuthService['REFRESH_TOKEN_COOKIE_NAME']
+		token: string | null
+		expires: Date
+	}) {
+		const isRemoveCookie = !token
 
-		const expiresIn = new Date(Date.now() + this.EXPIRE_DAY_REFRESH_TOKEN * 24 * 60 * 60 * 1000) // 3 days
+		const expiresIn = isRemoveCookie ? new Date(0) : expires
 
-		res.cookie(this.REFRESH_TOKEN_COOKIE_NAME, refreshToken || '', {
+		new Date(Date.now() + this.EXPIRE_DAYS_REFRESH_TOKEN * 24 * 60 * 60 * 1000) // 3 days
+
+		res.cookie(name, token || '', {
 			httpOnly: true,
 			expires: expiresIn,
 			// sameSite: isDev(this.configService) ? 'lax' : 'none',

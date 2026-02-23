@@ -10,16 +10,11 @@ import { UsersService } from './users.service'
 export class UsersResolver {
 	constructor(private readonly usersService: UsersService) {}
 
-	//* -------------------------------- User By Id -------------------------------- */
-	@Query(() => UserModel, { name: 'userById' })
+	/* --------------------------------- Get Me --------------------------------- */
+	@Query(() => UserModel, { name: 'me' })
 	@Auth()
-	getUserById(
-		@CurrentUser('userId') currentUserId: string,
-		@CurrentUser('role') role: Role,
-		@Args('userId', { nullable: true }) userId?: string
-	) {
-		const targetUserId = role === Role.ADMIN && userId ? userId : currentUserId
-		return this.usersService.findUserById(targetUserId)
+	getMe(@CurrentUser('userId') userId: string) {
+		return this.usersService.findUserById(userId)
 	}
 
 	//* -------------------------- Get Full Profile ------------------------- */
@@ -49,6 +44,12 @@ export class UsersResolver {
 	/* ========================================================================== */
 	/*                                    ADMIN                                   */
 	/* ========================================================================== */
+	//* -------------------------------- User By Id -------------------------------- */
+	@Query(() => UserModel, { name: 'userById' })
+	@Auth(Role.ADMIN)
+	getUserById(@Args('userId') userId: string) {
+		return this.usersService.findUserById(userId)
+	}
 
 	//* ------------------------------ Get All Users ----------------------------- */
 	@Query(() => [UserModel], { name: 'allUsers' })
