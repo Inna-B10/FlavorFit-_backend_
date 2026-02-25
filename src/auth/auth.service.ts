@@ -24,7 +24,7 @@ export class AuthService {
 	private readonly EXPIRE_DAYS_REFRESH_TOKEN = 3
 	readonly REFRESH_TOKEN_COOKIE_NAME = 'refreshToken'
 
-	private readonly EXPIRE_MINUTES_ACCESS_TOKEN = 60
+	private readonly ACCESS_EXPIRE_MINUTES = 60
 	readonly ACCESS_TOKEN_COOKIE_NAME = 'accessToken'
 
 	//* ------------------------------ Registration ------------------------------ */
@@ -90,9 +90,7 @@ export class AuthService {
 
 		const tokens = this.generateTokens({
 			userId: freshUser.userId,
-			role: freshUser.role,
-			firstName: freshUser.firstName,
-			avatarUrl: freshUser.avatarUrl
+			role: freshUser.role
 		})
 
 		return { user: freshUser, ...tokens }
@@ -133,12 +131,10 @@ export class AuthService {
 			const user = await this.validateUser(input)
 			const tokens = this.generateTokens({
 				userId: user.userId,
-				role: user.role,
-				firstName: user.firstName,
-				avatarUrl: user.avatarUrl
+				role: user.role
 			})
 			return { user, ...tokens }
-		} catch (error) {
+		} catch (e) {
 			throw new NotFoundException('Invalid email or password')
 		}
 	}
@@ -164,7 +160,7 @@ export class AuthService {
 	//* ------------------------------ Generate Tokens --------------------------- */
 	generateTokens(data: IAuthTokenData) {
 		const accessToken = this.jwt.sign(data, {
-			expiresIn: '1h'
+			expiresIn: `${this.ACCESS_EXPIRE_MINUTES}m` //minutes
 		})
 		const refreshToken = this.jwt.sign(
 			{ userId: data.userId },
@@ -180,13 +176,14 @@ export class AuthService {
 
 	//* ----------------------------- Get New Tokens ----------------------------- */
 	async getNewTokens(refreshToken: string) {
-		const result = await this.jwt.verifyAsync<Pick<IAuthTokenData, 'userId'>>(refreshToken)
+		let payload: { userId: string }
 
-		if (!result) {
-			throw new BadRequestException('Invalid refresh token')
+		try {
+			payload = await this.jwt.verifyAsync(refreshToken)
+		} catch (e) {
+			throw new BadRequestException('Invalid or expired refresh token')
 		}
-
-		const user = await this.usersService.findUserById(result.userId)
+		const user = await this.usersService.findUserById(payload.userId)
 
 		if (!user) {
 			throw new NotFoundException('User not found')
@@ -194,9 +191,7 @@ export class AuthService {
 
 		const tokens = this.generateTokens({
 			userId: user.userId,
-			role: user.role,
-			firstName: user.firstName,
-			avatarUrl: user.avatarUrl
+			role: user.role
 		})
 
 		return { user, ...tokens }
@@ -208,7 +203,7 @@ export class AuthService {
 			res,
 			name: this.ACCESS_TOKEN_COOKIE_NAME,
 			token,
-			expires: new Date(Date.now() + this.EXPIRE_MINUTES_ACCESS_TOKEN * 60 * 1000)
+			expires: new Date(Date.now() + this.ACCESS_EXPIRE_MINUTES * 60 * 1000) //minutes
 		})
 	}
 	toggleRefreshTokenCookie(res: Response, token: string | null) {
@@ -216,7 +211,7 @@ export class AuthService {
 			res,
 			name: this.REFRESH_TOKEN_COOKIE_NAME,
 			token,
-			expires: new Date(Date.now() + this.EXPIRE_DAYS_REFRESH_TOKEN * 24 * 60 * 60 * 1000)
+			expires: new Date(Date.now() + this.EXPIRE_DAYS_REFRESH_TOKEN * 24 * 60 * 60 * 1000) //days
 		})
 	}
 
@@ -235,15 +230,13 @@ export class AuthService {
 
 		const expiresIn = isRemoveCookie ? new Date(0) : expires
 
-		new Date(Date.now() + this.EXPIRE_DAYS_REFRESH_TOKEN * 24 * 60 * 60 * 1000) // 3 days
-
 		res.cookie(name, token || '', {
 			httpOnly: true,
 			expires: expiresIn,
-			// sameSite: isDev(this.configService) ? 'lax' : 'none',
-			sameSite: 'none',
-			// secure: !isDev(this.configService)
-			secure: true
+			sameSite: isDev(this.configService) ? 'lax' : 'none',
+			// sameSite: 'none',
+			secure: isDev(this.configService) ? false : true
+			// secure: true
 			//domain:... really needed only if there are multiple subdomains and the cookie must be shared
 			// domain: isDev(this.configService) ? 'localhost' : '...',
 		})

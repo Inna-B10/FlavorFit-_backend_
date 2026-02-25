@@ -9,7 +9,7 @@ export class UserBaseModel {
 	userId: string
 	@Field()
 	email: string
-	@Field()
+	@Field(() => Role)
 	role: Role
 }
 
