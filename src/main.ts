@@ -9,9 +9,35 @@ import { isDev } from './utils/isDev.util'
 
 async function bootstrap() {
 	const logger = new ConsoleLogger()
-
 	const app = await NestFactory.create<NestExpressApplication>(AppModule)
-	//rate limiting
+
+	// If behind Cloudflare/Vercel proxy (recommended for correct IP / cookies / rate-limit)
+	app.set('trust proxy', 1)
+
+	const allowedOrigins = [
+		'https://flavor-fit-alekinna.vercel.app',
+		'http://localhost:3000',
+		'http://localhost:3001'
+	]
+
+	// CORS as early as possible
+	app.enableCors({
+		origin: (origin, callback) => {
+			// Allow no-origin (Postman, server-to-server) and allow listed origins
+			if (!origin || allowedOrigins.includes(origin)) return callback(null, true)
+			return callback(new Error(`CORS blocked for origin: ${origin}`), false)
+		},
+		credentials: true,
+		methods: ['GET', 'POST', 'OPTIONS'],
+		allowedHeaders: ['Content-Type', 'Authorization', 'Apollo-Require-Preflight'],
+
+		// (optional) makes preflight return 204 quickly
+		optionsSuccessStatus: 204
+	})
+
+	app.use(cookieParser())
+
+	//rate limiting AFTER CORS, and skip OPTIONS preflight
 	if (!isDev) {
 		app.use(
 			'/graphql',
@@ -20,12 +46,13 @@ async function bootstrap() {
 				limit: 60, // 60 req/min per IP
 				standardHeaders: true,
 				legacyHeaders: false,
-				message: 'Too many requests from this IP, please try again later'
+				message: 'Too many requests from this IP, please try again later',
+				skip: req => req.method === 'OPTIONS'
 			})
 		)
 	}
 
-	// security headers
+	// security headers (helmet after CORS is fine)
 	if (!isDev) {
 		app.use(
 			helmet({
@@ -34,25 +61,6 @@ async function bootstrap() {
 			})
 		)
 	}
-
-	app.use(cookieParser())
-
-	const allowedOrigins = [
-		'http://localhost:3000',
-		'http://localhost:3001',
-		'https://flavor-fit-alekinna.vercel.app'
-	]
-
-	app.enableCors({
-		origin: (origin, callback) => {
-			// Allow requests with no origin (like Postman) and allow listed origins
-			if (!origin || allowedOrigins.includes(origin)) return callback(null, true)
-			return callback(new Error(`CORS blocked for origin: ${origin}`), false)
-		},
-		credentials: true,
-		methods: ['GET', 'POST', 'OPTIONS'],
-		allowedHeaders: ['Content-Type', 'Authorization', 'Apollo-Require-Preflight']
-	})
 
 	app.useGlobalPipes(
 		new ValidationPipe({
@@ -66,6 +74,7 @@ async function bootstrap() {
 	)
 
 	app.disable('x-powered-by')
+
 	const port = process.env.PORT ?? 4200
 	await app.listen(port)
 	logger.log(`Server running on port ${port}`)

@@ -24,7 +24,7 @@ export class AuthService {
 	private readonly EXPIRE_DAYS_REFRESH_TOKEN = 3
 	readonly REFRESH_TOKEN_COOKIE_NAME = 'refreshToken'
 
-	private readonly ACCESS_EXPIRE_MINUTES = 60
+	private readonly ACCESS_EXPIRE_MINUTES = 1
 	readonly ACCESS_TOKEN_COOKIE_NAME = 'accessToken'
 
 	//* ------------------------------ Registration ------------------------------ */
@@ -233,11 +233,15 @@ export class AuthService {
 		res.cookie(name, token || '', {
 			httpOnly: true,
 			expires: expiresIn,
-			sameSite: isDev(this.configService) ? 'lax' : 'none',
+			//# online
 			// sameSite: 'none',
-			secure: isDev(this.configService) ? false : true
 			// secure: true
-			//domain:... really needed only if there are multiple subdomains and the cookie must be shared
+
+			//# local
+			sameSite: isDev(this.configService) ? 'lax' : 'none',
+			secure: isDev(this.configService) ? false : true
+
+			//domain:... really needed only if frontend and backend are in different SUBdomains and the cookie must be shared
 			// domain: isDev(this.configService) ? 'localhost' : '...',
 		})
 	}
