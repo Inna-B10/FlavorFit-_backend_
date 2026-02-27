@@ -5,6 +5,9 @@ model User {
   role              Role    @default(USER)
   verificationToken String? @default(uuid()) @map("verification_token")
 
+  resetPasswordToken          String?   @map("reset_password_token")
+  resetPasswordTokenExpiresAt DateTime? @map("reset_password_token_expires_at")
+
   firstName String @map("first_name")
   avatarUrl String @default("") @map("avatar_url")
 
