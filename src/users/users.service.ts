@@ -10,11 +10,16 @@ export class UsersService {
 
 	//* ------------------------------- Create User ------------------------------ */
 	async createUser(email: string, password: string, firstName: string) {
+		//NB! isDev
+		const verificationToken = '0000'
+		//const verificationToken = randomUUID()
+
 		const user = await this.prisma.user.create({
 			data: {
 				email,
 				password,
-				firstName
+				firstName,
+				verificationToken
 			}
 		})
 

@@ -3,7 +3,7 @@ model User {
   email             String  @unique @db.VarChar(100)
   password          String
   role              Role    @default(USER)
-  verificationToken String? @default(uuid()) @map("verification_token")
+  verificationToken String? @map("verification_token")
 
   resetPasswordToken          String?   @map("reset_password_token")
   resetPasswordTokenExpiresAt DateTime? @map("reset_password_token_expires_at")

@@ -2,10 +2,8 @@ import { BadRequestException, Injectable, NotFoundException } from '@nestjs/comm
 import { ConfigService } from '@nestjs/config'
 import { JwtService } from '@nestjs/jwt'
 import { hash, verify } from 'argon2'
-import { randomUUID } from 'crypto'
 import { Response } from 'express'
 import { EmailService } from 'src/email/email.service'
-import { PrismaService } from 'src/prisma/prisma.service'
 import { UsersService } from 'src/users/users.service'
 import { isDev } from 'src/utils/isDev.util'
 import type { IAuthTokenData } from './auth.interface'
@@ -14,7 +12,6 @@ import { LoginInput, RegisterInput } from './inputs/auth.input'
 @Injectable()
 export class AuthService {
 	constructor(
-		private prisma: PrismaService,
 		private configService: ConfigService,
 		private jwt: JwtService,
 		private emailService: EmailService,
@@ -45,9 +42,11 @@ export class AuthService {
 				input.firstName
 			)
 
-			const frontendUrl = this.configService.get<string>('FRONTEND_URL')
-			const link = `${frontendUrl}/auth/verify-email?token=${user.verificationToken}`
-			//[TODO] remove it
+			const verifyEmailLink = this.configService.getOrThrow<string>('FRONTEND_URL')
+
+			const link = `${verifyEmailLink}/auth/verify-email?token=${user.verificationToken}`
+
+			//NB! isDev
 			if (isDev(this.configService)) {
 				console.log('[DEV] Verification link:', link)
 				return { user }
@@ -56,73 +55,11 @@ export class AuthService {
 			await this.emailService.sendVerification(user.email, user.firstName, link)
 
 			return { user }
-			// return { userId: user.userId, email: user.email }
 		} catch (error) {
 			const message = error instanceof Error ? error.message : 'Unknown error'
 
 			throw new BadRequestException(message)
 		}
-	}
-
-	//* ------------------------------ Verify Email ------------------------------ */
-	async verifyEmail(token: string) {
-		const user = await this.prisma.user.findFirst({
-			where: {
-				verificationToken: token
-			}
-		})
-
-		if (!user) throw new NotFoundException('Invalid token!')
-
-		if (user.verificationToken) {
-			await this.prisma.user.update({
-				where: { userId: user.userId },
-				data: {
-					verificationToken: null
-				}
-			})
-		}
-
-		const freshUser = await this.prisma.user.findUnique({
-			where: { userId: user.userId }
-		})
-		if (!freshUser) throw new BadRequestException('User not found')
-
-		const tokens = this.generateTokens({
-			userId: freshUser.userId,
-			role: freshUser.role
-		})
-
-		return { user: freshUser, ...tokens }
-	}
-
-	//* ---------------------------- Resend Verification ------------------------- */
-	async resendVerification(email: string): Promise<boolean> {
-		const normalizedEmail = email.toLowerCase()
-		const user = await this.usersService.findUserByEmail(normalizedEmail)
-		if (!user) return true
-
-		if (!user.verificationToken) return true
-
-		const newToken = randomUUID()
-		await this.prisma.user.update({
-			where: { userId: user.userId },
-			data: {
-				verificationToken: newToken
-			}
-		})
-
-		const frontendUrl = this.configService.get<string>('FRONTEND_URL')
-		const link = `${frontendUrl}/auth/verify-email?token=${user.verificationToken}`
-
-		if (isDev(this.configService)) {
-			console.log('[DEV] Verification link:', link)
-			return true
-		}
-
-		await this.emailService.sendVerification(user.email, user.firstName, link)
-
-		return true
 	}
 
 	//* ---------------------------------- Login --------------------------------- */
@@ -135,7 +72,7 @@ export class AuthService {
 			})
 			return { user, ...tokens }
 		} catch (e) {
-			throw new NotFoundException('Invalid email or password')
+			throw new NotFoundException("Can't sign in. Check details or complete verification.")
 		}
 	}
 
@@ -152,6 +89,10 @@ export class AuthService {
 
 		if (!isValidPassword) {
 			throw new NotFoundException('Invalid email or password')
+		}
+
+		if (user.verificationToken) {
+			throw new BadRequestException('Email not verified')
 		}
 
 		return user
@@ -234,12 +175,12 @@ export class AuthService {
 			httpOnly: true,
 			expires: expiresIn,
 			//# online
-			// sameSite: 'none',
-			// secure: true
+			sameSite: 'lax',
+			secure: true
 
 			//# local
-			sameSite: isDev(this.configService) ? 'lax' : 'none',
-			secure: isDev(this.configService) ? false : true
+			// sameSite: isDev(this.configService) ? 'lax' : 'none',
+			// secure: isDev(this.configService) ? false : true
 
 			//domain:... really needed only if frontend and backend are in different SUBdomains and the cookie must be shared
 			// domain: isDev(this.configService) ? 'localhost' : '...',
