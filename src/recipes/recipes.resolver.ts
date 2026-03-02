@@ -30,7 +30,7 @@ export class RecipesResolver {
 
 	//* ------------------------------- By Slug --------------------------- */
 	@Query(() => RecipeModel, { name: 'recipeBySlug' })
-	getRecipeBySlug(@Args('slug') slug: string) {
+	getRecipeBySlug(@Args('slug', { type: () => String }) slug: string) {
 		return this.recipesService.getRecipeBySlug(slug)
 	}
 
@@ -44,7 +44,10 @@ export class RecipesResolver {
 	//* --------------------------------- Update --------------------------------- */
 	@Mutation(() => RecipeModel)
 	@Auth()
-	updateRecipe(@Args('recipeId') recipeId: string, @Args('input') input: UpdateRecipeInput) {
+	updateRecipe(
+		@Args('recipeId', { type: () => String }) recipeId: string,
+		@Args('input') input: UpdateRecipeInput
+	) {
 		return this.recipesService.updateRecipe(recipeId, input)
 	}
 
@@ -62,14 +65,14 @@ export class RecipesResolver {
 	//* ------------------------------ By Id - Admin ----------------------------- */
 	@Query(() => RecipeModel, { name: 'adminRecipeById' })
 	@Auth(Role.ADMIN)
-	getRecipeById(@Args('recipeId') recipeId: string) {
+	getRecipeById(@Args('recipeId', { type: () => String }) recipeId: string) {
 		return this.adminRecipesService.getRecipeById(recipeId)
 	}
 
 	//* --------------------------------- Delete --------------------------------- */
 	@Mutation(() => RecipeModel)
 	@Auth(Role.ADMIN)
-	deleteRecipe(@Args('recipeId') recipeId: string) {
+	deleteRecipe(@Args('recipeId', { type: () => String }) recipeId: string) {
 		return this.adminRecipesService.deleteRecipe(recipeId)
 	}
 }

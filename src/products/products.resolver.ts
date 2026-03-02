@@ -39,21 +39,24 @@ export class ProductsResolver {
 	//* ------------------------------ Product ById ------------------------------ */
 	@Query(() => ProductModel, { name: 'productById' })
 	@Auth(Role.ADMIN)
-	getProductById(@Args('productId') productId: string) {
+	getProductById(@Args('productId', { type: () => String }) productId: string) {
 		return this.productsService.getProductById(productId)
 	}
 
 	//* ------------------------------ Update Product ------------------------------ */
 	@Mutation(() => ProductModel)
 	@Auth(Role.ADMIN)
-	updateProduct(@Args('productId') productId: string, @Args('input') input: UpdateProductInput) {
+	updateProduct(
+		@Args('productId', { type: () => String }) productId: string,
+		@Args('input') input: UpdateProductInput
+	) {
 		return this.productsService.updateProduct(productId, input)
 	}
 
 	//* ------------------------------ Delete Product ------------------------------ */
 	@Mutation(() => ProductModel)
 	@Auth(Role.ADMIN)
-	deleteProduct(@Args('productId') productId: string) {
+	deleteProduct(@Args('productId', { type: () => String }) productId: string) {
 		return this.productsService.deleteProduct(productId)
 	}
 }

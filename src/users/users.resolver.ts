@@ -47,7 +47,7 @@ export class UsersResolver {
 	//* -------------------------------- User By Id -------------------------------- */
 	@Query(() => UserModel, { name: 'userById' })
 	@Auth(Role.ADMIN)
-	getUserById(@Args('userId') userId: string) {
+	getUserById(@Args('userId', { type: () => String }) userId: string) {
 		return this.usersService.findUserById(userId)
 	}
 
@@ -61,14 +61,14 @@ export class UsersResolver {
 	//* -------------------------------- User By Email -------------------------------- */
 	@Query(() => UserModel, { name: 'userByEmail' })
 	@Auth(Role.ADMIN)
-	getUserByEmail(@Args('email') email: string) {
+	getUserByEmail(@Args('email', { type: () => String }) email: string) {
 		return this.usersService.findUserByEmail(email)
 	}
 
 	//* ------------------------------ Delete User ------------------------------- */
 	@Mutation(() => Boolean)
 	@Auth(Role.ADMIN)
-	async deleteUser(@Args('userId') userId: string) {
+	async deleteUser(@Args('userId', { type: () => String }) userId: string) {
 		return this.usersService.deleteUser(userId)
 	}
 }

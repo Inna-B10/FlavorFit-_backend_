@@ -94,7 +94,7 @@ export class AuthResolver {
 		return response
 	}
 
-	//* ---------------------------- Resend Verification ------------------------- */
+	//* ---------------------------- Request New Verification ------------------------- */
 	@Mutation(() => Boolean)
 	// @VerifyCaptcha()
 	requestVerificationEmail(@Args('data') input: RequestEmailActionsInput) {

@@ -24,7 +24,7 @@ export class ReactionsResolver {
 	updateComment(
 		@CurrentUser('userId') userId: string,
 		@CurrentUser('role') userRole: Role,
-		@Args('commentId') commentId: string,
+		@Args('commentId', { type: () => String }) commentId: string,
 		@Args('input') input: CreateCommentInput
 	) {
 		return this.reactionsService.updateComment(userId, userRole, commentId, input)
@@ -36,7 +36,7 @@ export class ReactionsResolver {
 	deleteComment(
 		@CurrentUser('userId') userId: string,
 		@CurrentUser('role') userRole: Role,
-		@Args('commentId') commentId: string
+		@Args('commentId', { type: () => String }) commentId: string
 	) {
 		return this.reactionsService.deleteComment(userId, userRole, commentId)
 	}
@@ -44,7 +44,10 @@ export class ReactionsResolver {
 	//* ------------------------------- Toggle Like ------------------------------ */
 	@Mutation(() => ToggleLikeResponse)
 	@Auth()
-	toggleLike(@CurrentUser('userId') userId: string, @Args('recipeId') recipeId: string) {
+	toggleLike(
+		@CurrentUser('userId') userId: string,
+		@Args('recipeId', { type: () => String }) recipeId: string
+	) {
 		return this.reactionsService.toggleLike(recipeId, userId)
 	}
 }

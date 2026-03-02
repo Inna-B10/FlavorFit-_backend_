@@ -26,7 +26,7 @@ export class OrdersResolver {
 	getOrdersByUserId(
 		@CurrentUser('userId') currentUserId: string,
 		@CurrentUser('role') role: Role,
-		@Args('userId', { nullable: true }) userId?: string
+		@Args('userId', { nullable: true, type: () => String }) userId?: string
 	) {
 		const targetUserId = role === Role.ADMIN && userId ? userId : currentUserId
 		return this.ordersService.getOrdersByUserId(targetUserId)
@@ -38,8 +38,8 @@ export class OrdersResolver {
 	getOrderById(
 		@CurrentUser('userId') currentUserId: string,
 		@CurrentUser('role') role: Role,
-		@Args('orderId') orderId: string,
-		@Args('userId', { nullable: true }) userId?: string
+		@Args('orderId', { type: () => String }) orderId: string,
+		@Args('userId', { nullable: true, type: () => String }) userId?: string
 	) {
 		const targetUserId = role === Role.ADMIN && userId ? userId : currentUserId
 		return this.ordersService.getOrderById(targetUserId, orderId)
@@ -51,8 +51,8 @@ export class OrdersResolver {
 	getOrderByReference(
 		@CurrentUser('userId') currentUserId: string,
 		@CurrentUser('role') role: Role,
-		@Args('orderReference') orderReference: string,
-		@Args('userId', { nullable: true }) userId?: string
+		@Args('orderReference', { type: () => String }) orderReference: string,
+		@Args('userId', { nullable: true, type: () => String }) userId?: string
 	) {
 		const targetUserId = role === Role.ADMIN && userId ? userId : currentUserId
 		return this.ordersService.getOrderByReference(targetUserId, orderReference)
@@ -78,7 +78,7 @@ export class OrdersResolver {
 	//* ---------------------------- Delete Order By Id --------------------------- */
 	@Mutation(() => Boolean)
 	@Auth(Role.ADMIN)
-	async deleteOrder(@Args('orderId') orderId: string) {
+	async deleteOrder(@Args('orderId', { type: () => String }) orderId: string) {
 		await this.ordersService.deleteOrderById(orderId)
 		return true
 	}

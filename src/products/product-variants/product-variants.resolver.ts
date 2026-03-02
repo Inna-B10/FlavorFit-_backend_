@@ -13,14 +13,14 @@ export class ProductVariantsResolver {
 	//* -------------------------- Variants By ProductId ------------------------- */
 	@Query(() => [ProductVariantModel], { name: 'allProductVariants' })
 	@Auth(Role.ADMIN)
-	getAllProductVariantsByProductId(@Args('productId') productId: string) {
+	getAllProductVariantsByProductId(@Args('productId', { type: () => String }) productId: string) {
 		return this.productVariantsService.getAllProductVariantsByProductId(productId)
 	}
 
 	//* ------------------------------ Variant By Id ------------------------------ */
 	@Query(() => ProductVariantModel, { name: 'variantById' })
 	@Auth(Role.ADMIN)
-	getVariantById(@Args('variantId') variantId: string) {
+	getVariantById(@Args('variantId', { type: () => String }) variantId: string) {
 		return this.productVariantsService.getVariantById(variantId)
 	}
 
@@ -28,7 +28,7 @@ export class ProductVariantsResolver {
 	@Mutation(() => ProductVariantModel)
 	@Auth(Role.ADMIN)
 	async createProductVariant(
-		@Args('productId') productId: string,
+		@Args('productId', { type: () => String }) productId: string,
 		@Args('input') input: CreateProductVariantInput
 	) {
 		return this.productVariantsService.createProductVariant(productId, input)
@@ -38,7 +38,7 @@ export class ProductVariantsResolver {
 	@Mutation(() => ProductVariantModel)
 	@Auth(Role.ADMIN)
 	async updateProductVariant(
-		@Args('productVariantId') productVariantId: string,
+		@Args('productVariantId', { type: () => String }) productVariantId: string,
 		@Args('input') input: UpdateProductVariantInput
 	) {
 		return this.productVariantsService.updateProductVariant(productVariantId, input)
@@ -47,7 +47,9 @@ export class ProductVariantsResolver {
 	//* ------------------------------ Delete Variant ------------------------------ */
 	@Mutation(() => ProductVariantModel)
 	@Auth(Role.ADMIN)
-	async deleteProductVariant(@Args('productVariantId') productVariantId: string) {
+	async deleteProductVariant(
+		@Args('productVariantId', { type: () => String }) productVariantId: string
+	) {
 		return this.productVariantsService.deleteProductVariant(productVariantId)
 	}
 }
