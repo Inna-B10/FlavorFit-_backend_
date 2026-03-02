@@ -29,7 +29,7 @@ export async function getOrCreateProductIdForIngredient(
 	}
 
 	// case B: create product from productName (no variants)
-	const productName = (ing.productName || '').trim()
+	const productName = (ing.productName || '')?.trim()
 	if (!productName) throw new BadRequestException('Product name is required')
 
 	const recipeUnit = ing.recipeUnit
@@ -40,7 +40,10 @@ export async function getOrCreateProductIdForIngredient(
 	if (existing) return existing.productId
 
 	const created = await tx.product.create({
-		data: { productName, recipeUnit } // variants intentionally not created
+		data: {
+			productName: productName.toLocaleLowerCase(),
+			recipeUnit: recipeUnit
+		} // variants intentionally not created
 	})
 	return created.productId
 }

@@ -7,8 +7,8 @@ import { applyStepChanges } from './helpers/recipe-steps.helper'
 import { syncRecipeTags } from './helpers/recipe-tags'
 import { buildRecipesWhere, getOrderBy } from './helpers/recipe/build-recipes-query.helper'
 import {
-	createRecipeHelper,
-	validateCreateRecipeInput
+	assertNoDuplicateProductIds,
+	createRecipeHelper
 } from './helpers/recipe/create-recipe.helper'
 import { checkRecipeExists, getRecipeFull } from './helpers/recipe/get-recipe.helper'
 import { patchRecipeCore } from './helpers/recipe/update-recipe.helper'
@@ -76,18 +76,12 @@ export class RecipesService {
 	}
 
 	//* ------------------------------ Create Recipe ----------------------------- */
-	async createRecipe(
-		userId: string,
-		{ recipeSteps, ingredients, nutritionFacts, tags, ...recipeData }: CreateRecipeInput
-	) {
-		// Basic guards
-		validateCreateRecipeInput(userId, { ingredients, ...recipeData })
+	async createRecipe(userId: string, { ingredients, ...recipeData }: CreateRecipeInput) {
+		// check for no duplicate ingredients
+		assertNoDuplicateProductIds(ingredients)
 		return this.prisma.$transaction(tx =>
 			createRecipeHelper(tx, userId, {
-				recipeSteps,
 				ingredients,
-				nutritionFacts,
-				tags,
 				...recipeData
 			})
 		)

@@ -2,6 +2,7 @@ import { Field, InputType, Int } from '@nestjs/graphql'
 import { Type } from 'class-transformer'
 import {
 	ArrayMaxSize,
+	ArrayMinSize,
 	IsArray,
 	IsEnum,
 	IsInt,
@@ -78,6 +79,7 @@ export class CreateRecipeInput {
 
 	@Field(() => [CreateIngredientInput])
 	@IsArray()
+	@ArrayMinSize(1)
 	@ValidateNested({ each: true })
 	@Type(() => CreateIngredientInput)
 	ingredients: CreateIngredientInput[]

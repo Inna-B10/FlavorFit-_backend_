@@ -12,19 +12,22 @@ export class ProductsService {
 
 	//* ------------------------------ Create Product ------------------------------ */
 	async createProduct(input: CreateProductInput, role: Role) {
-		const { productVariants, ...productData } = input
+		const { productVariants, productName, ...productData } = input
+		const normalizedProductName = productName.toLocaleLowerCase()
+
 		return await this.prisma.$transaction(async tx => {
-			const existing = await checkUniqueProduct(tx, productData.productName, productData.recipeUnit)
+			const existing = await checkUniqueProduct(tx, normalizedProductName, productData.recipeUnit)
 
 			if (existing)
 				throw new NotFoundException(
-					`Product with name ${productData.productName} and recipeUnit ${productData.recipeUnit} already exists`
+					`Product with name ${normalizedProductName} and recipeUnit ${productData.recipeUnit} already exists`
 				)
 
 			const hasVariants = !!productVariants?.length
 
 			return this.prisma.product.create({
 				data: {
+					productName: normalizedProductName,
 					...productData,
 					isActive: role === Role.ADMIN ? hasVariants : false,
 					...(hasVariants && {
@@ -33,8 +36,8 @@ export class ProductsService {
 								pricingAmount: po.pricingAmount,
 								pricingUnit: po.pricingUnit,
 								price: po.price,
-								label: po.label,
-								variantNote: po.variantNote
+								label: po.label.toLocaleLowerCase(),
+								variantNote: po.variantNote?.toLocaleLowerCase()
 							}))
 						}
 					})
@@ -88,10 +91,15 @@ export class ProductsService {
 
 	//* ------------------------------ Update Product ------------------------------ */
 	async updateProduct(productId: string, input: UpdateProductInput) {
+		const { productName, ...productData } = input
+
 		try {
 			return await this.prisma.product.update({
 				where: { productId },
-				data: input,
+				data: {
+					...productData,
+					...(productName !== undefined ? { productName: productName.toLowerCase() } : {})
+				},
 				include: { productVariants: true }
 			})
 		} catch (e) {

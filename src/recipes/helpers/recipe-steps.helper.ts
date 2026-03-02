@@ -11,7 +11,7 @@ export function normalizeSteps(steps?: CreateRecipeStepInput[]) {
 	// normalize order to 1..N if not provided
 	const normalized = steps.map((s, index) => ({
 		stepNumber: s.stepNumber ?? index + 1,
-		title: s.title,
+		title: s.title?.toLocaleLowerCase(),
 		content: s.content
 	}))
 
@@ -32,7 +32,7 @@ export function buildStepPatch(
 	const data: Prisma.RecipeStepUpdateManyMutationInput = {}
 
 	if (step.stepNumber !== undefined) data.stepNumber = step.stepNumber
-	if (step.title !== undefined) data.title = step.title
+	if (step.title !== undefined) data.title = step.title.toLocaleLowerCase()
 	if (step.content !== undefined) data.content = step.content
 
 	return data

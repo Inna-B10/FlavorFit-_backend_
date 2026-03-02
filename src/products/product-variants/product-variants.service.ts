@@ -20,8 +20,15 @@ export class ProductVariantsService {
 
 	//* ------------------------------ Create Variant ------------------------------ */
 	async createProductVariant(productId: string, input: CreateProductVariantInput) {
+		const { label: labelVariant, ...rest } = input
 		try {
-			return await this.prisma.productVariant.create({ data: { productId, ...input } })
+			return await this.prisma.productVariant.create({
+				data: {
+					productId,
+					label: labelVariant.toLowerCase(),
+					...rest
+				}
+			})
 		} catch (e) {
 			rethrowPrismaKnownErrors(e, { notFound: { type: 'product', id: productId } })
 		}
@@ -29,13 +36,13 @@ export class ProductVariantsService {
 
 	//* ------------------------------ Update Variant ------------------------------ */
 	async updateProductVariant(productVariantId: string, input: UpdateProductVariantInput) {
-		// for not to save undefined
-		const data = Object.fromEntries(Object.entries(input).filter(([, v]) => v !== undefined))
-
+		if (input.label) {
+			input.label = input.label.toLowerCase()
+		}
 		try {
 			return await this.prisma.productVariant.update({
 				where: { productVariantId },
-				data
+				data: input
 			})
 		} catch (e) {
 			rethrowPrismaKnownErrors(e, { notFound: { type: 'productVariant', id: productVariantId } })

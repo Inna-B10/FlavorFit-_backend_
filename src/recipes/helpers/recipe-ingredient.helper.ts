@@ -19,11 +19,15 @@ export async function applyIngredientChanges(
 
 	// update ingredients (patch existing rows)
 	if (input.updateIngredients?.length) {
+		const patches = (input.updateIngredients ?? [])
+			.map(ing => ({ ing, data: buildIngredientPatch(ing) }))
+			.filter(x => Object.keys(x.data).length > 0)
+
 		const results = await Promise.all(
-			input.updateIngredients.map(ing =>
+			patches.map(({ ing, data }) =>
 				tx.ingredient.updateMany({
 					where: { recipeId, ingredientId: ing.ingredientId },
-					data: buildIngredientPatch(ing)
+					data
 				})
 			)
 		)

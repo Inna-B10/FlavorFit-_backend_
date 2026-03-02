@@ -9,7 +9,7 @@ export function buildRecipePatch(
 	const data: Prisma.RecipeUpdateInput = {}
 
 	if (input.slug !== undefined) data.slug = input.slug
-	if (input.title !== undefined) data.title = input.title
+	if (input.title !== undefined) data.title = input.title?.toLocaleLowerCase()
 	if (input.description !== undefined) data.description = input.description
 	if (input.difficulty !== undefined) data.difficulty = input.difficulty
 	if (input.dishType !== undefined) data.dishType = input.dishType
