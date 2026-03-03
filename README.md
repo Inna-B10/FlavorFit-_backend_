@@ -80,6 +80,7 @@ npm i @nestjs-modules/mailer
 npm i nodemailer
 npm i @react-email/components
 npm i -D react-email
+npm i nest-cloudflare-turnstile
 
 ```
 
@@ -89,21 +90,45 @@ npm i -D react-email
 
 ### 📋 TODOs:
 
-#### **frontend:**
+#### **remember frontend:**
 
+- [ ] в меню пользователя пометка о состоянии добавленного ингредиента (на проверке / отклонено /
+      опубликовано)
 - [ ] в Shopping list добавить возможность "отметить все ингредиенты данного рецепта"
 - [ ] product without variants in cart!! view message
 
 #### **backend:**
 
-- [ ] verification email
+- [ ] `RecipeDraft.status + reviewedBy/reviewedAt/reviewNote`
+- [ ]`IngredientDraft.rawName + resolvedProductId?`
+- [ ] запрет approve при unresolved ингредиентах
+- [ ] транзакционный publish (draft → recipe)
+- [ ] бэкенд-валидация: нельзя в cart продукт без variants
+- [ ] анти-спам/валидация rawName (trim, длина, rate limit)
+- [ ] решить “to taste” для draft-ингредиентов (quantity nullable или правило через note)
+-
+- [ ] **переделать процесс добавления рецепта:**
+  - [ ] пользователь не может создавать новый продукт
+  - [ ] несуществующий ингредиент можно задать как строку (RecipeDraft/IngredientDraft)
+  - [ ] RecipeDraft на проверку модератору
+  - [ ] функции модератора
+- [ ] **переделать процесс создания продукта:**
+  - [ ] добавить таблицу ProductFamily с familyKey
+  - [ ] для продуктов добавить familyId?, searchTerms String[], culinaryForm enum
+- [ ] ? работа с тегами:
+  - if tags provided - replaces current tags with exactly this list
+  - if not provided - do nothing
+  - empty list - clears all tags
+- [ ] ? нормализация названия рецепта и тегов
+- [ ] CORS-configuration
+- [x] verification email
+- [x] reset password
 - [ ] **Recipes, CRUD:**
   - [ ] ? при удалении проверка тегов на удаление
 - [ ] **Products, CRUD:**
 - [ ] ? meal type enum (breakfast, dinner, lunch,snacks desserts drinks)
 - [ ] ? dietary tags (vegetar, gluten-free)
-- [ ] Captcha
-- [ ] CORS-configuration
+- [x] Captcha
 
 <details style="border:1px solid #d4d4d4; border-radius:2px; padding:1rem;">
 <summary><h4 style="display:inline; padding-left:6px;">✅ Done</h4></summary>

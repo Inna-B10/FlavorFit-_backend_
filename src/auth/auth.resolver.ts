@@ -3,6 +3,7 @@ import { Args, Context, Mutation, Query, Resolver } from '@nestjs/graphql'
 import type { IGqlContext } from 'src/app.interface'
 import { AuthAccountService } from './auth-account.service'
 import { AuthService } from './auth.service'
+import { VerifyCaptcha } from './decorators/captcha.decorator'
 import { LoginInput, RegisterInput } from './inputs/auth.input'
 import { RequestEmailActionsInput } from './inputs/request-email-actions.input'
 import { ResetPasswordInput } from './inputs/reset-password.input'
@@ -17,7 +18,7 @@ export class AuthResolver {
 
 	//* -------------------------------- Register -------------------------------- */
 	@Mutation(() => AuthResponse)
-	// @VerifyCaptcha()
+	@VerifyCaptcha()
 	async register(@Args('data') input: RegisterInput) {
 		return await this.authService.register(input)
 	}
@@ -25,7 +26,7 @@ export class AuthResolver {
 	//* ---------------------------------- Login --------------------------------- */
 
 	@Mutation(() => AuthResponse)
-	// @VerifyCaptcha()
+	@VerifyCaptcha()
 	async login(@Args('data') input: LoginInput, @Context() { res }: IGqlContext) {
 		const { refreshToken, accessToken, ...response } = await this.authService.login(input)
 		this.authService.toggleAccessTokenCookie(res, accessToken)
@@ -76,7 +77,6 @@ export class AuthResolver {
 
 	//* ------------------------------ Verify Email ------------------------------ */
 	@Mutation(() => AuthResponse)
-	// @VerifyCaptcha()
 	async verifyEmail(
 		@Args('token', { type: () => String }) token: string,
 		@Context() { res }: IGqlContext
@@ -96,28 +96,27 @@ export class AuthResolver {
 
 	//* ---------------------------- Request New Verification ------------------------- */
 	@Mutation(() => Boolean)
-	// @VerifyCaptcha()
+	@VerifyCaptcha()
 	requestVerificationEmail(@Args('data') input: RequestEmailActionsInput) {
 		return this.authAccountService.resendVerification(input.email)
 	}
 
 	//* ---------------------------- Request Password Reset ------------------------- */
 	@Mutation(() => Boolean)
-	// @VerifyCaptcha()
+	@VerifyCaptcha()
 	requestPasswordReset(@Args('data') input: RequestEmailActionsInput) {
 		return this.authAccountService.requestPasswordReset(input.email)
 	}
 
 	//* ---------------------------- Validate Reset Token ------------------------- */
 	@Query(() => Boolean)
-	// @VerifyCaptcha()
 	validateResetToken(@Args('token', { type: () => String }) token: string) {
 		return this.authAccountService.validateResetToken(token)
 	}
 
 	//* ---------------------------- Reset Password ------------------------- */
 	@Mutation(() => Boolean)
-	// @VerifyCaptcha()
+	@VerifyCaptcha()
 	resetPassword(@Args('data') input: ResetPasswordInput) {
 		return this.authAccountService.resetPassword(input.token, input.newPassword)
 	}

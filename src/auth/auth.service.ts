@@ -72,7 +72,7 @@ export class AuthService {
 			})
 			return { user, ...tokens }
 		} catch (e) {
-			throw new NotFoundException("Can't sign in. Check details or complete verification.")
+			throw new NotFoundException('Unable to sign in; check details or complete verification.')
 		}
 	}
 
