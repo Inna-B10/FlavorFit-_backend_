@@ -76,14 +76,14 @@ export class UsersService {
 	}
 	//* --------------------------- Update Full Profile -------------------------- */
 	async updateFullProfile(userId: string, input: FullProfileUpdateInput) {
-		const { profile, fitnessProfile } = input
+		const { userProfile, fitnessProfile } = input
 
-		const updateUserProfile = profile
+		const updateUserProfile = userProfile
 			? {
 					userProfile: {
 						upsert: {
-							create: profile,
-							update: profile
+							create: userProfile,
+							update: userProfile
 						}
 					}
 				}

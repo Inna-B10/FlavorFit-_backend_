@@ -3,19 +3,15 @@ import Decimal from 'decimal.js'
 
 import { ActivityLevel, Gender, NutritionGoal, Role } from 'src/graphql/graphql.enums'
 
-@ObjectType({ isAbstract: true })
-export class UserBaseModel {
+//* ---------------------------------- User ---------------------------------- */
+@ObjectType()
+export class UserModel {
 	@Field()
 	userId: string
 	@Field()
 	email: string
 	@Field(() => Role)
 	role: Role
-}
-
-//* ---------------------------------- User ---------------------------------- */
-@ObjectType()
-export class UserModel extends UserBaseModel {
 	@Field()
 	firstName: string
 	@Field({ nullable: true })
@@ -62,9 +58,9 @@ export class UserProfileModel {
 	bio?: string
 }
 
-//* ------------------------- User With Full Profile ------------------------- */
+//* ------------------------- Full Profile ------------------------- */
 @ObjectType()
-export class UserWithProfileModel {
+export class FullProfileModel {
 	@Field(() => UserProfileModel, { nullable: true })
 	userProfile?: UserProfileModel
 

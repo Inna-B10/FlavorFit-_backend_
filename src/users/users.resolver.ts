@@ -3,7 +3,7 @@ import { Role } from 'prisma/generated/client'
 import { Auth } from 'src/auth/decorators/auth.decorator'
 import { CurrentUser } from 'src/auth/decorators/current-user.decorator'
 import { FullProfileUpdateInput, UserUpdateInput } from 'src/users/inputs/user-profile.input'
-import { UserModel, UserWithProfileModel } from './models/user-profile.model'
+import { FullProfileModel, UserModel } from './models/user-profile.model'
 import { UsersService } from './users.service'
 
 @Resolver()
@@ -18,7 +18,7 @@ export class UsersResolver {
 	}
 
 	//* -------------------------- Get Full Profile ------------------------- */
-	@Query(() => UserWithProfileModel, { name: 'fullProfile' })
+	@Query(() => FullProfileModel, { name: 'fullProfile' })
 	@Auth()
 	getFullProfile(@CurrentUser('userId') userId: string) {
 		return this.usersService.findFullProfile(userId)
@@ -27,16 +27,16 @@ export class UsersResolver {
 	//* ------------------------------- Update User ------------------------------ */
 	@Mutation(() => UserModel)
 	@Auth()
-	updateUser(@CurrentUser('userId') userId: string, @Args('input') input: UserUpdateInput) {
+	updateUser(@CurrentUser('userId') userId: string, @Args('data') input: UserUpdateInput) {
 		return this.usersService.updateUser(userId, input)
 	}
 
 	//* ----------------------------- Update Full Profile ----------------------------- */
-	@Mutation(() => UserWithProfileModel)
+	@Mutation(() => FullProfileModel)
 	@Auth()
 	updateFullProfile(
 		@CurrentUser('userId') userId: string,
-		@Args('input') input: FullProfileUpdateInput
+		@Args('data') input: FullProfileUpdateInput
 	) {
 		return this.usersService.updateFullProfile(userId, input)
 	}

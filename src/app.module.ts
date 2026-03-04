@@ -17,6 +17,7 @@ import { ProductsModule } from './products/products.module'
 import { RecipesModule } from './recipes/recipes.module'
 import { ShoppingListsModule } from './shopping-lists/shopping-lists.module'
 import { UsersModule } from './users/users.module'
+import { MediaUploadModule } from './media-upload/media-upload.module';
 
 @Module({
 	imports: [
@@ -40,7 +41,8 @@ import { UsersModule } from './users/users.module'
 		ShoppingListsModule,
 		CartsModule,
 		OrdersModule,
-		PrismaModule
+		PrismaModule,
+		MediaUploadModule
 	],
 	controllers: [AppController],
 	providers: [AppService, DecimalScalar]

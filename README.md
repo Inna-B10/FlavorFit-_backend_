@@ -81,6 +81,10 @@ npm i nodemailer
 npm i @react-email/components
 npm i -D react-email
 npm i nest-cloudflare-turnstile
+npm i fs-extra
+npm i app-root-path
+npm i -D @types/fs-extra @types/multer @types/app-root-path
+npm i @nestjs/serve-static
 
 ```
 

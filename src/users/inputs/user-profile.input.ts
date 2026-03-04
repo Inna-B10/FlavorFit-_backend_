@@ -132,7 +132,7 @@ export class FullProfileUpdateInput {
 	@IsOptional()
 	@ValidateNested()
 	@Type(() => UserProfileUpdateInput)
-	profile?: UserProfileUpdateInput
+	userProfile?: UserProfileUpdateInput
 
 	@Field(() => FitnessProfileUpdateInput, { nullable: true })
 	@IsOptional()
