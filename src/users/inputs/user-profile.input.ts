@@ -5,7 +5,6 @@ import {
 	IsInt,
 	IsOptional,
 	IsString,
-	IsUrl,
 	Max,
 	MaxLength,
 	Min,
@@ -30,8 +29,8 @@ export class UserUpdateInput {
 
 	@Field(() => String, { nullable: true })
 	@IsOptional()
-	@IsUrl()
-	@MaxLength(500)
+	@IsString()
+	@Trim()
 	avatarUrl?: string
 }
 

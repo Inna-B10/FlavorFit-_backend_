@@ -1,8 +1,9 @@
 import { Injectable } from '@nestjs/common'
-import path from 'app-root-path'
+
 import { ensureDir, writeFile } from 'fs-extra'
 
 import * as iconv from 'iconv-lite'
+import path from 'path'
 import { v4 as uuidv4 } from 'uuid'
 import { IUploadResponse } from './upload-response.types'
 
@@ -12,7 +13,7 @@ export class MediaUploadService {
 
 	async saveAvatar(file: Express.Multer.File): Promise<IUploadResponse> {
 		const folder = 'avatars'
-		const uploadFolder = `${path}/uploads/${folder}`
+		const uploadFolder = `${path.resolve()}/uploads/${folder}`
 		//eslint-disable-next-line @typescript-eslint/no-unsafe-call
 		await ensureDir(uploadFolder)
 

@@ -1,13 +1,14 @@
 import { Module } from '@nestjs/common'
 import { ServeStaticModule } from '@nestjs/serve-static'
-import { path } from 'app-root-path'
+
+import path from 'path'
 import { MediaUploadController } from './media-upload.controller'
 import { MediaUploadService } from './media-upload.service'
 
 @Module({
 	imports: [
 		ServeStaticModule.forRoot({
-			rootPath: `${path}/uploads`,
+			rootPath: `${path.resolve()}/uploads`,
 			serveRoot: '/uploads'
 		})
 	],

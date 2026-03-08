@@ -30,6 +30,16 @@ export class UsersService {
 				data: { userId: user.userId },
 				select: { listId: true }
 			})
+
+			await this.prisma.userProfile.create({
+				data: { userId: user.userId },
+				select: { profileId: true }
+			})
+
+			await this.prisma.fitnessProfile.create({
+				data: { userId: user.userId },
+				select: { fitnessProfileId: true }
+			})
 		}
 
 		return user
