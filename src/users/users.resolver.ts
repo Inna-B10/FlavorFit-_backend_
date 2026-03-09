@@ -10,7 +10,7 @@ import { UsersService } from './users.service'
 export class UsersResolver {
 	constructor(private readonly usersService: UsersService) {}
 
-	/* --------------------------------- Get Me --------------------------------- */
+	//* --------------------------------- Get Me --------------------------------- */
 	@Query(() => UserModel, { name: 'me' })
 	@Auth()
 	getMe(@CurrentUser('userId') userId: string) {
@@ -29,6 +29,13 @@ export class UsersResolver {
 	@Auth()
 	updateUser(@CurrentUser('userId') userId: string, @Args('data') input: UserUpdateInput) {
 		return this.usersService.updateUser(userId, input)
+	}
+
+	//* ------------------------------ Reset Avatar ------------------------------ */
+	@Mutation(() => Boolean)
+	@Auth()
+	resetAvatar(@CurrentUser('userId') userId: string) {
+		return this.usersService.resetAvatar(userId)
 	}
 
 	//* ----------------------------- Update Full Profile ----------------------------- */

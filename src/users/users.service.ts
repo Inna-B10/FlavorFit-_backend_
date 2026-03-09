@@ -84,6 +84,24 @@ export class UsersService {
 			}
 		})
 	}
+
+	//* ------------------------------ Reset Avatar ------------------------------ */
+	async resetAvatar(userId: string) {
+		const user = await this.prisma.user.update({
+			where: {
+				userId
+			},
+			data: {
+				avatarUrl: ''
+			}
+		})
+		if (!user) {
+			throw new BadRequestException('Failed to reset avatar')
+		}
+
+		return true
+	}
+
 	//* --------------------------- Update Full Profile -------------------------- */
 	async updateFullProfile(userId: string, input: FullProfileUpdateInput) {
 		const { userProfile, fitnessProfile } = input
