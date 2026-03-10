@@ -15,7 +15,9 @@ export class UserModel {
 	@Field()
 	firstName: string
 	@Field({ nullable: true })
-	avatarUrl: string
+	avatarUrl?: string
+	@Field({ nullable: true })
+	avatarBlobPath?: string
 	@Field({ nullable: true })
 	verificationToken?: string
 }

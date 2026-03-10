@@ -3,6 +3,7 @@ import { UserUpdateInput } from 'prisma/generated/models'
 import { rethrowPrismaKnownErrors } from 'src/common/prisma/prisma-errors'
 import { PrismaService } from 'src/prisma/prisma.service'
 import { FullProfileUpdateInput } from 'src/users/inputs/user-profile.input'
+import { UpdateAvatarInput } from './inputs/update-avatar.input'
 
 @Injectable()
 export class UsersService {
@@ -85,20 +86,34 @@ export class UsersService {
 		})
 	}
 
-	//* ------------------------------ Reset Avatar ------------------------------ */
-	async resetAvatar(userId: string) {
+	//* ------------------------------ Update Avatar ------------------------------ */
+	async updateAvatar(userId: string, input: UpdateAvatarInput) {
 		const user = await this.prisma.user.update({
 			where: {
 				userId
 			},
 			data: {
-				avatarUrl: ''
+				avatarUrl: input.avatarUrl,
+				avatarBlobPath: input.avatarBlobPath
+			}
+		})
+		return user
+	}
+
+	//* ------------------------------ Delete Avatar ------------------------------ */
+	async deleteAvatar(userId: string) {
+		const user = await this.prisma.user.update({
+			where: {
+				userId
+			},
+			data: {
+				avatarUrl: null,
+				avatarBlobPath: null
 			}
 		})
 		if (!user) {
-			throw new BadRequestException('Failed to reset avatar')
+			throw new BadRequestException('Failed to delete avatar')
 		}
-
 		return true
 	}
 

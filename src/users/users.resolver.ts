@@ -3,6 +3,7 @@ import { Role } from 'prisma/generated/client'
 import { Auth } from 'src/auth/decorators/auth.decorator'
 import { CurrentUser } from 'src/auth/decorators/current-user.decorator'
 import { FullProfileUpdateInput, UserUpdateInput } from 'src/users/inputs/user-profile.input'
+import { UpdateAvatarInput } from './inputs/update-avatar.input'
 import { FullProfileModel, UserModel } from './models/user-profile.model'
 import { UsersService } from './users.service'
 
@@ -31,11 +32,18 @@ export class UsersResolver {
 		return this.usersService.updateUser(userId, input)
 	}
 
-	//* ------------------------------ Reset Avatar ------------------------------ */
+	//* ------------------------------ Update Avatar ------------------------------ */
+	@Mutation(() => UserModel)
+	@Auth()
+	updateAvatar(@CurrentUser('userId') userId: string, @Args('data') input: UpdateAvatarInput) {
+		return this.usersService.updateAvatar(userId, input)
+	}
+
+	//* ------------------------------ Delete Avatar ------------------------------ */
 	@Mutation(() => Boolean)
 	@Auth()
-	resetAvatar(@CurrentUser('userId') userId: string) {
-		return this.usersService.resetAvatar(userId)
+	deleteAvatar(@CurrentUser('userId') userId: string) {
+		return this.usersService.deleteAvatar(userId)
 	}
 
 	//* ----------------------------- Update Full Profile ----------------------------- */

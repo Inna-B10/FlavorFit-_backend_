@@ -31,7 +31,6 @@ export class GqlTurnstileGuard implements CanActivate {
 		const gqlContext = GqlExecutionContext.create(context)
 		const request = gqlContext.getContext<IGqlContext>().req
 
-		//[TODO] add dev mode after testing
 		// if (isDev(this.configService)) return true
 
 		const token = request?.headers?.['cf-turnstile-token'] as string
