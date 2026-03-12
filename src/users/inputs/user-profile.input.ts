@@ -89,11 +89,12 @@ export class FitnessProfileUpdateInput {
 	@Amount()
 	currentWeight?: Decimal
 
-	@Field(() => Int, { nullable: true })
+	@Field(() => Decimal, { nullable: true })
 	@IsOptional()
-	@IsInt({ message: 'Target weight must be a number' })
-	@Min(1, { message: 'Target weight: the value is invalid' })
-	targetWeight?: number
+	@Type(() => String)
+	@ToDecimal()
+	@Amount()
+	targetWeight?: Decimal
 
 	@Field(() => Int, { nullable: true })
 	@IsOptional()

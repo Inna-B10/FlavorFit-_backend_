@@ -29,8 +29,8 @@ export class FitnessProfileModel {
 	heightCm?: number
 	@Field(() => Decimal, { nullable: true })
 	currentWeight?: Decimal
-	@Field(() => Int, { nullable: true })
-	targetWeight?: number
+	@Field(() => Decimal, { nullable: true })
+	targetWeight?: Decimal
 	@Field(() => Int, { nullable: true })
 	chestCm?: number
 	@Field(() => Int, { nullable: true })

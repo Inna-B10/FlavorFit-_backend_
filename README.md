@@ -104,7 +104,7 @@ npm i @nestjs/serve-static
 #### **backend:**
 
 - [ ] `RecipeDraft.status + reviewedBy/reviewedAt/reviewNote`
-- [ ]`IngredientDraft.rawName + resolvedProductId?`
+- [ ] `IngredientDraft.rawName + resolvedProductId?`
 - [ ] запрет approve при unresolved ингредиентах
 - [ ] транзакционный publish (draft → recipe)
 - [ ] бэкенд-валидация: нельзя в cart продукт без variants

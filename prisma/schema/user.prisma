@@ -51,7 +51,7 @@ model FitnessProfile {
 
   heightCm      Int?     @map("height_cm")
   currentWeight Decimal? @map("current_weight")
-  targetWeight  Int?     @map("target_weight")
+  targetWeight  Decimal? @map("target_weight")
 
   chestCm Int? @map("chest_cm")
   waistCm Int? @map("waist_cm")
