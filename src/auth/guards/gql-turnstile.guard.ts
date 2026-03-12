@@ -9,6 +9,7 @@ import { ConfigService } from '@nestjs/config'
 import { GqlExecutionContext } from '@nestjs/graphql'
 import { TurnstileService } from 'nest-cloudflare-turnstile/dist/services/turnstile.service'
 import { IGqlContext } from 'src/app.interface'
+import { isDev } from 'src/utils/isDev.util'
 
 interface ITurnstileResponse {
 	success: boolean
@@ -31,7 +32,8 @@ export class GqlTurnstileGuard implements CanActivate {
 		const gqlContext = GqlExecutionContext.create(context)
 		const request = gqlContext.getContext<IGqlContext>().req
 
-		// if (isDev(this.configService)) return true
+		//NB! isDev
+		if (isDev(this.configService)) return true
 
 		const token = request?.headers?.['cf-turnstile-token'] as string
 

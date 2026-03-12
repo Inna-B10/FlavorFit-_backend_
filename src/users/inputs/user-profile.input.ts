@@ -31,12 +31,6 @@ export class UserUpdateInput {
 	// @IsOptional()
 	// @IsString()
 	// @Trim()
-	// avatarUrl?: string
-
-	// @Field(() => String, { nullable: true })
-	// @IsOptional()
-	// @IsString()
-	// @Trim()
 	// @MinLength(6, { message: 'Password is too short' })
 	// @MaxLength(64, { message: 'Password is too long' })
 	// // @MinLength(8, { message: 'Password is too short' })
