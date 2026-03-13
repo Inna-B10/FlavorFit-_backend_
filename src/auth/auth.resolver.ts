@@ -95,14 +95,14 @@ export class AuthResolver {
 	}
 
 	//* ---------------------------- Request New Verification ------------------------- */
-	@Mutation(() => Boolean)
+	@Mutation(() => String, { nullable: true }) //@Mutation(() => Boolean)
 	@VerifyCaptcha()
 	requestVerificationEmail(@Args('data') input: RequestEmailActionsInput) {
 		return this.authAccountService.resendVerification(input.email)
 	}
 
 	//* ---------------------------- Request Password Reset ------------------------- */
-	@Mutation(() => Boolean)
+	@Mutation(() => String, { nullable: true }) //@Mutation(() => Boolean)
 	@VerifyCaptcha()
 	requestPasswordReset(@Args('data') input: RequestEmailActionsInput) {
 		return this.authAccountService.requestPasswordReset(input.email)

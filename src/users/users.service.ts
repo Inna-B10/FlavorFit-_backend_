@@ -1,4 +1,5 @@
 import { BadRequestException, Injectable } from '@nestjs/common'
+import { randomUUID } from 'crypto'
 import { UserUpdateInput } from 'prisma/generated/models'
 import { rethrowPrismaKnownErrors } from 'src/common/prisma/prisma-errors'
 import { PrismaService } from 'src/prisma/prisma.service'
@@ -11,9 +12,7 @@ export class UsersService {
 
 	//* ------------------------------- Create User ------------------------------ */
 	async createUser(email: string, password: string, firstName: string) {
-		//NB! isDev
-		const verificationToken = '0000'
-		//const verificationToken = randomUUID()
+		const verificationToken = randomUUID()
 
 		const user = await this.prisma.user.create({
 			data: {

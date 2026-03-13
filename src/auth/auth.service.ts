@@ -21,6 +21,7 @@ export class AuthService {
 	private readonly EXPIRE_DAYS_REFRESH_TOKEN = 3
 	readonly REFRESH_TOKEN_COOKIE_NAME = 'refreshToken'
 
+	//NB![DEV] 1 minute
 	private readonly ACCESS_EXPIRE_MINUTES = 1
 	readonly ACCESS_TOKEN_COOKIE_NAME = 'accessToken'
 
@@ -46,14 +47,14 @@ export class AuthService {
 
 			const link = `${verifyEmailLink}/auth/verify-email?token=${user.verificationToken}`
 
-			//NB! isDev
-			if (isDev(this.configService)) {
-				console.log('[DEV] Verification link:', link)
-				return { user }
+			// try/catch if email service is down, user will still be created
+			try {
+				await this.emailService.sendVerification(user.email, user.firstName, link)
+			} catch (e) {
+				if (isDev(this.configService)) {
+					console.log(e)
+				}
 			}
-
-			await this.emailService.sendVerification(user.email, user.firstName, link)
-
 			return { user }
 		} catch (error) {
 			const message = error instanceof Error ? error.message : 'Unknown error'

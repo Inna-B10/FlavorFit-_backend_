@@ -2,6 +2,7 @@ import { BadRequestException, Injectable, NotFoundException } from '@nestjs/comm
 import { ConfigService } from '@nestjs/config'
 import { JwtService } from '@nestjs/jwt'
 import { hash } from 'argon2'
+import { randomUUID } from 'crypto'
 import { EmailService } from 'src/email/email.service'
 import { PrismaService } from 'src/prisma/prisma.service'
 import { UsersService } from 'src/users/users.service'
@@ -52,16 +53,14 @@ export class AuthAccountService {
 	}
 
 	//* ---------------------------- Resend Verification ------------------------- */
-	async resendVerification(email: string): Promise<boolean> {
+	async resendVerification(email: string): Promise<string | null> {
 		const normalizedEmail = email.toLowerCase()
 		const user = await this.usersService.findUserByEmail(normalizedEmail)
-		if (!user) return true
+		if (!user) return null //return true
 
-		if (!user.verificationToken) return true
+		if (!user.verificationToken) return null //return true
 
-		//NB! isDev
-		const newToken = '0000'
-		//const newToken = randomUUID()
+		const newToken = randomUUID()
 
 		await this.prisma.user.update({
 			where: { userId: user.userId },
@@ -72,31 +71,28 @@ export class AuthAccountService {
 
 		const verifyEmailLink = this.configService.getOrThrow<string>('FRONTEND_URL')
 
-		//NB! isDev
-		const link = `${verifyEmailLink}/auth/verify-email?token=${newToken}`
-		//const link = `${verifyEmailLink}/auth/verify-email?token=${user.verificationToken}`
+		const link = `${verifyEmailLink}/auth/verify-email?token=${user.verificationToken}`
 
-		//NB! isDev
-		if (isDev(this.configService)) {
-			console.log('[DEV] Verification link:', link)
-			return true
+		try {
+			await this.emailService.sendVerification(user.email, user.firstName, link)
+		} catch (e) {
+			if (isDev(this.configService)) {
+				console.log(e)
+			}
 		}
 
-		await this.emailService.sendVerification(user.email, user.firstName, link)
-
-		return true
+		return link //return true
 	}
 
 	//* ---------------------------- Request Password Reset ------------------------- */
 	async requestPasswordReset(email: string) {
 		const normalizedEmail = email.toLowerCase()
 		const user = await this.usersService.findUserByEmail(normalizedEmail)
-		if (!user) return true
+		if (!user) return null //return true
 
-		//NB! isDev
-		const newResetPasswordToken = '0000'
-		//const newResetPasswordToken = randomUUID()
+		const newResetPasswordToken = randomUUID()
 
+		//NB![DEV] 1 minute
 		await this.prisma.user.update({
 			where: { userId: user.userId },
 			data: {
@@ -105,19 +101,17 @@ export class AuthAccountService {
 			}
 		})
 
-		//NB! isDev
-		const resetPasswordLink = `${this.configService.getOrThrow<string>('FRONTEND_URL')}/auth/reset-password?token=${newResetPasswordToken}`
-		//const resetPasswordLink = `${this.configService.getOrThrow<string>('FRONTEND_URL')}/auth/reset-password?token=${user.resetPasswordToken}`
+		const resetPasswordLink = `${this.configService.getOrThrow<string>('FRONTEND_URL')}/auth/reset-password?token=${user.resetPasswordToken}`
 
-		//NB! isDev
-		if (isDev(this.configService)) {
-			console.log('[DEV] Reset password link:', resetPasswordLink)
-			return true
+		try {
+			await this.emailService.sendResetPassword(user.email, user.firstName, resetPasswordLink)
+		} catch (e) {
+			if (isDev(this.configService)) {
+				console.log(e)
+			}
 		}
 
-		await this.emailService.sendResetPassword(user.email, user.firstName, resetPasswordLink)
-
-		return true
+		return resetPasswordLink //return true
 	}
 
 	//* ---------------------------- Validate Reset Token ------------------------- */
