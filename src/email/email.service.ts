@@ -1,20 +1,52 @@
-import { MailerService } from '@nestjs-modules/mailer'
 import { Injectable } from '@nestjs/common'
+import { ConfigService } from '@nestjs/config'
 import { render } from '@react-email/render'
 import ResetPasswordEmail from './templates/reset-password'
 import VerificationEmail from './templates/verification-email'
 
+interface MailgunResponse {
+	id: string
+	message: string
+}
+
 @Injectable()
 export class EmailService {
-	constructor(private readonly mailerService: MailerService) {}
+	constructor(private readonly configService: ConfigService) {}
 
-	sendEmail(to: string, subject: string, html: string, text?: string): Promise<void> {
-		return this.mailerService.sendMail({
-			to,
-			subject,
-			html,
-			text
+	async sendEmail(
+		to: string,
+		subject: string,
+		html: string,
+		text?: string
+	): Promise<MailgunResponse> {
+		const apiKey = this.configService.get<string>('MAILGUN_API_KEY')
+		const domain = this.configService.get<string>('MAILGUN_DOMAIN')
+		const from = this.configService.get<string>('MAIL_FROM')
+
+		const formData = new FormData()
+
+		formData.append('from', from!)
+		formData.append('to', to)
+		formData.append('subject', subject)
+		formData.append('html', html)
+		formData.append('text', text || '')
+
+		const res = await fetch(`https://api.mailgun.net/v3/${domain}/messages`, {
+			method: 'POST',
+			headers: {
+				Authorization: `Basic ${Buffer.from(`api:${apiKey}`).toString('base64')}`
+			},
+			body: formData
 		})
+
+		if (!res.ok) {
+			const text = await res.text()
+			throw new Error(`Mailgun error: ${text}`)
+		}
+
+		const result = (await res.json()) as MailgunResponse
+		console.log('Mailgun message id:', result.id)
+		return result
 	}
 
 	//* ---------------------------- Verify Email ------------------------------ */
