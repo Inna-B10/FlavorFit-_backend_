@@ -71,7 +71,7 @@ export class AuthAccountService {
 
 		const verifyEmailLink = this.configService.getOrThrow<string>('FRONTEND_URL')
 
-		const link = `${verifyEmailLink}/auth/verify-email?token=${user.verificationToken}`
+		const link = `${verifyEmailLink}/auth/verify-email?token=${newToken}`
 
 		try {
 			await this.emailService.sendVerification(user.email, user.firstName, link)
@@ -101,7 +101,7 @@ export class AuthAccountService {
 			}
 		})
 
-		const resetPasswordLink = `${this.configService.getOrThrow<string>('FRONTEND_URL')}/auth/reset-password?token=${user.resetPasswordToken}`
+		const resetPasswordLink = `${this.configService.getOrThrow<string>('FRONTEND_URL')}/auth/reset-password?token=${newResetPasswordToken}`
 
 		try {
 			await this.emailService.sendResetPassword(user.email, user.firstName, resetPasswordLink)
