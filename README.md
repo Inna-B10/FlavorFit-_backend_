@@ -78,13 +78,8 @@ npm i express-rate-limit
 npm i helmet
 npm i @nestjs-modules/mailer
 npm i nodemailer
-npm i @react-email/components
 npm i -D react-email
 npm i nest-cloudflare-turnstile
-npm i fs-extra
-npm i app-root-path
-npm i -D @types/fs-extra @types/multer @types/app-root-path
-npm i @nestjs/serve-static
 
 ```
 
@@ -103,6 +98,7 @@ npm i @nestjs/serve-static
 
 #### **backend:**
 
+- [ ] Account: new password
 - [ ] `RecipeDraft.status + reviewedBy/reviewedAt/reviewNote`
 - [ ] `IngredientDraft.rawName + resolvedProductId?`
 - [ ] запрет approve при unresolved ингредиентах
@@ -124,19 +120,19 @@ npm i @nestjs/serve-static
   - if not provided - do nothing
   - empty list - clears all tags
 - [ ] ? нормализация названия рецепта и тегов
-- [ ] CORS-configuration
-- [x] verification email
-- [x] reset password
 - [ ] **Recipes, CRUD:**
   - [ ] ? при удалении проверка тегов на удаление
 - [ ] **Products, CRUD:**
 - [ ] ? meal type enum (breakfast, dinner, lunch,snacks desserts drinks)
 - [ ] ? dietary tags (vegetar, gluten-free)
-- [x] Captcha
 
 <details style="border:1px solid #d4d4d4; border-radius:2px; padding:1rem;">
 <summary><h4 style="display:inline; padding-left:6px;">✅ Done</h4></summary>
 
+- [x] Captcha
+- [x] CORS-configuration
+- [x] verification email
+- [x] reset password
 - [x] **input rules** + password rules/auth.input.ts
 - [x] **user info:** 2 separate pages
   - [x] account
