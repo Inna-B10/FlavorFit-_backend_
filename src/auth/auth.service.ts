@@ -174,16 +174,10 @@ export class AuthService {
 		res.cookie(name, token || '', {
 			httpOnly: true,
 			expires: expiresIn,
-			//# online
-			sameSite: 'lax',
-			secure: true
-
-			//# local
-			// sameSite: isDev(this.configService) ? 'lax' : 'none',
-			// secure: isDev(this.configService) ? false : true
+			sameSite: isDev(this.configService) ? 'lax' : 'none',
+			secure: isDev(this.configService) ? false : true
 
 			//domain:... really needed only if frontend and backend are in different SUBdomains and the cookie must be shared
-			// domain: isDev(this.configService) ? 'localhost' : '...',
 		})
 	}
 }

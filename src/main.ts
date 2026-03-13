@@ -15,7 +15,7 @@ async function bootstrap() {
 	app.set('trust proxy', 1)
 
 	const allowedOrigins = [
-		'https://flavor-fit-alekinna.vercel.app',
+		process.env.FRONTEND_URL,
 		'http://localhost:3000',
 		'http://localhost:3001'
 	]
@@ -29,7 +29,12 @@ async function bootstrap() {
 		},
 		credentials: true,
 		methods: ['GET', 'POST', 'OPTIONS'],
-		allowedHeaders: ['Content-Type', 'Authorization', 'Apollo-Require-Preflight'],
+		allowedHeaders: [
+			'Content-Type',
+			'Authorization',
+			'Apollo-Require-Preflight',
+			'X-Apollo-Operation-Name'
+		],
 
 		// (optional) makes preflight return 204 quickly
 		optionsSuccessStatus: 204

@@ -7,5 +7,6 @@ export const getGraphQLConfig = (configService: ConfigService): ApolloDriverConf
 	autoSchemaFile: true,
 	sortSchema: true,
 	playground: isDev(configService),
+	introspection: isDev(configService),
 	context: ({ req, res }: IGqlContext): IGqlContext => ({ req, res })
 })
