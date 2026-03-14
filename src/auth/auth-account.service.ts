@@ -1,7 +1,7 @@
 import { BadRequestException, Injectable, NotFoundException } from '@nestjs/common'
 import { ConfigService } from '@nestjs/config'
 import { JwtService } from '@nestjs/jwt'
-import { hash } from 'argon2'
+import { hash, verify } from 'argon2'
 import { randomUUID } from 'crypto'
 import { EmailService } from 'src/email/email.service'
 import { PrismaService } from 'src/prisma/prisma.service'
@@ -151,5 +151,29 @@ export class AuthAccountService {
 		})
 
 		return true
+	}
+
+	//* ------------------------------ Change Password ---------------------------- */
+	async changePassword(userId: string, currentPassword: string, newPassword: string) {
+		const user = await this.usersService.findUserById(userId)
+
+		if (!user) throw new NotFoundException('User not found')
+
+		const isValidPassword = await verify(user.password, currentPassword)
+
+		if (!isValidPassword) throw new BadRequestException('Current password is incorrect')
+
+		const hashedPassword = await hash(newPassword)
+		if (hashedPassword === user.password)
+			throw new BadRequestException('New password is the same as the old one')
+
+		await this.prisma.user.update({
+			where: { userId: user.userId },
+			data: {
+				password: hashedPassword
+			}
+		})
+
+		return user
 	}
 }

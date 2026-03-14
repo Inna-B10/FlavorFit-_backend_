@@ -1,9 +1,13 @@
 import { BadRequestException, UnauthorizedException } from '@nestjs/common'
 import { Args, Context, Mutation, Query, Resolver } from '@nestjs/graphql'
 import type { IGqlContext } from 'src/app.interface'
+import { ChangePasswordInput } from 'src/auth/inputs/change-password.input'
+import { UserModel } from 'src/users/models/user-profile.model'
 import { AuthAccountService } from './auth-account.service'
 import { AuthService } from './auth.service'
+import { Auth } from './decorators/auth.decorator'
 import { VerifyCaptcha } from './decorators/captcha.decorator'
+import { CurrentUser } from './decorators/current-user.decorator'
 import { LoginInput, RegisterInput } from './inputs/auth.input'
 import { RequestEmailActionsInput } from './inputs/request-email-actions.input'
 import { ResetPasswordInput } from './inputs/reset-password.input'
@@ -119,5 +123,12 @@ export class AuthResolver {
 	@VerifyCaptcha()
 	resetPassword(@Args('data') input: ResetPasswordInput) {
 		return this.authAccountService.resetPassword(input.token, input.newPassword)
+	}
+
+	//* ---------------------------- Change Password ------------------------- */
+	@Mutation(() => UserModel)
+	@Auth()
+	changePassword(@CurrentUser('userId') userId: string, @Args('data') input: ChangePasswordInput) {
+		return this.authAccountService.changePassword(userId, input.currentPassword, input.newPassword)
 	}
 }
