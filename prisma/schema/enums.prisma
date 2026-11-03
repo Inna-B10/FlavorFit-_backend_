@@ -36,6 +36,12 @@ enum DishType {
   DRINK
 }
 
+enum RecipeDraftStatus {
+  PENDING
+  APPROVED
+  REJECTED
+}
+
 enum Role {
   USER
   ADMIN

@@ -25,6 +25,8 @@ model Recipe {
   likes    Like[]
   views    Int       @default(0)
 
+  recipeDraft RecipeDraft?
+
   listRecipes     ShoppingListRecipe[]
   listItemSources ShoppingListItemSource[]
   orderRecipes    OrderRecipe[]

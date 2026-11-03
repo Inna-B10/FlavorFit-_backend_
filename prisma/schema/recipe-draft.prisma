@@ -1,0 +1,102 @@
+model RecipeDraft {
+  recipeDraftId String @id @default(cuid()) @map("recipe_draft_id")
+
+  // slug лучше не делать unique в draft
+  slug        String? @map("slug")
+  title       String
+  description String
+
+  calories    Int?
+  cookingTime Int?       @map("cooking_time")
+  difficulty  Difficulty
+  dishType    DishType   @map("dish_type")
+
+  // чтобы не делать DraftTag таблицу
+  tags String[] @default([]) @map("tags")
+
+  status RecipeDraftStatus @default(PENDING)
+
+  reviewNote String?   @map("review_note")
+  reviewedAt DateTime? @map("reviewed_at")
+
+  // reviewer
+  reviewedBy String? @map("reviewed_by")
+  reviewer   User?   @relation("RecipeDraftReviewer", fields: [reviewedBy], references: [userId])
+
+  // author
+  userId String @map("user_id")
+  user   User   @relation("RecipeDraftAuthor", fields: [userId], references: [userId])
+
+  // связь с опубликованным рецептом
+  publishedRecipeId String? @unique @map("published_recipe_id")
+  publishedRecipe   Recipe? @relation(fields: [publishedRecipeId], references: [recipeId])
+
+  ingredients    IngredientDraft[]
+  recipeSteps    RecipeStepDraft[]
+  nutritionFacts NutritionFactDraft?
+
+  createdAt      DateTime @default(now()) @map("created_at")
+  updatedAt      DateTime @updatedAt @map("updated_at")
+  recipeRecipeId String?
+
+  @@index([status])
+  @@index([userId, status])
+  @@map("recipe_drafts")
+}
+
+model IngredientDraft {
+  ingredientDraftId String @id @default(cuid()) @map("ingredient_draft_id")
+
+  quantity       Decimal?    @db.Decimal(10, 3) // nullable для "to taste"
+  recipeUnit     RecipeUnit? @map("recipe_unit")
+  ingredientNote String?     @map("ingredient_note")
+
+  productId String?  @map("product_id")
+  product   Product? @relation(fields: [productId], references: [productId])
+
+  rawProductName String? @map("raw_product_name") // если не найден
+
+  recipeDraftId String      @map("recipe_draft_id")
+  recipeDraft   RecipeDraft @relation(fields: [recipeDraftId], references: [recipeDraftId], onDelete: Cascade)
+
+  createdAt DateTime @default(now()) @map("created_at")
+  updatedAt DateTime @updatedAt @map("updated_at")
+
+  @@index([productId])
+  @@map("ingredient_drafts")
+}
+
+model RecipeStepDraft {
+  recipeStepDraftId String @id @default(cuid()) @map("recipe_step_draft_id")
+
+  stepNumber Int?    @map("step_number")
+  title      String?
+  content    String
+
+  recipeDraftId String      @map("recipe_draft_id")
+  recipeDraft   RecipeDraft @relation(fields: [recipeDraftId], references: [recipeDraftId], onDelete: Cascade)
+
+  createdAt DateTime @default(now()) @map("created_at")
+  updatedAt DateTime @updatedAt @map("updated_at")
+
+  @@unique([recipeDraftId, stepNumber])
+  @@map("recipe_step_drafts")
+}
+
+model NutritionFactDraft {
+  factDraftId String @id @default(cuid()) @map("fact_draft_id")
+
+  protein       Decimal?
+  fats          Decimal?
+  carbohydrates Decimal?
+  fiber         Decimal?
+  sugar         Decimal?
+
+  recipeDraftId String      @unique @map("recipe_draft_id")
+  recipeDraft   RecipeDraft @relation(fields: [recipeDraftId], references: [recipeDraftId], onDelete: Cascade)
+
+  createdAt DateTime @default(now()) @map("created_at")
+  updatedAt DateTime @updatedAt @map("updated_at")
+
+  @@map("nutrition_fact_drafts")
+}

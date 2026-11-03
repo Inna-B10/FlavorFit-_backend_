@@ -11,10 +11,13 @@ model Product {
   // how it is SOLD variations
   productVariants ProductVariant[] //packaging, weight, price
 
-  recipes          Ingredient[] // in what recipes is it used
+  recipes      Ingredient[] // in what recipes is it used
+  recipeDrafts IngredientDraft[]
+
   shoppingListItem ShoppingListItem[]
   orderItems       OrderItem[]
-  cartItems        CartItem[]
+
+  cartItems CartItem[]
 
   createdAt DateTime @default(now()) @map("created_at")
   updatedAt DateTime @updatedAt @map("updated_at")
