@@ -15,7 +15,10 @@ model User {
   userProfile    UserProfile?
   fitnessProfile FitnessProfile?
 
-  recipes  Recipe[]
+  recipes              Recipe[]
+  recipeDrafts         RecipeDraft[] @relation("RecipeDraftAuthor")
+  reviewedRecipeDrafts RecipeDraft[] @relation("RecipeDraftReviewer")
+
   comments Comment[]
   likes    Like[]
 

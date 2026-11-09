@@ -15,10 +15,13 @@ model Product {
   culinaryForm CulinaryForm?  @map("culinary_form")
   searchTerms  String[]       @default([]) @map("search_terms")
 
-  recipes          Ingredient[] // in what recipes is it used
+  recipes      Ingredient[] // in what recipes is it used
+  recipeDrafts IngredientDraft[]
+
   shoppingListItem ShoppingListItem[]
   orderItems       OrderItem[]
-  cartItems        CartItem[]
+
+  cartItems CartItem[]
 
   createdAt DateTime @default(now()) @map("created_at")
   updatedAt DateTime @updatedAt @map("updated_at")

@@ -16,41 +16,36 @@ import {
 } from 'class-validator'
 import { Trim } from 'src/common/class-transformer/string.decorators'
 import { Difficulty, DishType } from 'src/graphql/graphql.enums'
-import { CreateIngredientInput } from '../ingredient/create-ingredient.input'
+import {
+	CreateIngredientDraftInput,
+	CreateIngredientInput
+} from '../ingredient/create-ingredient.input'
 import { NutritionFactsInput } from '../nutrition-facts.input'
 import { CreateRecipeStepInput } from '../step/create-step.input'
 
-@InputType()
-export class CreateRecipeInput {
-	@Field(() => String)
-	@IsString()
-	@Trim()
-	@MaxLength(160)
-	@MinLength(1)
-	@Matches(/^[a-z0-9-]+$/)
-	slug: string
-
+@InputType({ isAbstract: true })
+export class RecipeBaseInput {
 	@Field(() => String)
 	@IsString()
 	@Trim()
 	@MinLength(1)
 	@MaxLength(200)
-	title: string
+	title!: string
 
 	@Field(() => String)
 	@IsString()
 	@Trim()
 	@MinLength(1)
 	@MaxLength(500)
-	description: string
+	description!: string
 
 	@Field(() => Difficulty)
 	@IsEnum(Difficulty)
-	difficulty: Difficulty
+	difficulty!: Difficulty
 
 	@Field(() => DishType)
 	@IsEnum(DishType)
-	dishType: DishType
+	dishType!: DishType
 
 	@Field(() => Int, { nullable: true })
 	@IsOptional()
@@ -63,6 +58,12 @@ export class CreateRecipeInput {
 	@IsInt()
 	@Min(0)
 	calories?: number
+
+	@Field(() => NutritionFactsInput, { nullable: true })
+	@IsOptional()
+	@ValidateNested()
+	@Type(() => NutritionFactsInput)
+	nutritionFacts?: NutritionFactsInput
 
 	@Field(() => [String], { nullable: true })
 	@IsOptional()
@@ -77,23 +78,47 @@ export class CreateRecipeInput {
 	@ArrayMaxSize(20)
 	tags?: string[]
 
-	@Field(() => [CreateIngredientInput])
-	@IsArray()
-	@ArrayMinSize(1)
-	@ValidateNested({ each: true })
-	@Type(() => CreateIngredientInput)
-	ingredients: CreateIngredientInput[]
-
 	@Field(() => [CreateRecipeStepInput], { nullable: true })
 	@IsOptional()
 	@IsArray()
 	@ValidateNested({ each: true })
 	@Type(() => CreateRecipeStepInput)
 	recipeSteps?: CreateRecipeStepInput[]
+}
 
-	@Field(() => NutritionFactsInput, { nullable: true })
+@InputType()
+export class CreateRecipeInput extends RecipeBaseInput {
+	@Field(() => String)
+	@IsString()
+	@Trim()
+	@MaxLength(160)
+	@MinLength(1)
+	@Matches(/^[a-z0-9-]+$/)
+	slug!: string
+
+	@Field(() => [CreateIngredientInput])
+	@IsArray()
+	@ArrayMinSize(1)
+	@ValidateNested({ each: true })
+	@Type(() => CreateIngredientInput)
+	ingredients!: CreateIngredientInput[]
+}
+
+@InputType()
+export class CreateRecipeDraftInput extends RecipeBaseInput {
+	@Field(() => String, { nullable: true })
 	@IsOptional()
-	@ValidateNested()
-	@Type(() => NutritionFactsInput)
-	nutritionFacts?: NutritionFactsInput
+	@IsString()
+	@Trim()
+	@MaxLength(160)
+	@MinLength(1)
+	@Matches(/^[a-z0-9-]+$/)
+	slug?: string
+
+	@Field(() => [CreateIngredientDraftInput])
+	@IsArray()
+	@ArrayMinSize(1)
+	@ValidateNested({ each: true })
+	@Type(() => CreateIngredientDraftInput)
+	ingredients!: CreateIngredientDraftInput[]
 }
