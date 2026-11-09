@@ -91,19 +91,30 @@ export class ProductsService {
 
 	//* ------------------------------ Update Product ------------------------------ */
 	async updateProduct(productId: string, input: UpdateProductInput) {
-		const { productName, ...productData } = input
+		const { productName, familyId, searchTerms, ...productData } = input
 
 		try {
 			return await this.prisma.product.update({
 				where: { productId },
 				data: {
 					...productData,
-					...(productName !== undefined ? { productName: productName.toLowerCase() } : {})
+
+					...(productName !== undefined ? { productName: productName.toLowerCase() } : {}),
+
+					...(familyId !== undefined
+						? {
+								family: familyId === null ? { disconnect: true } : { connect: { familyId } }
+							}
+						: {}),
+
+					...(searchTerms !== undefined ? { searchTerms } : {})
 				},
 				include: { productVariants: true }
 			})
 		} catch (e) {
-			rethrowPrismaKnownErrors(e, { notFound: { type: 'product', id: productId } })
+			rethrowPrismaKnownErrors(e, {
+				notFound: { type: 'product', id: productId }
+			})
 		}
 	}
 

@@ -3,13 +3,17 @@ model Product {
   productName String  @map("product_name")
   iconUrl     String? @map("icon_url")
 
-  isActive Boolean @default(false) @map("is_active")
-
+  isActive        Boolean          @default(false) @map("is_active")
   // how it is USED in recipes
-  recipeUnit RecipeUnit @map("recipe_unit") // 150 MILLILITER
-
+  recipeUnit      RecipeUnit       @map("recipe_unit") // 150 MILLILITER
   // how it is SOLD variations
   productVariants ProductVariant[] //packaging, weight, price
+
+  // Product classification
+  familyId     String?        @map("family_id")
+  family       ProductFamily? @relation(fields: [familyId], references: [familyId], onDelete: SetNull)
+  culinaryForm CulinaryForm?  @map("culinary_form")
+  searchTerms  String[]       @default([]) @map("search_terms")
 
   recipes          Ingredient[] // in what recipes is it used
   shoppingListItem ShoppingListItem[]
@@ -42,4 +46,13 @@ model ProductVariant {
 
   @@unique([productId, pricingAmount, pricingUnit, label])
   @@map("product_variants")
+}
+
+model ProductFamily {
+  familyId   String @id @default(cuid()) @map("family_id")
+  familyName String @unique @map("family_name")
+
+  products Product[]
+
+  @@map("product_families")
 }

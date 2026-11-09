@@ -96,6 +96,9 @@ npm i nest-cloudflare-turnstile
 
 #### **backend:**
 
+- [ ] Удалить из GraphQL-моделей !, добавленные для подавления strictPropertyInitialization.
+- [ ]     @Field(() => [IngredientModel], { nullable: true }) - почему может быть nullable?
+
 - [ ] Account: new password
 - [ ] `RecipeDraft.status + reviewedBy/reviewedAt/reviewNote`
 - [ ] `IngredientDraft.rawName + resolvedProductId?`

@@ -1,6 +1,7 @@
 import { registerEnumType } from '@nestjs/graphql'
 import {
 	ActivityLevel,
+	CulinaryForm,
 	Difficulty,
 	DishType,
 	Gender,
@@ -22,9 +23,11 @@ registerEnumType(Gender, { name: 'Gender' })
 registerEnumType(ActivityLevel, { name: 'ActivityLevel' })
 registerEnumType(NutritionGoal, { name: 'NutritionGoal' })
 registerEnumType(RecipeSort, { name: 'RecipeSort' })
+registerEnumType(CulinaryForm, { name: 'CulinaryForm' })
 
 export {
 	ActivityLevel,
+	CulinaryForm,
 	Difficulty,
 	DishType,
 	Gender,

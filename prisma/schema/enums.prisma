@@ -74,3 +74,14 @@ enum RecipeSort {
   POPULAR
   COOKING_TIME
 }
+
+enum CulinaryForm {
+  FRESH
+  FROZEN
+  SPICE_HERB_SEASONING
+  CANNED_JARRED
+  PASTE_SAUCE
+  DRIED
+  EXTRACT
+  OTHER
+}

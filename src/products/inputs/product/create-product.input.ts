@@ -12,7 +12,7 @@ import {
 	ValidateNested
 } from 'class-validator'
 import { Trim } from 'src/common/class-transformer/string.decorators'
-import { RecipeUnit } from 'src/graphql/graphql.enums'
+import { CulinaryForm, RecipeUnit } from 'src/graphql/graphql.enums'
 import { CreateProductVariantInput } from '../product-variant/create-product-variants.input'
 
 @InputType()
@@ -40,4 +40,20 @@ export class CreateProductInput {
 	@ValidateNested({ each: true })
 	@Type(() => CreateProductVariantInput)
 	productVariants?: CreateProductVariantInput[]
+
+	@Field(() => String, { nullable: true })
+	@IsOptional()
+	@IsString()
+	familyId?: string
+
+	@Field(() => CulinaryForm, { nullable: true })
+	@IsOptional()
+	@IsEnum(CulinaryForm)
+	culinaryForm?: CulinaryForm
+
+	@Field(() => [String], { nullable: true })
+	@IsOptional()
+	@IsArray()
+	@IsString({ each: true })
+	searchTerms?: string[]
 }
