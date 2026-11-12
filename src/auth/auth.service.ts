@@ -21,8 +21,8 @@ export class AuthService {
 	private readonly EXPIRE_DAYS_REFRESH_TOKEN = 3
 	readonly REFRESH_TOKEN_COOKIE_NAME = 'refreshToken'
 
-	//NB![DEV] 1 minute
-	private readonly ACCESS_EXPIRE_MINUTES = 1
+	//NB![DEV] 360 minute (6times)
+	private readonly ACCESS_EXPIRE_MINUTES = 360
 	readonly ACCESS_TOKEN_COOKIE_NAME = 'accessToken'
 
 	//* ------------------------------ Registration ------------------------------ */

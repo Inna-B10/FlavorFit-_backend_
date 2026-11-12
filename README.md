@@ -89,6 +89,10 @@ npm i nest-cloudflare-turnstile
 
 #### **remember frontend:**
 
+- [ ] Combobox для выбора ProductFamily
+- [ ] Выбор и сброс CulinaryForm
+- [ ] Отображение family и culinaryForm в поиске продуктов
+- [ ] Использование searchTerms(продукта) при поиске
 - [ ] в меню пользователя пометка о состоянии добавленного ингредиента (на проверке / отклонено /
       опубликовано)
 - [ ] в Shopping list добавить возможность "отметить все ингредиенты данного рецепта"
@@ -96,8 +100,13 @@ npm i nest-cloudflare-turnstile
 
 #### **backend:**
 
+- [ ] внутри $transaction создание продукта лучше выполнять через tx.product.create, а не
+      this.prisma.product.create. Сейчас проверка уникальности выполняется через транзакционный
+      клиент, а создание — через основной. Это стоит исправить, но не смешивать с текущей проверкой
+      интеграции
+- [ ] ограничить выбор RecipeUnit только разрешенными enum (чтобы не было перец в миллиграммах :)
 - [ ] Удалить из GraphQL-моделей !, добавленные для подавления strictPropertyInitialization.
-- [ ]     @Field(() => [IngredientModel], { nullable: true }) - почему может быть nullable?
+- [ ]     @Field(() => [IngredientModel], { nullable: true }) - почему может быть nullable? при создании рецепта
 
 - [ ] Account: new password
 - [ ] `RecipeDraft.status + reviewedBy/reviewedAt/reviewNote`
@@ -106,16 +115,13 @@ npm i nest-cloudflare-turnstile
 - [ ] транзакционный publish (draft → recipe)
 - [ ] бэкенд-валидация: нельзя в cart продукт без variants
 - [ ] анти-спам/валидация rawName (trim, длина, rate limit)
+- [ ] Проверка поведения при конкурентном создании одинаковых семейств
 - [ ] решить “to taste” для draft-ингредиентов (quantity nullable или правило через note)
--
 - [ ] **переделать процесс добавления рецепта:**
   - [ ] пользователь не может создавать новый продукт
   - [ ] несуществующий ингредиент можно задать как строку (RecipeDraft/IngredientDraft)
   - [ ] RecipeDraft на проверку модератору
   - [ ] функции модератора
-- [ ] **переделать процесс создания продукта:**
-  - [ ] добавить таблицу ProductFamily с familyKey
-  - [ ] для продуктов добавить familyId?, searchTerms String[], culinaryForm enum
 - [ ] ? работа с тегами:
   - if tags provided - replaces current tags with exactly this list
   - if not provided - do nothing
@@ -123,9 +129,8 @@ npm i nest-cloudflare-turnstile
 - [ ] ? нормализация названия рецепта и тегов
 - [ ] **Recipes, CRUD:**
   - [ ] ? при удалении проверка тегов на удаление
-- [ ] **Products, CRUD:**
-- [ ] ? meal type enum (breakfast, dinner, lunch,snacks desserts drinks)
 - [ ] ? dietary tags (vegetar, gluten-free)
+- [ ] Использование searchTerms(продукта) при поиске
 
 <details style="border:1px solid #d4d4d4; border-radius:2px; padding:1rem;">
 <summary><h4 style="display:inline; padding-left:6px;">✅ Done</h4></summary>
@@ -159,6 +164,10 @@ npm i nest-cloudflare-turnstile
   - [x] create, update delete recipe, get by slug, by ID
   - [x] admin service
 - [x] **Products, CRUD:**
+  - [x] **переделать процесс создания продукта:**
+    - [x] добавить таблицу ProductFamily
+    - [x] для продуктов добавить familyId?, searchTerms String[], culinaryForm enum
+    - [x] meal type enum (breakfast, dinner, lunch,snacks desserts drinks)
   - [x] Get all products without productVariant
   - [x] add field "isActive"
   - [x] Create, Edit, Delete, Get all, Get 1 by ID

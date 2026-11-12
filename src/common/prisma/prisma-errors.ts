@@ -5,6 +5,7 @@ type NotFoundContext =
 	| { type: 'recipe'; id?: string }
 	| { type: 'user'; id?: string }
 	| { type: 'product'; id?: string }
+	| { type: 'productFamily'; id?: string }
 	| { type: 'cart'; id?: string }
 	| { type: 'productVariant'; id?: string }
 	| { type: 'custom'; message: string }
@@ -38,6 +39,10 @@ export function rethrowPrismaKnownErrors(e: unknown, ctx?: PrismaErrorContext): 
 				case 'productVariant':
 					throw new NotFoundException(
 						`Product variant${nf.id ? ` with ID '${nf.id}'` : ''} not found`
+					)
+				case 'productFamily':
+					throw new NotFoundException(
+						`Product family${nf.id ? ` with ID '${nf.id}'` : ''} not found`
 					)
 				case 'custom':
 					throw new NotFoundException(nf.message)

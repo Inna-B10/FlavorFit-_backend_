@@ -1,4 +1,4 @@
-import { Injectable, NotFoundException } from '@nestjs/common'
+import { ForbiddenException, Injectable, NotFoundException } from '@nestjs/common'
 import { Role } from 'prisma/generated/enums'
 import { rethrowPrismaKnownErrors } from 'src/common/prisma/prisma-errors'
 import { PrismaService } from 'src/prisma/prisma.service'
@@ -12,6 +12,9 @@ export class ProductsService {
 
 	//* ------------------------------ Create Product ------------------------------ */
 	async createProduct(input: CreateProductInput, role: Role) {
+		if (role !== Role.ADMIN) {
+			throw new ForbiddenException('You do not have permission to create products')
+		}
 		const { productVariants, productName, ...productData } = input
 		const normalizedProductName = productName.toLocaleLowerCase()
 
@@ -20,7 +23,7 @@ export class ProductsService {
 
 			if (existing)
 				throw new NotFoundException(
-					`Product with name ${normalizedProductName} and recipeUnit ${productData.recipeUnit} already exists`
+					`Product with name '${normalizedProductName}' and recipeUnit ${productData.recipeUnit} already exists`
 				)
 
 			const hasVariants = !!productVariants?.length
@@ -29,7 +32,7 @@ export class ProductsService {
 				data: {
 					productName: normalizedProductName,
 					...productData,
-					isActive: role === Role.ADMIN ? hasVariants : false,
+					isActive: hasVariants,
 					...(hasVariants && {
 						productVariants: {
 							create: productVariants.map(po => ({
@@ -43,7 +46,8 @@ export class ProductsService {
 					})
 				},
 				include: {
-					productVariants: true
+					productVariants: true,
+					family: true
 				}
 			})
 		})
@@ -57,18 +61,21 @@ export class ProductsService {
 	async getAllProducts() {
 		return this.prisma.product.findMany({
 			include: {
-				productVariants: true
+				productVariants: true,
+				family: true
 			}
 		})
 	}
 
+	//* -------------------------- Get Without Variants -------------------------- */
 	async getWithoutVariants() {
 		return this.prisma.product.findMany({
 			where: {
 				productVariants: { none: {} }
 			},
 			include: {
-				productVariants: true
+				productVariants: true,
+				family: true
 			}
 		})
 	}
@@ -80,11 +87,12 @@ export class ProductsService {
 				productId
 			},
 			include: {
-				productVariants: true
+				productVariants: true,
+				family: true
 			}
 		})
 		if (!product) {
-			throw new NotFoundException(`Product with ID ${productId} not found`)
+			throw new NotFoundException(`Product with ID '${productId}' not found`)
 		}
 		return product
 	}
@@ -92,6 +100,17 @@ export class ProductsService {
 	//* ------------------------------ Update Product ------------------------------ */
 	async updateProduct(productId: string, input: UpdateProductInput) {
 		const { productName, familyId, searchTerms, ...productData } = input
+
+		// Check if familyId exists
+		if (familyId) {
+			const family = await this.prisma.productFamily.findUnique({
+				where: { familyId }
+			})
+
+			if (!family) {
+				throw new NotFoundException(`Product family with ID '${familyId}' not found`)
+			}
+		}
 
 		try {
 			return await this.prisma.product.update({
@@ -109,7 +128,7 @@ export class ProductsService {
 
 					...(searchTerms !== undefined ? { searchTerms } : {})
 				},
-				include: { productVariants: true }
+				include: { productVariants: true, family: true }
 			})
 		} catch (e) {
 			rethrowPrismaKnownErrors(e, {
@@ -126,7 +145,8 @@ export class ProductsService {
 					productId
 				},
 				include: {
-					productVariants: true
+					productVariants: true,
+					family: true
 				}
 			})
 		} catch (e) {

@@ -13,14 +13,10 @@ export class ProductsResolver {
 
 	//* ------------------------------ Create Product ------------------------------ */
 	@Mutation(() => ProductModel)
-	@Auth()
+	@Auth(Role.ADMIN)
 	createProduct(@Args('input') input: CreateProductInput, @CurrentUser('role') role: Role) {
 		return this.productsService.createProduct(input, role)
 	}
-
-	/* ========================================================================== */
-	/*                                    ADMIN                                   */
-	/* ========================================================================== */
 
 	//* ------------------------------ All Products ------------------------------ */
 	@Query(() => [ProductModel], { name: 'allProducts' })
