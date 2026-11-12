@@ -1,4 +1,9 @@
-import { ForbiddenException, Injectable, NotFoundException } from '@nestjs/common'
+import {
+	ConflictException,
+	ForbiddenException,
+	Injectable,
+	NotFoundException
+} from '@nestjs/common'
 import { Role } from 'prisma/generated/enums'
 import { rethrowPrismaKnownErrors } from 'src/common/prisma/prisma-errors'
 import { PrismaService } from 'src/prisma/prisma.service'
@@ -22,13 +27,13 @@ export class ProductsService {
 			const existing = await checkUniqueProduct(tx, normalizedProductName, productData.recipeUnit)
 
 			if (existing)
-				throw new NotFoundException(
+				throw new ConflictException(
 					`Product with name '${normalizedProductName}' and recipeUnit ${productData.recipeUnit} already exists`
 				)
 
 			const hasVariants = !!productVariants?.length
 
-			return this.prisma.product.create({
+			return tx.product.create({
 				data: {
 					productName: normalizedProductName,
 					...productData,

@@ -33,11 +33,11 @@ export class RecipeModel {
 	@Field(() => DishType)
 	dishType: DishType
 
-	@Field(() => [IngredientModel], { nullable: true })
-	ingredients?: IngredientModel[]
+	@Field(() => [IngredientModel])
+	ingredients!: IngredientModel[]
 
-	@Field(() => [RecipeStepModel], { nullable: true })
-	recipeSteps?: RecipeStepModel[]
+	@Field(() => [RecipeStepModel])
+	recipeSteps!: RecipeStepModel[]
 
 	@Field(() => [RecipeTagModel])
 	tags: RecipeTagModel[]

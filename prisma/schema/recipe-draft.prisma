@@ -35,9 +35,8 @@ model RecipeDraft {
   recipeSteps    RecipeStepDraft[]
   nutritionFacts NutritionFactDraft?
 
-  createdAt      DateTime @default(now()) @map("created_at")
-  updatedAt      DateTime @updatedAt @map("updated_at")
-  recipeRecipeId String?
+  createdAt DateTime @default(now()) @map("created_at")
+  updatedAt DateTime @updatedAt @map("updated_at")
 
   @@index([status])
   @@index([userId, status])
@@ -69,7 +68,7 @@ model IngredientDraft {
 model RecipeStepDraft {
   recipeStepDraftId String @id @default(cuid()) @map("recipe_step_draft_id")
 
-  stepNumber Int?    @map("step_number")
+  stepNumber Int     @map("step_number")
   title      String?
   content    String
 

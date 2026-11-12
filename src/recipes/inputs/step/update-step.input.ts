@@ -1,5 +1,5 @@
-import { Field, InputType, Int } from '@nestjs/graphql'
-import { IsInt, IsOptional, MaxLength, Min, MinLength } from 'class-validator'
+import { Field, InputType } from '@nestjs/graphql'
+import { IsOptional, MaxLength, MinLength } from 'class-validator'
 import { IsCuid, Trim } from 'src/common/class-transformer/string.decorators'
 
 @InputType()
@@ -8,12 +8,6 @@ export class UpdateRecipeStepInput {
 	@Trim()
 	@IsCuid()
 	recipeStepId: string
-
-	@Field(() => Int, { nullable: true })
-	@IsOptional()
-	@IsInt({ message: 'Step number must be a number' })
-	@Min(1, { message: 'Step number must be higher than 0' })
-	stepNumber?: number
 
 	@Field(() => String, { nullable: true })
 	@IsOptional()

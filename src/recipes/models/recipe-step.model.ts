@@ -5,8 +5,8 @@ export class RecipeStepModel {
 	@Field()
 	recipeStepId: string
 
-	@Field(() => Int, { nullable: true })
-	stepNumber?: number
+	@Field(() => Int)
+	stepNumber!: number
 
 	@Field({ nullable: true })
 	title?: string

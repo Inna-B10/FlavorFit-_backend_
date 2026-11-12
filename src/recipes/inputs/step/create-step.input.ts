@@ -1,15 +1,9 @@
-import { Field, InputType, Int } from '@nestjs/graphql'
-import { IsInt, IsOptional, IsString, MaxLength, Min, MinLength } from 'class-validator'
+import { Field, InputType } from '@nestjs/graphql'
+import { IsOptional, IsString, MaxLength, MinLength } from 'class-validator'
 import { Trim } from 'src/common/class-transformer/string.decorators'
 
 @InputType()
 export class CreateRecipeStepInput {
-	@Field(() => Int, { nullable: true })
-	@IsOptional()
-	@IsInt({ message: 'Step number must be a number' })
-	@Min(1, { message: 'Step number must be higher than 0' })
-	stepNumber?: number
-
 	@Field(() => String, { nullable: true })
 	@IsOptional()
 	@IsString()

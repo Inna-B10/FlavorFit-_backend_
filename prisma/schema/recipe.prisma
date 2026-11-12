@@ -59,7 +59,7 @@ model Ingredient {
 
 model RecipeStep {
   recipeStepId String  @id @default(cuid()) @map("recipe_steps_id")
-  stepNumber   Int?    @map("step_number")
+  stepNumber   Int     @map("step_number")
   title        String?
   content      String
 

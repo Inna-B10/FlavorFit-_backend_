@@ -20,7 +20,11 @@ export async function getRecipeFull(tx: Prisma.TransactionClient, recipeId: stri
 		where: { recipeId },
 		include: {
 			ingredients: { include: { product: true } },
-			recipeSteps: true,
+			recipeSteps: {
+				orderBy: {
+					stepNumber: 'asc'
+				}
+			},
 			tags: true,
 			nutritionFacts: true
 		}

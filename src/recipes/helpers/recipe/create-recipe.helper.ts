@@ -56,7 +56,11 @@ export async function createRecipeHelper(
 				nutritionFacts: buildNutritionData(nutritionFacts)
 			},
 			include: {
-				recipeSteps: true,
+				recipeSteps: {
+					orderBy: {
+						stepNumber: 'asc'
+					}
+				},
 				tags: true,
 				nutritionFacts: true
 			}
@@ -84,7 +88,11 @@ export async function createRecipeHelper(
 			where: { recipeId: recipe.recipeId },
 			include: {
 				ingredients: { include: { product: true } },
-				recipeSteps: true,
+				recipeSteps: {
+					orderBy: {
+						stepNumber: 'asc'
+					}
+				},
 				tags: true,
 				nutritionFacts: true
 			}

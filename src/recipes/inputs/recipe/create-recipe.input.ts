@@ -78,12 +78,12 @@ export class RecipeBaseInput {
 	@ArrayMaxSize(20)
 	tags?: string[]
 
-	@Field(() => [CreateRecipeStepInput], { nullable: true })
-	@IsOptional()
+	@Field(() => [CreateRecipeStepInput])
 	@IsArray()
+	@ArrayMinSize(1)
 	@ValidateNested({ each: true })
 	@Type(() => CreateRecipeStepInput)
-	recipeSteps?: CreateRecipeStepInput[]
+	recipeSteps!: CreateRecipeStepInput[]
 }
 
 @InputType()

@@ -16,7 +16,11 @@ export class AdminRecipesService {
 		// 				product: true
 		// 			}
 		// 		},
-		// 		recipeSteps: true,
+		// 	recipeSteps: {
+		// 	orderBy: {
+		// 		stepNumber: 'asc'
+		// 	}
+		// },
 		// 		tags: true,
 		// 		nutritionFacts: true
 		// 	}
@@ -38,7 +42,11 @@ export class AdminRecipesService {
 						}
 					}
 				},
-				recipeSteps: true,
+				recipeSteps: {
+					orderBy: {
+						stepNumber: 'asc'
+					}
+				},
 				tags: true,
 				nutritionFacts: true,
 				user: true,
