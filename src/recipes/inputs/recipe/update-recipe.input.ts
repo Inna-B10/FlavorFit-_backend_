@@ -13,7 +13,7 @@ import {
 	MinLength,
 	ValidateNested
 } from 'class-validator'
-import { Trim } from 'src/common/class-transformer/string.decorators'
+import { IsCuid, Trim } from 'src/common/class-transformer/string.decorators'
 import { Difficulty, DishType } from 'src/graphql/graphql.enums'
 import { CreateIngredientInput } from '../ingredient/create-ingredient.input'
 import { UpdateIngredientInput } from '../ingredient/update-ingredient.input'
@@ -93,6 +93,7 @@ export class UpdateRecipeInput {
 	@Field(() => [CreateIngredientInput], { nullable: true })
 	@IsOptional()
 	@IsArray()
+	@ArrayMaxSize(100)
 	@ValidateNested({ each: true })
 	@Type(() => CreateIngredientInput)
 	addIngredients?: CreateIngredientInput[]
@@ -100,6 +101,7 @@ export class UpdateRecipeInput {
 	@Field(() => [UpdateIngredientInput], { nullable: true })
 	@IsOptional()
 	@IsArray()
+	@ArrayMaxSize(100)
 	@ValidateNested({ each: true })
 	@Type(() => UpdateIngredientInput)
 	updateIngredients?: UpdateIngredientInput[]
@@ -107,7 +109,7 @@ export class UpdateRecipeInput {
 	@Field(() => [String], { nullable: true })
 	@IsOptional()
 	@IsArray()
-	@IsString({ each: true })
+	@IsCuid({ each: true })
 	@ArrayMaxSize(100)
 	deleteIngredientIds?: string[]
 
@@ -115,6 +117,7 @@ export class UpdateRecipeInput {
 	@Field(() => [CreateRecipeStepInput], { nullable: true })
 	@IsOptional()
 	@IsArray()
+	@ArrayMaxSize(100)
 	@ValidateNested({ each: true })
 	@Type(() => CreateRecipeStepInput)
 	addRecipeSteps?: CreateRecipeStepInput[]
@@ -122,6 +125,7 @@ export class UpdateRecipeInput {
 	@Field(() => [UpdateRecipeStepInput], { nullable: true })
 	@IsOptional()
 	@IsArray()
+	@ArrayMaxSize(100)
 	@ValidateNested({ each: true })
 	@Type(() => UpdateRecipeStepInput)
 	updateRecipeSteps?: UpdateRecipeStepInput[]
@@ -129,7 +133,7 @@ export class UpdateRecipeInput {
 	@Field(() => [String], { nullable: true })
 	@IsOptional()
 	@IsArray()
-	@IsString({ each: true })
+	@IsCuid({ each: true })
 	@ArrayMaxSize(100)
 	deleteStepIds?: string[]
 }

@@ -7,6 +7,7 @@ import {
 	Gender,
 	NutritionGoal,
 	OrderStatus,
+	RecipeDraftStatus,
 	RecipeSort,
 	RecipeUnit,
 	Role,
@@ -24,6 +25,7 @@ registerEnumType(ActivityLevel, { name: 'ActivityLevel' })
 registerEnumType(NutritionGoal, { name: 'NutritionGoal' })
 registerEnumType(RecipeSort, { name: 'RecipeSort' })
 registerEnumType(CulinaryForm, { name: 'CulinaryForm' })
+registerEnumType(RecipeDraftStatus, { name: 'RecipeDraftStatus' })
 
 export {
 	ActivityLevel,
@@ -33,6 +35,7 @@ export {
 	Gender,
 	NutritionGoal,
 	OrderStatus,
+	RecipeDraftStatus,
 	RecipeSort,
 	RecipeUnit,
 	Role,

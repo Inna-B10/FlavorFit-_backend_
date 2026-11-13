@@ -53,7 +53,8 @@ model IngredientDraft {
   productId String?  @map("product_id")
   product   Product? @relation(fields: [productId], references: [productId])
 
-  rawProductName String? @map("raw_product_name") // если не найден
+  rawProductName String? @map("raw_product_name") // предложенное имя от пользователя
+  originalProductName String? @map("original_product_name") // это копия rawProductName,остается после модерации
 
   recipeDraftId String      @map("recipe_draft_id")
   recipeDraft   RecipeDraft @relation(fields: [recipeDraftId], references: [recipeDraftId], onDelete: Cascade)

@@ -11,6 +11,7 @@ import {
 } from 'class-validator'
 import Decimal from 'decimal.js'
 import { Amount, ToDecimal } from 'src/common/class-transformer/decimal/decimal.decorators'
+import { OneOf } from 'src/common/class-transformer/one-of.decorator'
 import { IsCuid, Trim } from 'src/common/class-transformer/string.decorators'
 import { RecipeUnit } from 'src/graphql/graphql.enums'
 
@@ -20,12 +21,6 @@ export class CreateIngredientInput {
 	@Trim()
 	@IsCuid()
 	productId!: string
-
-	@Field(() => String, { nullable: true })
-	@IsOptional()
-	@IsString()
-	@Trim()
-	productIconUrl?: string
 
 	@Field(() => Decimal)
 	@Type(() => String)
@@ -48,6 +43,9 @@ export class CreateIngredientInput {
 
 @InputType()
 export class CreateIngredientDraftInput {
+	@OneOf(['productId', 'rawProductName'])
+	private readonly ingredientSourceValidation = true
+
 	// If exists in catalog
 	@Field(() => String, { nullable: true })
 	@IsOptional()
@@ -63,12 +61,6 @@ export class CreateIngredientDraftInput {
 	@MaxLength(120, { message: 'Product name is too long' })
 	@MinLength(2, { message: 'Product name is too short' })
 	rawProductName?: string
-
-	@Field(() => String, { nullable: true })
-	@IsOptional()
-	@IsString()
-	@Trim()
-	productIconUrl?: string
 
 	@Field(() => Decimal, { nullable: true })
 	@ValidateIf((o: CreateIngredientDraftInput) => !!o.productId)

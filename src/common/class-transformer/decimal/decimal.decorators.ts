@@ -6,10 +6,25 @@ import Decimal from 'decimal.js'
 /** --- low-level validators (tiny + reusable) --- */
 export const ToDecimal = () =>
 	Transform(({ value }: { value: unknown }) => {
-		if (value === undefined || value === null || value === '') return undefined
+		if (value === undefined || value === null || value === '') {
+			return undefined
+		}
+
 		if (value instanceof Decimal) return value
-		if (typeof value === 'string') return new Decimal(value.replace(',', '.'))
-		return new Decimal(value as any)
+
+		try {
+			if (typeof value === 'string') {
+				return new Decimal(value.replace(',', '.'))
+			}
+
+			if (typeof value === 'number' || typeof value === 'bigint') {
+				return new Decimal(value)
+			}
+		} catch {
+			return value
+		}
+
+		return value
 	})
 
 function IsDecimalJs(options?: ValidationOptions) {

@@ -48,6 +48,9 @@ export class IngredientDraftModel {
 	rawProductName?: string
 
 	@Field(() => String, { nullable: true })
+	originalProductName?: string
+
+	@Field(() => String, { nullable: true })
 	productId?: string
 
 	@Field(() => ProductModel, { nullable: true })
