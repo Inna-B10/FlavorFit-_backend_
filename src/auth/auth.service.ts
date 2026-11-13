@@ -72,7 +72,7 @@ export class AuthService {
 				role: user.role
 			})
 			return { user, ...tokens }
-		} catch (e) {
+		} catch {
 			throw new NotFoundException('Unable to sign in; check details or complete verification.')
 		}
 	}
@@ -122,7 +122,7 @@ export class AuthService {
 
 		try {
 			payload = await this.jwt.verifyAsync(refreshToken)
-		} catch (e) {
+		} catch {
 			throw new BadRequestException('Invalid or expired refresh token')
 		}
 		const user = await this.usersService.findUserById(payload.userId)
