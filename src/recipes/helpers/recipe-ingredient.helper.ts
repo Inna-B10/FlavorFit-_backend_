@@ -2,7 +2,7 @@ import { BadRequestException } from '@nestjs/common'
 import { Prisma } from 'prisma/generated/client'
 import { UpdateIngredientInput } from 'src/recipes/inputs/ingredient/update-ingredient.input'
 import { UpdateRecipeInput } from 'src/recipes/inputs/recipe/update-recipe.input'
-import { getOrCreateProductIdForIngredient } from './recipe-ingredient-products.helper'
+import { resolveIngredientProductId } from './recipe-ingredient-products.helper'
 
 //* ------------------------- Apply Ingredient Changes ------------------------- */
 export async function applyIngredientChanges(
@@ -34,8 +34,11 @@ export async function applyIngredientChanges(
 
 		// strict mode (optional): if some id didn't match -> error
 		const notFound = results
-			.map((r, i) => ({ count: r.count, id: input.updateIngredients![i].ingredientId }))
-			.filter(x => x.count === 0)
+			.map((result, index) => ({
+				count: result.count,
+				id: patches[index].ing.ingredientId
+			}))
+			.filter(item => item.count === 0)
 
 		if (notFound.length) {
 			throw new BadRequestException(
@@ -44,26 +47,21 @@ export async function applyIngredientChanges(
 		}
 	}
 
-	// add ingredient (productId OR productName -> create Product without variants)
+	// Add ingredients
 	if (input.addIngredients?.length) {
-		// Pre-resolve productIds (sequential or parallel; sequential is easier for debugging)
 		const productIds: string[] = []
+
 		for (const ing of input.addIngredients) {
-			productIds.push(await getOrCreateProductIdForIngredient(tx, ing))
+			productIds.push(await resolveIngredientProductId(tx, ing.productId))
 		}
 
-		if (productIds.length !== input.addIngredients.length) {
-			throw new BadRequestException('Resolved productIds mismatch')
-		}
-
-		// @@unique([recipeId, productId]) means duplicates will throw P2002
 		await tx.ingredient.createMany({
 			data: input.addIngredients.map((ing, idx) => ({
 				recipeId,
 				productId: productIds[idx],
 				quantity: ing.quantity,
 				recipeUnit: ing.recipeUnit,
-				ingredientNote: ing.ingredientNote || null
+				ingredientNote: ing.ingredientNote ?? null
 			}))
 		})
 	}
@@ -80,4 +78,45 @@ export function buildIngredientPatch(
 	if (ing.ingredientNote !== undefined) data.ingredientNote = ing.ingredientNote
 
 	return data
+}
+
+//* ---------------------- Check Ingredients Duplicates ---------------------- */
+export async function assertNoDuplicateProductIds(
+	tx: Prisma.TransactionClient,
+	ingredients: { productId?: string }[]
+) {
+	const seen = new Set<string>()
+	const dupIds = new Set<string>()
+
+	// 1. Собираем все дублирующиеся ID без обращений к БД
+	for (const i of ingredients) {
+		if (!i.productId) continue
+
+		if (seen.has(i.productId)) {
+			dupIds.add(i.productId)
+		} else {
+			seen.add(i.productId)
+		}
+	}
+
+	// 2. Если дубликатов нет, выходим сразу без запроса в базу
+	if (!dupIds.size) return
+
+	// 3. Получаем названия всех дубликатов одним запросом
+	const products = await tx.product.findMany({
+		where: {
+			productId: { in: [...dupIds] }
+		},
+		select: {
+			productId: true,
+			productName: true
+		}
+	})
+
+	// Сопоставляем ID с названиями (если продукт не найден в БД, оставляем сам ID)
+	const productNamesMap = new Map(products.map(p => [p.productId, p.productName] as const))
+
+	const duplicateNames = [...dupIds].map(id => productNamesMap.get(id) ?? id)
+
+	throw new BadRequestException(`Duplicate ingredients: ${duplicateNames.join(', ')}`)
 }

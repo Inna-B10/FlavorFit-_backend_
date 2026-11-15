@@ -1,8 +1,8 @@
-import { BadRequestException } from '@nestjs/common'
 import { Prisma } from 'prisma/generated/client'
 import { rethrowPrismaKnownErrors } from 'src/common/prisma/prisma-errors'
 import { CreateRecipeInput } from 'src/recipes/inputs/recipe/create-recipe.input'
-import { getOrCreateProductIdForIngredient } from '../recipe-ingredient-products.helper'
+import { resolveIngredientProductId } from '../recipe-ingredient-products.helper'
+import { assertNoDuplicateProductIds } from '../recipe-ingredient.helper'
 import { buildNutritionData } from '../recipe-nutrition.helper'
 import { normalizeSteps } from '../recipe-steps.helper'
 import { buildTagsConnectOrCreate } from '../recipe-tags'
@@ -16,23 +16,6 @@ type CreatedRecipe = Prisma.RecipeGetPayload<{
 	}
 }>
 
-//* ---------------------- Check Ingredients Duplicates ---------------------- */
-export function assertNoDuplicateProductIds(ingredients: { productId?: string }[]) {
-	// prevent duplicate products inside one recipe by productId (because of @@unique([recipeId, productId]))
-	const seen = new Set<string>()
-	const dup = new Set<string>()
-
-	for (const i of ingredients) {
-		if (!i.productId) continue
-		if (seen.has(i.productId)) dup.add(i.productId)
-		else seen.add(i.productId)
-	}
-
-	if (dup.size) {
-		throw new BadRequestException(`Duplicate productId in ingredients: ${[...dup].join(', ')}`)
-	}
-}
-
 //* ------------------------------ Create Recipe ----------------------------- */
 export async function createRecipeHelper(
 	tx: Prisma.TransactionClient,
@@ -43,36 +26,31 @@ export async function createRecipeHelper(
 
 	const stepsData = normalizeSteps(recipeSteps)
 
+	await assertNoDuplicateProductIds(tx, ingredients)
+
 	try {
+		const productIds: string[] = []
+
+		for (const ing of ingredients) {
+			productIds.push(await resolveIngredientProductId(tx, ing.productId))
+		}
+
 		const recipe = await tx.recipe.create({
 			data: {
 				...recipeData,
-				user: { connect: { userId: userId } },
-
+				user: { connect: { userId } },
 				recipeSteps: { create: stepsData },
-
 				tags: buildTagsConnectOrCreate(tags),
-
 				nutritionFacts: buildNutritionData(nutritionFacts)
 			},
 			include: {
 				recipeSteps: {
-					orderBy: {
-						stepNumber: 'asc'
-					}
+					orderBy: { stepNumber: 'asc' }
 				},
 				tags: true,
 				nutritionFacts: true
 			}
 		})
-
-		const productIds: string[] = []
-		for (const ing of ingredients) {
-			productIds.push(await getOrCreateProductIdForIngredient(tx, ing))
-		}
-		if (productIds.length !== ingredients.length) {
-			throw new BadRequestException('Resolved productIds mismatch')
-		}
 
 		await tx.ingredient.createMany({
 			data: ingredients.map((ing, idx) => ({
@@ -80,7 +58,7 @@ export async function createRecipeHelper(
 				productId: productIds[idx],
 				quantity: ing.quantity,
 				recipeUnit: ing.recipeUnit,
-				ingredientNote: ing.ingredientNote ?? null // IMPORTANT
+				ingredientNote: ing.ingredientNote ?? null
 			}))
 		})
 
@@ -89,9 +67,7 @@ export async function createRecipeHelper(
 			include: {
 				ingredients: { include: { product: true } },
 				recipeSteps: {
-					orderBy: {
-						stepNumber: 'asc'
-					}
+					orderBy: { stepNumber: 'asc' }
 				},
 				tags: true,
 				nutritionFacts: true
