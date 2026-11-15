@@ -6,11 +6,11 @@ import { upsertNutritionFacts } from './helpers/recipe-nutrition.helper'
 import { applyStepChanges } from './helpers/recipe-steps.helper'
 import { syncRecipeTags } from './helpers/recipe-tags'
 import { buildRecipesWhere, getOrderBy } from './helpers/recipe/build-recipes-query.helper'
-
+import { createRecipeDraftHelper } from './helpers/recipe/create-recipe-draft.helper'
 import { createRecipeHelper } from './helpers/recipe/create-recipe.helper'
 import { checkRecipeExists, getRecipeFull } from './helpers/recipe/get-recipe.helper'
 import { patchRecipeCore } from './helpers/recipe/update-recipe.helper'
-import { CreateRecipeInput } from './inputs/recipe/create-recipe.input'
+import { CreateRecipeDraftInput, CreateRecipeInput } from './inputs/recipe/create-recipe.input'
 import { RecipesQueryInput } from './inputs/recipe/get-recipes-query.input'
 import { UpdateRecipeInput } from './inputs/recipe/update-recipe.input'
 
@@ -106,5 +106,11 @@ export class RecipesService {
 		} catch (e) {
 			rethrowPrismaKnownErrors(e, { slug: input.slug, notFound: { type: 'recipe', id: recipeId } })
 		}
+	}
+
+	//* ---------------------------- Create Recipe Draft ----------------------------
+
+	async createRecipeDraft(userId: string, input: CreateRecipeDraftInput) {
+		return this.prisma.$transaction(tx => createRecipeDraftHelper(tx, userId, input))
 	}
 }

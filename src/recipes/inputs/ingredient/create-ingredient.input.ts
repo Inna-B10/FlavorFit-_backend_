@@ -53,7 +53,7 @@ export class CreateIngredientDraftInput {
 	@IsCuid()
 	productId?: string
 
-	// If product doesn't exist - create it
+	// If product doesn't exist - submit its name for admin review
 	@Field(() => String, { nullable: true })
 	@IsOptional()
 	@IsString()

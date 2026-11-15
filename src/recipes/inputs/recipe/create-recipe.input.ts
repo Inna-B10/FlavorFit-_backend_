@@ -81,6 +81,7 @@ export class RecipeBaseInput {
 	@Field(() => [CreateRecipeStepInput])
 	@IsArray()
 	@ArrayMinSize(1)
+	@ArrayMaxSize(100)
 	@ValidateNested({ each: true })
 	@Type(() => CreateRecipeStepInput)
 	recipeSteps!: CreateRecipeStepInput[]
@@ -99,6 +100,7 @@ export class CreateRecipeInput extends RecipeBaseInput {
 	@Field(() => [CreateIngredientInput])
 	@IsArray()
 	@ArrayMinSize(1)
+	@ArrayMaxSize(100)
 	@ValidateNested({ each: true })
 	@Type(() => CreateIngredientInput)
 	ingredients!: CreateIngredientInput[]
